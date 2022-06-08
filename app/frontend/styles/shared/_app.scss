@@ -1,0 +1,39 @@
+@import './vars';
+
+html,
+body {
+  font-family: $main_font;
+  font-size: $main_font_size;
+  background: #F1F1F1;
+  height: 100%; /* needed for container min-height */
+}
+ul {
+  font-family: $main_font;
+  font-size: $main_font_size;
+  font-weight: 600;
+}
+form,table {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#wrap {
+  display: flex;
+  min-height: 100%;
+  height: auto;
+  box-sizing: border-box;
+
+  @media (max-width: 991px) {
+    flex-direction: column;
+  }
+}
+
+#wrap > div {
+  min-height: calc(100% - 195px);
+}
+.calc-min-h {
+  min-height: calc(100% - 55px) !important;
+}
+.calc-min-h-temp {
+  min-height: calc(100% - 135px) !important;
+}

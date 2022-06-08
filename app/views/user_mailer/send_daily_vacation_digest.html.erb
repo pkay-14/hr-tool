@@ -1,0 +1,76 @@
+<tr>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      Dear HR, <br>
+      Here below is an aggregate report on the requests submitted by MOCG masters yesterday:
+    </span>
+  </td>
+</tr>
+<tr><td height="20"></td></tr>
+<tr>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      <b>Sick leaves:</b>
+    </span>
+  </td>
+</tr>
+<tr><td height="5"></td></tr>
+<tr>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      <% if @digest['sick'].present? %>
+        <% @digest['sick']&.each do |message| %>
+          <%= message %> <br>
+        <% end %>
+      <% else %>
+        'N/A' <br>
+      <% end %>
+    </span>
+  </td>
+</tr>
+<tr><td height="10"></td></tr>
+<tr>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      <b>Vacation requests:</b>
+    </span>
+  </td>
+</tr>
+<tr><td height="5"></td></tr>
+<tr>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      <% if @digest['vacation'].present? %>
+        <% @digest['vacation']&.each do |message| %>
+          <%= message %> <br>
+        <% end %>
+      <% else %>
+        'N/A' <br>
+      <% end %>
+    </span>
+  </td>
+</tr>
+<tr><td height="10"></td></tr>
+<tr>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      <b>Unpaid-leave requests:</b>
+    </span>
+  </td>
+</tr>
+<tr><td height="5"></td></tr>
+<tr>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      <% if @digest['days-off'].present? %>
+        <% @digest['days-off']&.each do |message| %>
+          <%= message %> <br>
+        <% end %>
+      <% else %>
+        'N/A' <br>
+      <% end %>
+    </span>
+ </td>
+</tr>
+<tr><td height="35"></td></tr>
+

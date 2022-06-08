@@ -1,0 +1,157 @@
+$("#stats").html('<%= escape_javascript(render :partial => "month_stats", locals: {
+  users: @users, users_batch: @users_batch, from_date: @from_date, to_date: @to_date,
+  date: @date, jira_data: @jira_data, batch_token: @batch_token, teammates: @options['teammates']
+  } )%>');
+
+var get_next_users;
+get_next_users = function(batch_token, batch_number) {
+  if (batch_number > <%= @batches_quantity %>) {
+    return;
+  }
+  spinner.addToElement('#stats', spinner.getSpinnerDefaultParams().spinnerDomId, false);
+  //$('.spinner').fadeIn('slow');
+  var params;
+  params = {};
+  params['tech'] = '<%= @options['tech'] %>';
+  params['load_status'] = '<%= @options['load_status'] %>';
+  params['project_category'] = '<%= @options['project_category'] %>';
+  params['company_division'] = '<%= @options['company_division'] %>';
+  params['community'] = '<%= @options['community'] %>';
+  params['position'] = '<%= @options['position'] %>';
+  params['sort_name'] = '<%= @options['sort_name'] %>';
+  params['sort_total'] = '<%= @options['sort_total'] %>';
+  <% if @options['search_query'].present? %>
+  params['search_query'] = '<%= @options['search_query'] %>';
+  <% end %>
+  params['date'] = '<%= @date.strftime("%Y-%m-%d") %>';
+  params['batch_token'] = batch_token;
+  params['page'] = batch_number;
+  params['per_page'] = 10;
+  params['master'] = '<%= master_cabinet? %>';
+  params['team'] = '<%= @options['team'] %>';
+  params['teammates'] = '<%= @options['teammates'] %>';
+
+  $.ajax({
+    url: "/manager/calendar/batch",
+    type: "GET",
+    data: params
+  }).done(function() {
+    spinner.remove();
+    //$('.spinner').hide();
+    get_next_users(batch_token, ++batch_number);
+  });
+};
+
+get_next_users('<%= @batch_token %>', <%= @batch_number %>);
+
+$('.imployee-info i').click(function() {
+  $(this).closest("tr").nextUntil("[data-main='info']").toggleClass('hide-calendar-employee-projects');
+  return $(this).toggleClass('icon-caret-down icon-caret-up');
+});
+
+
+function request() {
+
+  var params;
+  params = {};
+  params['project_category'] = $('a[data-current-project-category]').text().trim();
+  params['tech'] = $('a[data-current-tech]').text().trim();
+  params['load_status'] = $('a[data-current-status]').text().trim();
+  params['company_division'] = $('a[data-current-company-division]').text().trim();
+  params['community'] = $('a[data-current-community]').text().trim();
+  params['position'] = $('a[data-current-position]').text().trim();
+  params['search_query'] = $('#calendar .search-form input').val();
+  params['date'] = $('#calendar time').attr('datetime');
+  params['per_page'] = $('#calendar .items-on-page').val();
+  params['sort_name'] = $('#name__button').data('load-name');
+  params['master'] = $('.master-cabinet').data('master-cabinet').toString();
+  params['team'] = $('a[data-current-team]').text().trim();
+  if ($('[data-current-master-cabinet-filter]').text().trim() === "Team's") {
+    params['teammates'] = true;
+  } else {
+    params['teammates'] = false;
+  }
+
+  return $.ajax({
+    url: "/manager/calendar/search",
+    type: "GET",
+    data: params
+  }).done(function () {
+      highlightOption();
+  });
+
+}
+
+$('#calendar .items-on-page').on("change", request);
+
+var current_day = $('table th.current-day');
+var current_day_index = current_day.index();
+current_day.closest('table')
+    .find('td:nth-child(' + (current_day_index + 1) + ')')
+    .addClass('current-day');
+
+function highlightOption() {
+    var option = document.querySelectorAll('.items-on-page option')
+    option.forEach(function (i) {
+        if(i.selected === true) {
+            i.style.color = "#FD5D32"
+        }
+    })
+}
+
+function loadSortName() {
+  $('[data-sort-name]').on('click', function() {
+    sortName('sort-name');
+  });
+
+  function sortName(sortData) {
+    const sortBy = $(this).data(sortData);
+    const reqRout = '/manager/calendar/search';
+    const payload = {
+      project_category: $('a[data-current-project-category]').text().trim(),
+      tech: $('a[data-current-tech]').text().trim(),
+      load_status: $('a[data-current-status]').text().trim(),
+      company_division: $('a[data-current-company-division]').text().trim(),
+      community: $('a[data-current-community]').text().trim(),
+      position: $('a[data-current-position]').text().trim(),
+      search_query: $('#calendar #search-item input').val(),
+      date: $('#calendar time').attr('datetime'),
+      per_page: $('#calendar .items-on-page').val(),
+      master: $('.master-cabinet').data('master-cabinet').toString(),
+      teammates: $('[data-current-master-cabinet-filter]').text().trim() === 'Team\'s'
+    };
+
+    sortingSandboxName.sort(reqRout, payload, sortBy);
+  }
+}
+
+function loadSortTotal() {
+  $('[data-sort-total]').on('click', function() {
+    sortTotal('sort-total');
+  });
+
+  function sortTotal(sortData) {
+    const sortBy = $(this).data(sortData);
+    const reqRout = '/manager/calendar/search';
+    const payload = {
+      project_category: $('a[data-current-project-category]').text().trim(),
+      tech: $('a[data-current-tech]').text().trim(),
+      load_status: $('a[data-current-status]').text().trim(),
+      company_division: $('a[data-current-company-division]').text().trim(),
+      community: $('a[data-current-community]').text().trim(),
+      position: $('a[data-current-position]').text().trim(),
+      team: $('a[data-current-team]').text().trim(),
+      search_query: $('#calendar #search-item input').val(),
+      date: $('#calendar time').attr('datetime'),
+      per_page: $('#calendar .items-on-page').val(),
+      master: $('.master-cabinet').data('master-cabinet').toString(),
+      teammates: $('[data-current-master-cabinet-filter]').text().trim() === 'Team\'s'
+    };
+
+    sortingSandboxTotal.sort(reqRout, payload, sortBy);
+  }
+}
+
+$(document).ready(highlightOption);;
+$(document).ready(loadSortName);
+$(document).ready(loadSortTotal);

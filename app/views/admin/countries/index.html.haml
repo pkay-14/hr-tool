@@ -1,0 +1,42 @@
+#employee.employee-page-index.main-page
+  .content-container
+    .container.main.countries-container
+      .top-row
+        .all-masters-wrapper
+          %h2.title All Countries
+          .top-buttons
+            - if current_user.is_hr_manager?
+              .top-buttons-container
+                =link_to '+ Add Country', new_admin_country_path,  class: 'table-top-btn table-top-btn-m-0 mm-btn-white'
+
+      .employees-partial
+        .hr-table-wrap
+          %table.hr-table
+            %thead
+              %tr.hr-table__head-row.hr-table__head-row--height
+                %th.mm-th-table-top.hr-table__cell--padding-md.index #
+                %th.mm-th-table-top.employee-name Name
+                %th.mm-th-table-top.contacts Offices
+                %th.mm-th-table-top.projects Vacation days per year
+                %th.mm-th-table-top.projects Sick days per year
+
+            - @countries.each do |country|
+              %tr.hr-table__body-row
+                %td.hr-table__cell-center.hr-table__cell--padding-md.index
+                  -#= user.index_number
+                %td.hr-table__cell-center.master-info.employee-name
+                  %table.hr-table__sub-table.no-paddings
+                    %tr
+                      %td
+                        .user-info
+                          %h5
+                            = link_to country.name, edit_admin_country_path(country), class: "mm-name"
+                %td.hr-table__cell-center.contacts
+                  %ul.skills-list
+                    - country.offices.each do |office|
+                      %li
+                        = office.name
+                %td.hr-table__cell-center.projects
+                  = country.vacation_days_per_year
+                %td.hr-table__cell-center.projects
+                  = country.sick_days_per_year

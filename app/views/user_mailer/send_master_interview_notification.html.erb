@@ -1,0 +1,39 @@
+<tr>
+  <td width="20"></td>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      Привіт! <br>
+      Запрошуємо на інтерв'ю з клієнтом <%= @interview.client %>, з приводу залучення тебе до проекту <%= @interview.project %>.
+    </span>
+  </td>
+  <td width="20"></td>
+</tr>
+
+<tr><td height="35" colspan="3"></td></tr>
+
+<% if @interview.description  %>
+
+  <tr>
+    <td width="20"></td>
+    <td>
+      <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+       Опис проекту: <%= @interview.description %>
+      </span>
+    </td>
+    <td width="20"></td>
+  </tr>
+
+  <tr><td height="35" colspan="3"></td></tr>
+
+<% end  %>
+
+<tr>
+  <td width="20"></td>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      Ми раді запропонувати тобі свою допомогу в підготовці до інтерв'ю англійською мовою.
+      Наш досвід такої практики щоразу демонструє високі результати.
+    </span>
+  </td>
+  <td width="20"></td>
+</tr>

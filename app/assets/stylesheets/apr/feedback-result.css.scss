@@ -1,0 +1,73 @@
+// VIEW REPORT
+.share-report-bth.table-top-btn {
+  margin-left: auto;
+}
+
+.feedback-result {
+  padding: 24px;
+  border-bottom: 1px solid #F1F1F1;
+
+  &:last-child {
+    border: none;
+  }
+}
+
+.feedback-result__title {
+  margin: 0;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 28px;
+
+  color: #373737;
+}
+
+.feedback-result__description {
+  margin-top: 10px;
+  font-size: 14px;
+  line-height: 20px;
+  color: #373737;
+}
+
+.feedback-result__content {
+  display: flex;
+  margin-top: 25px;
+}
+.feedback-result__graph {
+  margin-right: 40px;
+}
+
+.feedback-result__comments-title {
+  margin: 0;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 22px;
+  color: #373737;
+}
+
+.feedback-result__comments-list {
+  margin: 15px 0 0 0;
+  padding: 0;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 20px;
+  color: #373737;
+}
+
+.feedback-result__comment {
+  margin-left: 15px;
+  list-style: decimal;
+  font-weight: normal;
+
+  &.feedback-result__comment--no-digit {
+    list-style: none;
+    margin-left: 0;
+  }
+}
+
+.result__item {
+  list-style: inside;
+}
+
+.mm-modal-body--share-report-with-master {
+  padding: 25px 15px 15px 15px;
+}

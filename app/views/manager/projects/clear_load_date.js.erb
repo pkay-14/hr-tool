@@ -1,0 +1,11 @@
+load_div = $('[data-load-id=<%= @load.id.to_s %>]')
+
+<% if @load.from.nil? %>
+  load_div.find('.from-date .date-text').html('')
+  load_div.find('.from-date .clear').html('')
+<% end %>
+
+<% if @load.to.nil? %>
+  load_div.find('.to-date .date-text').html('')
+  load_div.find('.to-date .clear').html('')
+<% end %>

@@ -1,0 +1,35 @@
+.dropdown-container.dropdown-container-no-space
+  .mobile-top-row
+    %h3.menu-title Filters
+    .close-dropdowns
+      %button#close-right-menu.close-right-menu
+  .dropdown-block.dropdown-block-208#overtime-approve-status-filter
+    %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_status: 'pending'}}
+      Pending
+    %ul.hr-dropdown__menu.dropdown-menu
+      %li.dropdown__item.hide{ data: { status: 'pending' } }
+        Pending
+      %li.dropdown__item{ data: { status: 'confirmed' } }
+        Confirmed
+      %li.dropdown__item{ data: { status: 'dismissed' } }
+        Dismissed
+      %li.dropdown__item{ data: { status: '' } }
+        Any status
+
+  .dropdown-block-date
+    %label.mm-label-datepicker
+      From
+    .input-append.input-append--flex.date.project-form__block.apr__block-dates{'data-datepicker-overtime-approve-from' => ''}
+      %input#overtime-approve-from-date.profile-form__input{"data-format"=>"dd.MM.yyyy", placeholder: 'dd.mm.yyyy', :name => "From"}
+      %span.add-on
+        %i.apr-date__icon.icon-calendar
+  .dropdown-block-date.m-l-15
+    %label.mm-label-datepicker
+      To
+    .input-append.input-append--flex.date.project-form__block.apr__block-dates{'data-datepicker-overtime-approve-to' => ''}
+      %input#overtime-approve-to-date.profile-form__input{"data-format"=>"dd.MM.yyyy", placeholder: 'dd.mm.yyyy', :name => "To"}
+      %span.add-on
+        %i.apr-date__icon.icon-calendar
+  .menu-bottom-button
+    %button.btn-show-result#close-right-menu-btn Show
+

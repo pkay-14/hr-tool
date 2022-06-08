@@ -1,0 +1,282 @@
+- if is_not_dev_env?
+  = stylesheet_pack_tag "timeOffDetails"
+#master-profile.profile-page.main-page
+  .content-container
+    .container.main
+      .content-block
+        .row-fluid.row-fluid-mobile
+          .container
+            .mm-btn-wrapper
+              = link_to 'Back', admin_employees_path, :class => 'mm-btn-back__link'
+              .top-buttons.top-buttons-mobile
+                -# -if current_user.is_manager?
+                -#   = link_to 'Master Interviews', manager_master_interviews_path(user_id: @user.id.to_s), :class => 'table-top-btn mm-btn-white'
+                -if current_user.is_hr_manager?
+                  #vue-time-off-details
+                -if current_user.is_hr_manager? || current_user.is_office_manager?
+                  = link_to 'Career history',  admin_career_histories_path(user_id: @user.id), :class => 'table-top-btn mm-btn-white'
+                -if current_user.is_hr_manager?
+                  = link_to 'Legal Info', legal_info_admin_employee_path(@user), :class => 'table-top-btn mm-btn-white'
+                -if current_user.is_hr_manager? || current_user.is_office_manager?
+                  = link_to 'Edit', edit_admin_employee_path(@user), :class => 'table-top-btn mm-btn-white'
+        .head-part.head-part--flex.master-head-part
+          .head-part__left-col
+            .mm-avatar
+              = image_tag((@user.photo.path(:small_retina).present? ? @user.photo.url(:small_retina) : "user_icon_placeholder@2x.png") , class: "profile__user-img img-circle pull-left", alt: "User photo" )
+            .master-title-wrap
+              %h3.master-title.space-r-25{id: 'master-title', 'data-master-id': @user.id}
+                = @user.full_name
+              - if @user.passport_info.present? && @user.show_non_english_name
+                %span.ukrainian-name__span
+                  = "#{@user.passport_info&.first_name} #{@user.passport_info&.last_name}".force_encoding(Encoding::UTF_8)
+
+              -#-if @user.resume_url.present?
+              -#  = link_to 'Resume', @user.resume_url, {:class => 'btn-icon resume-icon master-resume', :target => "_blank", data: {"toggle" => "popover", "hint" => "", "content" => "Resume"}}
+              .mm-working-status{data:{type: 'user-status'}}
+                = @user.get_working_status
+              .mm-location__list
+                %span.mm-location__item{data:{type: 'country'}}
+                  = @user.country&.name
+                %span.mm-location__item.mm-location__item-office{data:{type: 'office'}}
+                  = @user.office&.name
+          %ul#mm-days__list.mm-days__list{'data-per-year': @user.vacation_days_for_year(Date.today.year)}
+            %li.mm-days__item{data:{type: 'vacation_days'}, class: @user.vacation_days.present? ? '' : 'hidden'}
+              %p.mm-days__text
+                Total vacation days #{@current_year}
+              %span.mm-days__number
+                = sanitize "#{@user.remaining_vacation_days_current_year}"
+            %li.mm-days__item{data:{type: 'vacation_days'}, class: @user.vacation_days.present? ? '' : 'hidden'}
+              %p.mm-days__text Total vacation days #{@current_year - 1}
+              %span.mm-days__number
+                = sanitize "#{([@user.vacation_days_past_year, 0.0].compact.max).to_d}<br/>"
+            %li.mm-days__item
+              %p.mm-days__text Vacation days earned
+              %span.mm-days__number
+                = @user.left_at.present? ? 0.0 : @user.earned_vacation_days
+            %li.mm-days__item{data:{type: 'sick_days'}, class: @user.sick_days.present? ? '' : 'hidden'}
+              %p.mm-days__text{class: master_cabinet? ? 'profile-form-label--sm' : ''}
+                Sick days #{@current_year}
+              %span.mm-days__number
+                = "#{@user.left_at.present? ? 0.0 : @user.sick_days_remaining}"
+            %li.mm-days__item{data:{type: 'days_off'}, class: @user.days_off.present? ? '' : 'hidden'}
+              %p.mm-days__text{class: master_cabinet? ? 'profile-form-label--sm' : ''} Unpaid leave taken #{@current_year}
+              %span.mm-days__number
+                = "#{@user.count_unpaid_leave(Date.today.year)}"
+        .profile-info-box.info-box{data:{user_id: @user.id}}
+          %ul.profile-form-list
+
+            - user_current_projects_list = @user.current_projects_list('in_column')
+            %li.profile-form__item{data:{type: 'current projects'}, class: user_current_projects_list.present? ? '' : 'hidden'}
+              %span.profile-form-label
+                Current Projects:
+              %span.profile-sm-text
+                = simple_format(user_current_projects_list)
+
+            %li.profile-form__item{data:{type: 'reference'}, class: @user.reference.present? ? '' : 'hidden'}
+              %span.profile-form-label
+                Reference:
+              %span.profile-sm-text
+                = @user.reference
+                = @user.reference_additional
+
+            %li.profile-form__item{data:{type: 'str_technologies'}, class: (@user.str_technologies and !@user.str_technologies.blank?) ? '' : 'hidden'}
+              %span.profile-form-label
+                Technologies:
+              .skills-list.mm-size-14
+                - @user.skills.each do |s|
+                  %p.profile-sm-text
+                    = s.name
+                    %span.table-text-secondary-color
+                      = "- #{s.level.present? ? s.level : 'Unknown level'}"
+            %li.profile-form__item{data:{type: 'people_partner'}, class: @user.has_people_partner? ? '' : 'hidden'}
+              %span.profile-form-label
+                People partner:
+              %span.profile-sm-text
+                = @user.get_people_partner&.full_name
+
+            %li.profile-form__item{data:{type: 'company_division'}, class: @user.has_company_division? ? '' : 'hidden'}
+              %span.profile-form-label
+                Company division:
+              %span.profile-sm-text
+                = @user.company_division
+
+            %li.profile-form__item{data:{type: 'community'}, class: @user.has_community? && @user.has_company_division? ? '' : 'hidden'}
+              %span.profile-form-label
+                Community:
+              %span.profile-sm-text
+                = @user.community
+
+            %li.profile-form__item{data:{type: 'position'}, class: @user.has_position? && @user.has_community? && @user.has_company_division? ? '' : 'hidden'}
+              %span.profile-form-label
+                Position:
+              %span.profile-sm-text
+                = @user.position
+
+            %li.profile-form__item{data:{type: 'role'}, class: @user.has_additional_position? ? '' : 'hidden'}
+              %span.profile-form-label
+                Role:
+              %span.profile-sm-text
+                = @user.additional_position
+
+            %li.profile-form__item{data:{type: 'english_level'}, class: @user.has_english_level? ? '' : 'hidden'}
+              %span.profile-form-label
+                English level:
+              %span.profile-sm-text
+                = @user.english_level
+
+            %li.profile-form__item{data:{type: 'salary'}, class: (@user.sallary.present? && current_user.is_hr_manager?) ? '' : 'hidden'}
+              %span.profile-form-label
+                Compensation:
+              %span.profile-sm-text
+                -if current_user.is_hr_manager? && current_user.not_hr_test?
+                  = @user.sallary
+                - else
+                  N/A
+
+
+            .vacation-mobile__container
+              = render :partial => 'vacation_info', :locals => {:user => @user, :current_year => @current_year}
+
+            %li.profile-form__item{data:{type: 'birthday'}, class: (@user.birthday.present?) ? '' : 'hidden'}
+              %span.profile-form-label
+                Birthday
+              %span.profile-sm-text
+                = @user.birthday.strftime("%d.%m.%Y") if @user.birthday
+
+            %li.profile-form__item{data:{type: 'master_interviews'},class: @user.master_interviews.any? ? '' : 'hidden'}
+              %span.profile-form-label
+                Master interviews:
+              %span.profile-sm-text
+                Assigned -
+                = @user.master_interviews.where(passed: nil).count
+                %br
+                Passed -
+                = @user.master_interviews.where(passed: true).count
+                %br
+                Successful -
+                = @user.master_interviews.where(successful: true).count
+                %br
+                Unsuccessful -
+                = @user.master_interviews.where(successful: false).count
+
+            %li.profile-form__item{data:{type: 'email'},class: @user.email.present? ? '' : 'hidden'}
+              %span.profile-form-label
+                Main email:
+              %span.profile-sm-text
+                = @user.email
+
+            %li.profile-form__item{data:{type: 'moc_email'},class: @user.moc_email.present? ? '' : 'hidden'}
+              %span.profile-form-label
+                MOC email:
+              %span.profile-sm-text
+                = @user.moc_email
+
+            %li.profile-form__item{data:{type: 'tel_number'},class: @user.tel_number.present? ? '' : 'hidden'}
+              %span.profile-form-label
+                Telephone number:
+              %span.profile-sm-text
+                = @user.str_tel_number
+
+            %li.profile-form__item{data:{type: 'contacted_at'}, class: @user.contacted_at ? '' : 'hidden'}
+              %span.profile-form-label
+                Contacted at:
+              %span.profile-sm-text
+                = @user.contacted_at.strftime("%d-%m-%Y") if @user.contacted_at
+
+            %li.profile-form__item{data:{type: 'hired_at'}, class: @user.hired_at ? '' : 'hidden'}
+              %span.profile-form-label
+                Agreement signed at:
+              %span.profile-sm-text
+                = @user.hired_at.strftime("%d-%m-%Y") if @user.hired_at
+
+            -if current_user.is_hr_manager?
+              - default_date = @user.hired_at ? @user.hired_at : Date.today
+              - if (Date.today - default_date).to_i < 60
+                %li.profile-form__item{data:{type: 'onboarding_email'}}
+                  %span.profile-form-label
+                    Onboarding email:
+                  = form_tag(send_onboarding_email_admin_employee_path(@user), remote: true, class: 'profile-form__form' ) do
+                    .input-small-size.onbord-input-space-b-xs
+                      .input-append.date.space-r-15.input-cusom-space-l
+                        = text_field_tag 'onboarding_date', default_date.strftime("%d.%m.%Y"), "data-format"=>"dd.MM.yyyy"
+                        %span.add-on
+                          %i.datepicker--icon-calendar
+
+                    = submit_tag 'Send', class: 'table-top-btn'
+
+                    = image_tag("ajax-loader.gif", class: "spinner")
+                    #onboarding_email_message
+
+            %li.profile-form__item{data:{type: 'left_at'}, class: @user.left_at ? '' : 'hidden'}
+              %span.profile-form-label
+                = "Left on: "
+              %span.profile-sm-text.profile-text-flex
+              .profile-left-date
+                = @user.left_at.strftime("%d-%m-%Y") if @user.left_at
+                = "(#{@user.left_reason})"
+              -if @user.left_comment
+                .comment.comment--inline.reason-container
+                  .profile-form-label.profile-reason-label.space-r-15
+                    Reason:
+
+
+                  .profile-sm-text
+                    = @user.left_comment
+          - if @feedbacks.any? && current_user.is_hr_manager?
+            %li.profile-form__feedback-block.feedback-block{data:{type: 'feedbacs'}, class: ( "true" ?  '' : 'hidden')}
+              .open-feedbacks.d-flex.space-b-10
+                %span.profile-form-label
+                  Feedbacks:
+              - @feedbacks.each do |feedback|
+                .feedback-row.profile-form__feedback-row
+                  %p.profile-form__text.profile-form__text-manager.space-b-5
+                    -if feedback.manager
+                      = feedback.manager.try(:full_name)
+                    %span.project.profile-form__text-small-grey
+                      = feedback.project.try(:name)
+                  %p.profile-form__text
+                    = feedback.text
+
+          %li.profile-form__item.profile-form__item--column{data:{type: 'comments'}, class: (@user.comments and !@user.comments.blank?) ?  '' : 'hidden'}
+            %span.profile-form-label.space-b-20
+              Comments:
+            %span
+              = @user.comments
+
+.modal.fade#confirm-modal
+  .modal-dialog.modal-sm
+    .modal-content
+      .modal-header
+        %button.close{type:"button", 'data-dismiss'=>"modal", 'aria-label'=>"Close"}
+          %span{'aria-hidden'=>"true"}
+            %a.btn-icon.cancel-icon
+        %h5.modal-title
+          Warning!
+      .modal-body
+        %h4.uppercase.centered.danger-color Delete Photo?
+        %p.centered Are you sure?
+      .modal-footer
+        %button.btn.btn-default-gray-light.pull-left{type:"button", 'data-dismiss'=>"modal", 'aria-label'=>"Close"}
+          Cancel
+        %a.btn.btn-default#delete-photo
+          Yes. Delete
+
+.modal.fade#confirm-modal-meeting
+  .modal-dialog.modal-sm
+    .modal-content
+      .modal-header
+        %button.close{type:"button", 'data-dismiss'=>"modal", 'aria-label'=>"Close"}
+          %span{'aria-hidden'=>"true"}
+            %a.btn-icon.cancel-icon
+        %h5.modal-title
+          Warning!
+      .modal-body
+        %h4.uppercase.centered.danger-color Delete Comment?
+        %p.centered Are you sure?
+      .modal-footer
+        %button.btn.btn-default-gray-light.pull-left{type:"button", 'data-dismiss'=>"modal", 'aria-label'=>"Close"}
+          Cancel
+        %a.btn.btn-default#delete-comment
+          Yes. Delete
+
+= javascript_pack_tag "timeOffDetails"

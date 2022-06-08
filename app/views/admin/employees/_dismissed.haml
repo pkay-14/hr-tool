@@ -1,0 +1,16 @@
+%li.mm-profile-form__item.left-at
+  = f.label :left_reason, "Dismissed", class: "profile-edit-form-label"
+  .profile-form__item-input-wrap.mm-no-border
+    .input-medium-size.profile-form__input-wrap.space-r-15
+      = f.select :left_reason, ['none'] + User::LEFT_REASON, {:class => 'profile-form__select'}
+      %p#dismissed-error-text.dismissed-error__text required field
+    %div.left-at-date--container-main
+      #left-at-date--container.left-at-date--container.input-append.input-append--flex.date.project-form__block.apr__block-dates{'data-left-at-date' => '', 'data-current-left-at-date' => ''}
+        -if @user.left_at && @user.working_status.eql?('Ex Master')
+          = f.text_field :left_at, :value => @user.left_at.strftime("%d.%m.%Y"), "data-format"=>"dd.MM.yyyy", class: 'profile-form__input text_field', "readonly"=>"readonly"
+        -else
+          = f.text_field :left_at, :value => nil, :class => 'text_field profile-form__input', "data-format"=>"dd.MM.yyyy", "readonly"=>"readonly"
+        %button#left-at__button.left-at__button.add-on
+          %i.apr-date__icon{"data-time-icon"=>"icon-time", "data-date-icon"=>"icon-calendar"}
+      .date-change-error__text Please, specify the dismissal date
+      %p.left-at-date-validation__text The dismissal date is earlier than the Master's start date

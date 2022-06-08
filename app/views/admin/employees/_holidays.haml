@@ -1,0 +1,8 @@
+%li.profile-form__item.profile-form__item--column
+  %span.profile-form-label.profile-form__label-m
+    = sanitize "Holidays for #{current_year} year:<br/>"
+  %span
+    %dd
+      - holidays.each do |holiday|
+        = sanitize "#{holiday.date.strftime('%d-%m')} &zwnj; #{holiday.title}<br/>"
+

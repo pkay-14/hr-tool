@@ -1,0 +1,127 @@
+#offices {
+  list-style-type: none;
+}
+
+.office {
+  height: 40px
+}
+
+#holiday_year {
+  margin-bottom: 10px !important;
+}
+
+.countries-container {
+  margin-top: 20px;
+  @media (max-width: 991px) {
+    margin-top: 0;
+  }
+}
+
+#holidays {
+  width: 100%;
+  list-style-type: none;
+  label:first-child {
+    margin-right: 10px;
+  }
+  li.holiday:first-child {
+    label{
+      width:65px;
+      display:block;
+    }
+  }
+  ul.inline.nested-fields{
+    margin-top: 10px;
+  }
+  .mm-holidays-fields {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .mm-holidays-fields li {
+    padding: 0;
+  }
+
+  .mm-date-fields {
+    display: flex;
+    margin-bottom: 0 !important;
+    border: 1px solid #e5e5e5 !important;;
+    border-radius: 5px;
+
+    input {
+      border: none;
+      box-shadow: none;
+    }
+  }
+
+  .sm {
+    width: 75px;
+  }
+  .md {
+    width: 115px;
+  }
+  .bg {
+    width: 235px;
+  }
+  label.control-label{
+    display: none;
+    float: none;
+    text-align: left;
+  }
+  .vertical-align-btn {
+    vertical-align: 10px;
+  }
+}
+
+.inline.nested-fields.office {
+  margin-bottom: 15px;
+}
+
+.countries-office__item.countries-office__item {
+  display: flex;
+  align-items: center;
+  width: 235px;
+  margin-bottom: 15px;
+}
+
+.office-fields__item {
+  margin-bottom: 15px;
+}
+
+.countries__input.countries__input {
+  display: flex;
+  align-items: center;
+  height: 30px;
+}
+
+.countries__select {
+  height: 40px;
+  &:focus {
+    outline: none;
+  }
+}
+
+.mm-date-fields {
+  .add-on.add-on {
+    display: flex;
+    height: auto;
+    border: none;
+    background-color: #FFFFFF;
+    padding: 3px !important;
+  }
+  .icon-calendar {
+    background: none;
+  }
+}
+
+.project-form__block.project-form__block  {
+  margin: 0;
+}
+
+.countries__input.countries__select {
+  box-shadow: none !important;
+  &:focus {
+    outline: none;
+  }
+}

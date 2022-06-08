@@ -1,0 +1,7 @@
+.profile-form-additional__inner-container
+  = sanitize "#{additional_vacation&.days} for"
+  = sanitize "<span>#{additional_vacation&.created_at&.strftime('%m')}-#{additional_vacation&.created_at&.strftime('%Y')}</span>"
+  %br
+  %span.m-t-10.profile-form-additional__text
+    = sanitize "#{additional_vacation&.comment}"
+%hr.profile-form-additional__line

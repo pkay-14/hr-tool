@@ -1,0 +1,10 @@
+%li.mm-profile-form__item
+  = f.label :division, class: "profile-edit-form-label profile-edit-form-label--mandatory #{master_cabinet? ? 'profile-form-label--sm' : ''}"
+  .profile-form__item-input-wrap{class: @user.new_record? ? 'mm-no-border' : nil}
+    - if master_cabinet?
+      .input-medium-size.width325px.input-responsive.profile-form__input-ml
+        = user.company_division
+    - else
+      .input-medium-size.profile-form__input-wrap
+        = f.select :company_division, ['none'] + divisions, {}, {class: 'profile-form__select'}
+        %p#company-division-error-text.company-division-error__text required field

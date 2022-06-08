@@ -1,0 +1,51 @@
+# Common configuration.
+AllCops:
+  Exclude:
+    - bin/*
+    - db/schema.rb
+    - db/migrate/*.rb
+    - config/application.rb
+Metrics/BlockLength:
+  CountComments: false  # count full line comments?
+  Max: 25
+  Exclude:
+    - spec/**/*.rb
+    - db/**/*.rb
+    - config/environments/*.rb
+Style/Documentation:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 150
+
+Metrics/AbcSize:
+  Max: 30
+  Exclude:
+    - spec/**/*.rb
+
+Metrics/ClassLength:
+  CountComments: false  # count full line comments?
+  Max: 400
+  Exclude:
+    - spec/**/*.rb
+
+Metrics/ModuleLength:
+  CountComments: false  # count full line comments?
+  Max: 500
+
+Metrics/MethodLength:
+  CountComments: false  # count full line comments?
+  Max: 20
+
+Style/LambdaCall:
+  EnforcedStyle: braces
+Style/FrozenStringLiteralComment:
+  Enabled: false
+Layout/HashAlignment:
+  EnforcedHashRocketStyle:
+    - key
+    - table
+  EnforcedColonStyle:
+    - key
+    - table
+  EnforcedLastArgumentHashStyle: ignore_implicit

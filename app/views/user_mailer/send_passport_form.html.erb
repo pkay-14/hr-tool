@@ -1,0 +1,19 @@
+<tr>
+  <td width="20"></td>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      Fill in passport details for new Master <%= @user.full_name %>.
+    </span>
+  </td>
+  <td width="20"></td>
+</tr>
+
+<tr><td height="35" colspan="3"></td></tr>
+
+<tr>
+  <td width="20"></td>
+  <td align="center">
+    <%= link_to "Proceed to the form", edit_passport_info_admin_employee_url(@user), {:style=>"color:#ef4934; font:18px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block; text-decoration: none"} %>
+  </td>
+  <td width="20"></td>
+</tr>

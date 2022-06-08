@@ -1,0 +1,20 @@
+<tr>
+  <td style="font-family: Arial,serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.5;
+    letter-spacing: 0;
+    text-align: justify;
+    color: #646464;">
+    <span>
+      Hi, <%= @vacation.employee.full_name %>,
+      <br>
+      Your requested time off has been approved.
+      <br>
+      Your approvers are aware of your time off <%= @vacation.time_range_to_s %>, and approved it.
+      <br>
+      Have a good one.
+    </span>
+  </td>
+</tr>

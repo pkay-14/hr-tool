@@ -1,0 +1,11 @@
+<% if @project.errors.full_messages.present? %>
+  $('#add-project-popup--project-name--error-name-duplicated').css('display', 'block');
+  $('.new-project-container').css('display', 'block');
+  $('.mm-background-overlay').css('display', 'block');
+  $('.new-project-form__input-name').addClass('field_with_errors').css('marginBottom', '0');
+<% else %>
+  $('.new-project-container').css('display', 'none');
+  $('.mm-background-overlay').css('display', 'none');
+  $('body').css('overflow', 'auto');
+<% end %>
+

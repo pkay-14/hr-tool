@@ -1,0 +1,69 @@
+#master-overtime_report.main-page
+  .content-container
+    .row-fluid.top-row.m-t-20
+      %section.mm-wrapper.overtime-report-wrapper
+        = link_to 'Back', manager_overtimes_path, :class => 'mm-btn-back__link'
+        .pull-right
+          = link_to 'Export to google sheets', export_manager_overtimes_path(params: params.permit(:from, :to)), target:'_blank', method: :post, id:'btn_export_to_sheets', class: 'table-top-btn'
+    %table.aui
+      %thead
+        %tr
+          %th.mm-th-table-top.string.date Date
+          %th.mm-th-table-top.string.hours Hours
+          %th.mm-th-table-top.string.name Master
+          %th.mm-th-table-top.string.position Position
+          %th.mm-th-table-top.string.projects Project
+          %th.mm-th-table-top.string.PM Project Managers
+          %th.mm-th-table-top.string.status Status
+          %th.mm-th-table-top.string.people_partner People Partner
+          %th.mm-th-table-top.string.comment Comment(from PM)
+      %tbody
+        -unless @overtimes.nil?
+          - @overtimes.each do |overtime|
+            %tr
+              %td.hr-table__cell.string.date
+                = overtime.report_date
+              %td.hr-table__cell.string.hours
+                = overtime.hours.round(2)
+              %td.hr-table__cell.string.name
+                = overtime.employee.full_name
+              %td.hr-table__cell.string.position
+                = overtime.employee.position
+              %td.hr-table__cell.string.projects
+                - if overtime.approved?
+                  - if overtime.confirmed_approves.empty?
+                    = overtime.project_approved_on
+                  - else
+                    = overtime.confirmed_approves.last.project_approved_on
+              %td.hr-table__cell.string.project_manager
+                - case overtime.current_status
+                - when "Pending"
+                  - overtime.not_approved_managers.each do |manager|
+                    = sanitize "#{manager}</br>"
+                - when "Dismissed"
+                  - overtime.approves.sort_by { |approve| approve.manager.full_name  } .each do |overtime_approve|
+                    = sanitize "#{overtime_approve.manager&.full_name} <br>"
+                  - unless overtime.confirmed_by_approver?
+                    = sanitize "<i>dismissed by: </i>"
+                    = sanitize "<b>#{overtime.modifier&.full_name.blank? ? 'HR' : overtime.modifier&.full_name}</b>"
+                - when "Confirmed"
+                  - unless overtime.confirmed_by_approver?
+                    - overtime.not_approved_managers.each do |manager|
+                      = sanitize "#{manager}</br>"
+                    = sanitize "<i>confirmed by: </i>"
+                    = sanitize "<b>#{overtime.modifier&.full_name.blank? ? 'HR' : overtime.modifier&.full_name}</b>"
+                  - else
+                    = overtime.confirmed_approves.last.manager&.full_name
+              %td.hr-table__cell.string.status
+                = overtime.current_status
+              %td.hr-table__cell.string.people_partner
+                = overtime.employee.get_people_partner&.full_name
+              %td.hr-table__cell.string.comment
+                - case overtime.current_status
+                  - when 'Dismissed'
+                    - overtime.report_comment.each do |comment_row|
+                      = sanitize "#{comment_row} </br>"
+                  - when 'Confirmed'
+                    = sanitize overtime.report_comment
+    .moc-paginate
+      = paginate @overtimes if @overtimes

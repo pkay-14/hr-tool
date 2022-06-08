@@ -1,0 +1,13 @@
+.container.main.mm-background-overlay--active
+  .mm-modal-custom
+    .mm-modal__title
+      %h3.vacation-reject__title Provide a reason for rejection:
+      =link_to 'Cancel', manager_vacation_approve_index_path,  class: 'btn-icon cancel-icon'
+      = hidden_field_tag 'current_url', request.url
+
+    = form_tag reject_manager_vacation_approve_path(@approve), class: 'vacation-reject__form' do
+      .vacation-reject__field
+        %label.mm-modal__label{for: 'Comment'} Comment
+        = text_area_tag :comment, nil, class: 'vacation-reject__textarea mm-modal__textarea'
+      .mm-modal__buttons
+        =submit_tag "OK", class: 'add-question mm-button mm-button-orange'

@@ -1,0 +1,59 @@
+- only_lead = (current_user.is_lead? && !(current_user.is_manager? || current_user.is_hr_manager?))
+=cache ['project', load, load.actual?, only_lead] do
+  %tr.hr-table__body-row.hr-table__body-row--white.table-load-tr-responsive.member-row.hide{data: {"project-members" => project.id.to_s, "load-id" => load.id.to_s, "load-actual" => load.actual? ? 1 : 0 }}
+    %td.table-td-responsive.hr-table__cell-member.hr-table__cell--space-l-10.member-name
+      -# = best_in_place load, :employee_id, :as => :select, url: manager_update_project_load_path(load), collection: @current_employee_bip_hash, place_holder: "Choose master"
+      .mm-master-photo--projects
+        =  image_tag((load.employee&.photo&.path(:medium).present? ? load.employee&.photo&.url(:medium) : 'user_icon_placeholder@2x.png'), class: 'user-img', alt: 'User photo')
+        .mm-master-tooltip{'data-master-tooltip' => ''}
+          %span{'data-master-tooltip-text' => ''}
+            - project_info = load.employee.project_info if load.employee.present?
+            - unless project_info.blank?
+              - project_info.each do |project, load|
+                %span
+                  = "#{project}: #{load}%"
+                %br
+      %span.st-member-name{'data-master-name' => ''}
+        = load.employee.try(:full_name) ? load.employee.full_name : 'Choose master'
+      - unless only_lead
+        %span.select-wrapper.hidden
+          %select{data:{"id" => project.id.to_s, "user-list" => "initail"}, style: 'width: 100px;'}
+    %td.table-td-responsive.hr-table__cell-member.hr-table__cell--size-sm.position
+      - unless only_lead
+        = best_in_place load, :dev_role, :as => :select, display_as: :dev_role, url: manager_update_project_load_path(load), collection: @dev_roles_bip_hash, :inner_class => 'best_in_place__select', :class => 'best_in_place--relative'
+      - else
+        = load.dev_role
+    %td.table-td-responsive.hr-table__cell-member.hr-table__cell--align-c.hr-table__cell--size-sm.from-date
+      = hidden_field_tag :from, load.from.try(:strftime,"%d.%m.%Y"), "data-format"=>"dd.MM.yyyy"
+      %span.add-on
+        - unless only_lead
+          %button.project-icon-calendar
+      - if load.from
+        %span.date-text
+          = load.from.strftime("%d.%m.%Y")
+    %td.table-td-responsive.hr-table__cell-member.hr-table__cell--align-c.hr-table__cell--size-sm.to-date
+      = hidden_field_tag :from, load.to.try(:strftime, "%d.%m.%Y"), "data-format"=>"dd.MM.yyyy"
+      %span.add-on
+        - unless only_lead
+          %button.project-icon-calendar
+      - if load.to
+        %span.date-text
+          = load.to.strftime("%d.%m.%Y")
+        %button.clear
+          - unless only_lead
+            = sanitize ""
+    %td.table-td-responsive.hr-table__cell-center
+    %td.table-td-responsive.hr-table__cell-center
+    %td.table-td-responsive.hr-table__cell-member.hr-table__cell--size-sm.member-load
+      - unless only_lead
+        = best_in_place load, :load, :as => :select, url: manager_update_project_load_level_path(load), data: { load_id: load.id.to_s  }, collection: @loads_list_bip_hash
+      - else
+        = load.load == -1 ? 'Plan' : "#{load.load}%"
+    %td.table-td-responsive.hr-table__cell-member.hr-table__cell--size-sm.not_paid
+      - unless only_lead
+        = best_in_place load, :billable, as: :select, url: manager_update_project_load_path(load), data: { load_id: load.id.to_s  }, collection: Load::BILLABLE, default: load.billable
+      - else
+        = load.billable ? 'Yes' : 'No'
+    %td.table-td-responsive.hr-table__cell-member.hr-table__cell--size-sm.hr-table__td--text-right.actions.projects-members-actions
+      - unless only_lead
+        =link_to "", "#", class: 'btn-remove-master', data: {'toggle'=>"modal", 'target'=>"#confirm-modal-master", "load-id" => load.id.to_s }

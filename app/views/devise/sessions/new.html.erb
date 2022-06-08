@@ -1,0 +1,32 @@
+<div class="login-wrapper">
+  <div class="login-box">
+    <%#= image_tag "moc-logo-orange.png",class: "moc-logo"%>
+    <% if params[:controller] == "acc/sessions"%>
+      <div class="bk-module-title">
+        Bookkeeping Module
+      </div>
+      <%= link_to "Sign in with Google", "/users/auth/google_oauth2?bookkeeper=true", method: :post, id: "sign_in",class: "moc-id-btn"  %>
+    <% else -%>
+      <%= link_to "Sign in with Google", "/users/auth/google_oauth2", method: :post, id: "sign_in",class: "moc-id-btn"  %>
+    <% end -%>
+  </div>
+</div>
+<% if Rails.env.development? || Rails.env.staging? || Rails.env.pre_production? %>
+  <div id="sign-in" class="text-center">
+    <h2>Sign in</h2>
+
+    <%= form_for(resource, :as => resource_name, :url => session_path(resource_name), html: { autocomplete: "off" }) do |f| %>
+      <div><%= f.label :email %><br/>
+        <%= f.email_field :moc_email, :autofocus => true %></div>
+
+      <div><%= f.label :password %><br/>
+        <%= f.password_field :password %></div>
+
+      <% if devise_mapping.rememberable? -%>
+        <div><%= f.check_box :remember_me %> <%= f.label :remember_me %></div>
+      <% end -%>
+
+      <div><%= f.submit "Sign in" %></div>
+    <% end %>
+  </div>
+<% end %>

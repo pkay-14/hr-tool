@@ -1,0 +1,35 @@
+- model_class = User
+#master-form.profile-page.profile-form.main-page
+  .content-container
+    .container.main
+      .content-block
+        .row-fluid
+          .container
+            .mm-btn-back-wrapper
+              = link_to 'Back', admin_employees_path, :class => 'mm-btn-back__link'
+        .head-part.head-part-edit
+          %h2.profile-title.no-margin New Master
+        .profile-info-box
+          = render :partial => "form"
+
+:javascript
+
+  function selectCompanyDivision() {
+    var userCompanyDivision = document.querySelector("#user_company_division");
+    var userShowInLoadCalendar = document.querySelector("#user_show_in_load_calendar");
+    var userSendTimeTrackingReminders = document.querySelector("#user_send_time_tracking_reminders");
+
+    userCompanyDivision.addEventListener('change', function () {
+      if(this.value === 'Business Operations') {
+        userShowInLoadCalendar.checked = false;
+        userSendTimeTrackingReminders.checked = false;
+      } else {
+        userShowInLoadCalendar.checked = true;
+        userSendTimeTrackingReminders.checked = true;
+      }
+    })
+
+    // var skillList = document.querySelectorAll('.edit-skills__item');
+    // console.log(skillList);
+  }
+  $(document).on('page:load', selectCompanyDivision).ready(selectCompanyDivision);

@@ -1,0 +1,8 @@
+= form_for comment, url: add_comment_admin_employee_path, remote: true, :authenticity_token => true  do |f|
+  = render :partial => 'shared/errors', locals: {target: comment}
+  %ul.control-group
+    %li
+      .controls
+        =f.text_area :text, class: 'text_field span5'
+  .actions
+    = f.submit nil, :class => 'btn btn-primary'

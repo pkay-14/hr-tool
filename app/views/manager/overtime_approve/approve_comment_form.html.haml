@@ -1,0 +1,19 @@
+.container.main.mm-background-overlay--active
+  .mm-modal-custom
+    .mm-modal__title
+      %h3.overtime-approval__title Confirmation
+      = link_to 'Cancel', manager_overtime_approve_index_path,  class: 'btn-icon cancel-icon'
+
+    = form_tag approve_manager_overtime_approve_path(@approve), class: 'overtime-approval__form' do
+      .overtime__field
+        .overtime-comment
+          = label_tag 'Comment'
+          = text_area_tag :comment, nil, placeholder: "Specify reason for confirmation", class: 'overtime__textarea overtime__textarea-confirmation mm-modal__textarea'
+          %p.error-comment Comment too short
+        = sanitize "<br>"
+        .overtime-project
+          = label_tag 'Project'
+          = select_tag :project, options_for_select(@project_list), class: 'overtime_approve_project_list mm-modal__select'
+        = hidden_field_tag('approval_type', 'confirm')
+        .mm-modal__buttons
+          = submit_tag "OK", id: 'overtime_submit_comment_button', class: 'add-question mm-button mm-button-orange'

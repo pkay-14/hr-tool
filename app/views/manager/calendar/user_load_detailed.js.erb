@@ -1,0 +1,7 @@
+var masterRow = $("[data-user-id = <%= @users.id&.to_s %> ]");
+
+if (masterRow.nextUntil('[data-main]').length) {
+  masterRow.nextUntil('[data-main]').replaceWith('');
+}
+
+masterRow.after('<%= escape_javascript(render :partial => "month_stats_body_detailed", locals: { user: @users, jira_data: @jira_data } )%>');

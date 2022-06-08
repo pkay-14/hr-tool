@@ -1,0 +1,26 @@
+<tr>
+  <td width="20"></td>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      Привіт! <br>
+      Новий майстер<%= @user.full_name %>  пройшов всі етапи відбору на позицію <%= @user.position %>. Його тріальний період розпочинається <%= @user.hired_at.strftime("%d.%m.%Y") %>.
+    </span>
+  </td>
+  <td width="20"></td>
+</tr>
+
+<% if @comments  %>
+
+  <tr><td height="35" colspan="3"></td></tr>
+
+  <tr>
+    <td width="20"></td>
+    <td>
+      <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+        Коментарі: <%= @comments %>
+      </span>
+    </td>
+    <td width="20"></td>
+  </tr>
+
+<% end %>

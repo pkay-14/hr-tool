@@ -1,0 +1,67 @@
+= form_for user, :url => admin_employee_path(user) , :html => { :class => 'edit-user-form' } do |f|
+  =render :partial =>'shared/errors', locals: {target: user}
+  %ul.profile-form-list.mm-no-border
+    =f.hidden_field :employee_id, :value => user.id, id: 'employee-id'
+    =f.hidden_field :master_cabinet, :value => true
+    %li.profile-form__item.profile-form__item--top.profile-form__item--column-tablet
+      .profile-form-label.profile-form-label--sm.space-b-5
+        Technologies:
+      .technologies-wrapper
+        %ul#skills
+          - user.skills.each do |skill|
+            %li.skill
+              = render :partial => 'skill_fields', :locals => {:skill => skill, :f => f}
+    - if f.object&.has_people_partner? || !master_cabinet?
+      %li.profile-form__item
+        %label{class: "profile-edit-form-label #{master_cabinet? ? 'profile-form-label--sm' : ''}", for: "user_people_partner"} People partner:
+        .input-medium-size.profile-form__input-wrap.m-l-15
+          - if master_cabinet?
+            = f.object.get_people_partner.full_name
+          -else
+            = f.select :people_partner_id, options_from_collection_for_select(User.people_partners, 'id', 'full_name', selected: f.object&.people_partner_id), {:include_blank => true}, {class: 'profile-form__select'}
+
+    %li.profile-form__item
+      %label{class: "profile-edit-form-label #{master_cabinet? ? 'profile-form-label--sm' : ''}", for: "user_company_division"} Company division:
+      - if master_cabinet?
+        .input-medium-size.width325px.input-responsive.profile-form__input-ml
+          = user.company_division
+      - else
+        .input-medium-size.profile-form__input-wrap
+          = f.select :company_division, ['none'] + divisions, {}, {class: 'profile-form__select'}
+
+    %li.profile-form__item
+      %label{class: "profile-edit-form-label #{master_cabinet? ? 'profile-form-label--sm' : ''}", for: "user_community"} Community:
+      .input-medium-size.profile-form__input-wrap.m-l-15
+        - if master_cabinet?
+          = user.community
+        - else
+          = f.select :community, ['none'] + division_communities(f.object.company_division), {}, {class: 'profile-form__select', disabled: f.object.company_division.in?(['none', nil])}
+
+    %li.profile-form__item
+      %label{class: "profile-edit-form-label #{master_cabinet? ? 'profile-form-label--sm' : ''}", for: "user_position"} Position:
+      .input-medium-size.profile-form__input-wrap.m-l-15
+        - if master_cabinet?
+          = user.position
+        - else
+          = f.select :position, ['none'] + community_positions(f.object.community), {}, {class: 'profile-form__select', disabled: f.object.community.in?(['none', nil])}
+
+    - if user.has_additional_position?
+      %li.profile-form__item
+        %label{class: "profile-edit-form-label #{master_cabinet? ? 'profile-form-label--sm' : ''}", for: "user_role"} Role:
+        .input-medium-size.profile-form__input-wrap.m-l-15
+          - if master_cabinet?
+            = user.additional_position
+          - else
+            = f.select :additional_position, ['none'] + User.role_positions, {}, {class: 'profile-form__select'}
+    %li.profile-form__item
+      %label{class: "profile-edit-form-label #{master_cabinet? ? 'profile-form-label--sm' : ''}", for: "user_english_level"} English level:
+      .input-medium-size.profile-form__input-wrap.m-l-15
+        - if master_cabinet?
+          = user.english_level
+        - else
+          = f.select :english_level, User::ENGLISH_LEVELS, {}, {class: 'profile-form__select'}
+
+  .text-center.space-b-10
+    -# = f.submit 'Update', :class => 'btn btn-default'
+    -# = link_to t('.cancel', :default => t("helpers.links.cancel")), '', :class => 'btn btn-default-gray-light btn-not-approved'
+

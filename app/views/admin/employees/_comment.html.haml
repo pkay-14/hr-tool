@@ -1,0 +1,8 @@
+.comment-wrapper
+  .comment-head
+    %span.comment-author
+      = comment.author.full_name
+    %span.comment-date
+      = comment.created_at.to_s
+  .comment-body
+    =comment.text

@@ -1,0 +1,26 @@
+- if master_cabinet?
+  %ul.inline.nested-fields.nested-fields--inline
+    %li.inline__item
+      .skill-name.skill-name--mobile.space-b-10
+        = "#{skill.name}"
+        = " - #{skill.level.blank? ? 'Unknown level' : skill.level}"
+- else
+  %ul.inline.nested-fields.nested-fields--inline.skills__list
+    %li.skills__item-name
+      .skill-name.skill-name--mobile
+        = f.select 'name' , Skill::SKILLS ,{selected: Skill::SKILLS.include?(f.object.skills.name) ? f.object.name : 'Custom'}, {class: 'profile-form__select profile-form__select-skill'}
+      -#= f.text_field 'name_custom', :class => 'hidden', value: f.object.name
+
+    - unless master_cabinet?
+      %li.skill-level__item
+        .skill-level
+          .profile-form__select-wrap
+            //= f.select :level , Skill::LEVEL, {include_blank: true}, {class: 'profile-form__select profile-form__select-lvl no-margin-b'}
+            .edit-skills__list
+              - Skill::LEVEL.each do |level|
+                %button.edit-skills__item{type: 'button'}
+                  = level
+                  -# = f.radio_button :level, level
+            = link_to_remove_association 'remove', f, :class => 'btn-icon cancel-icon vertical-align-middle'
+
+    -# %li.profile-form__remove-skill-item

@@ -1,0 +1,15 @@
+<tr>
+  <td width="20"></td>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      Привіт!
+      <br>
+      <% if @model.class.name == 'Project' %>
+        Створено новий проект <%= @model.name %>
+      <% else %>
+        Майстер <%= @model.employee.full_name %> приєднався до проекту <%= @model.project.name %>
+      <% end %>
+    </span>
+  </td>
+  <td width="20"></td>
+</tr>

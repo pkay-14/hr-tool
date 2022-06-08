@@ -1,0 +1,16 @@
+<tr>
+  <td style="font-family: Arial,serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0;
+    text-align: center;
+    color: #646464;">
+    <span>
+      <%= @content.html_safe %>
+      <br>
+      <a href="<%= view_report_apr_user_session_url(@user_session.id, host: masters_url_host, master: true, only_role: true) %>" target="_blank" rel="noopener" style="color:#FD5D32; text-decoration: none">You may check your results of the consolidated feedback file here</a>.
+    </span>
+  </td>
+</tr>

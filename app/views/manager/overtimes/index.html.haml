@@ -1,0 +1,24 @@
+#overtimes.overtime-page-index.main-page
+  .content-container
+    .row-fluid
+      .container
+        %section.menu-wrapper.filters-bar.filters-bar--flex.general-dropdown
+          = render 'overtime_filters'
+
+    .container.main
+      -if current_user.is_hr_manager? && !master_cabinet?
+        .top-row
+          .all-masters-wrapper
+            %h2.title Overtime list
+            .pull-right.top-buttons
+              .top-buttons-container
+                %button#btn_export_to_sheets.table-top-btn.table-top-btn-m-0.mm-btn-white Export to google sheets
+                -# =link_to 'View Report', report_manager_overtimes_path(params: @overtime_params), method: :get, id: 'view_report_link', class: 'table-top-btn table-top-btn-m-0 mm-btn-white'
+              -unless master_cabinet?
+                .search-container
+                  .hr-search.search-form.search-item#search-form
+                    =text_field_tag 'query', @overtime_params[:query] ? @overtime_params[:query] : '', {class: 'search__field', placeholder: 'Search'}
+                  .open-dropdowns
+                    %button#open-right-menu.open-right-menu
+      #overtimes_list.overtime-table
+        = render 'overtimes'

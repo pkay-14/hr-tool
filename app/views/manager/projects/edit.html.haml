@@ -1,0 +1,146 @@
+#master-form.profile-page.profile-form.main-page
+  .content-container
+    .container.main
+      .content-block
+        .row-fluid
+          .container
+            .mm-btn-wrapper
+              = link_to 'Back', manager_project_path(@project.id), :class => 'mm-btn-back__link'
+        .head-part.head-part-border-r
+          %h2.profile-title Edit Project Info
+        .profile-info-box
+          = form_for @project, url: manager_project_path(@project.id), method: :put, :html => { :class => 'edit-user-form' } do |f|
+            %ul.profile-form-list
+              -# =f.hidden_field :employee_id, :value => @user.id, id: 'employee-id'
+              %li.profile-form__item
+                = f.label :project_name, class: "profile-edit-form-label"
+                %span.span9.input-medium-size
+                  = f.text_field :name, {class: 'profile-form__input'}
+              %li.profile-form__item
+                = f.label :manager, class: "profile-edit-form-label"
+                %span.span9.input-medium-size
+                  -# f.select :manager, {class: 'profile-form__select'}
+                  = f.select :manager_id, options_from_collection_for_select(@current_managers, 'id' ,'full_name', @project.manager_id),  {}, {class: 'profile-form__select'}
+              %li.profile-form__item
+                = f.label :category, class: "profile-edit-form-label"
+                %span.span9.input-medium-size
+                  =f.select :category, Project::CATEGORIES, {}, {class: 'profile-form__select'}
+              %li.profile-form__item
+                = f.label :status, class: "profile-edit-form-label"
+                %span.span9.input-medium-size
+                  =f.select :status, Project::STATUS,  {}, {class: 'profile-form__select'}
+
+              %li.profile-form__item
+                = f.label :Project_duration, class: "profile-edit-form-label"
+                .profile-form__item-container.span9
+                  .d-flex
+                    %label.project-form__label
+                      From
+                      .input-append.input-append--flex.date.project-form__block.project-form__block-dates{'data-datepicker-proj' => '', 'data-current-datepicker-proj' => ''}
+                        %button.btn-icon.cancel-icon.clear-date{type: 'button'}
+                        = f.text_field :from, :class => 'text_field project-form__input', "data-format"=>"yyyy-MM-dd", "data-start-date-proj"=>""
+                        %span.add-on
+                          %i.datepicker--icon-calendar
+
+                    %label.project-form__label
+                      To
+                      .input-append.input-append--flex.date.project-form__block.project-form__block-dates{'data-datepicker-proj' => '', 'data-launch-datepicker-proj' => ''}
+                        %button.btn-icon.cancel-icon.clear-date{type: 'button'}
+                        = f.text_field :to, :class => 'text_field project-form__input', "data-format"=>"yyyy-MM-dd", "data-end-date-proj"=>""
+                        %span.add-on
+                          %i.datepicker--icon-calendar
+                  .error-date-massage-projects__item
+                    %p.error-date-massage-projects__text.m-t-10 Please adjust the start and end dates!
+
+              %li.profile-form__item
+                = f.label :description, class: "profile-edit-form-label"
+                %span.span9
+                  = f.text_area :description, {class: 'profile-form__textarea project-form__textarea'}
+              -#%li.profile-form__item.profile-form__item-year
+              -#  = f.label :active_years, class: "profile-edit-form-label"
+                -#.profile-form__item-container.span9
+                -#  .years-container
+                -#  %span.input-medium-size.profile-form__select-year
+                -#    = f.text_field :active_years, value: @project.active_years, class: 'profile-form__input'
+                -#    %button.table-top-btn-m-0.m-l-15#add-year-btn{type: "button"} Add
+              -#%li.profile-form__item.profile-form__item-technology
+              -#  = f.label :technology_stack, class: "profile-edit-form-label"
+              -#  .profile-form__item-container.span9
+              -#    .technology-container
+              -#      .technology
+              -#        %button.btn-icon.cancel-icon-active#remove-technology-btn{type: "button"}
+              -#        %span
+              -#          = @project.technology_stack.present? ? @project.technology_stack : '—'
+              -#    %span.input-medium-size.profile-form__select-technology
+              -#      = f.select :technology_stack , Skill::SKILLS ,{selected: Skill::SKILLS.include?(f.object.name) ? f.object.name : 'Custom'}, {class: 'profile-form__select profile-form__select-skill'}
+              -#      %button.table-top-btn-m-0.m-l-15#add-technology-btn{type: "button"} Add
+              %li.profile-form__item.profile-form__item-technology
+                = f.label :technology_stack, class: "profile-edit-form-label"
+                .profile-form__item-container.span9
+                  %span.input-medium-size.profile-form__select-technology
+                    = f.text_field :technology_stack, value: @project.technology_stack
+
+              %li#business-domains__item.profile-form__item
+                = f.label :business_domains, class: "profile-edit-form-label"
+                %span.span9.input-medium-size
+                  = f.text_field :business_domains, {class: 'profile-form__input'}
+              %li#graylog-names__item.profile-form__item
+                = f.label 'Graylog names', class: "profile-edit-form-label"
+                %span.span9.input-medium-size
+                  = f.text_field :graylog_names, {class: 'profile-form__input'}
+              %li#errbit-keys__item.profile-form__item
+                = f.label 'Errbit keys', class: "profile-edit-form-label"
+                %span.span9.input-medium-size
+                  = f.text_field :errbit_keys, {class: 'profile-form__input'}
+              %li#project-url__item.profile-form__item
+                = f.label :project_url, class: "profile-edit-form-label"
+                %span.span9.input-medium-size
+                  = f.text_field :project_url, {class: 'profile-form__input'}
+            .mm-bottom-btn-container
+              = link_to t('.cancel', :default => t("helpers.links.cancel")), manager_project_path(@project.id), :class => 'mm-button mm-button-gray'
+              = f.submit nil, :class => 'mm-button mm-button-orange m-l-15 mm-button-update-project'
+
+-#:javascript
+-#
+-#  function addField() {
+-#    var addTechnologyBtn = document.querySelector('#add-technology-btn');
+-#    var technologyStack = document.querySelector('#project_technology_stack');
+-#    var technologyContainer = document.querySelector('.technology-container');
+-#    var yearsContainer = document.querySelector('.years-container');
+-#    var valArr = [];
+-#
+-#    function createField(container) {
+-#      technologyStack.addEventListener('change', function () {
+-#        var techVal =  this.value;
+-#        valArr.push(techVal);
+-#      })
+-#
+-#      addTechnologyBtn.addEventListener('click', function () {
+-#       var lastVal = valArr.pop();
+-#        if(lastVal !== undefined) {
+-#          var techField = document.createElement('div');
+-#          var techBtn = document.createElement('button');
+-#          var techSpan = document.createElement('span');
+-#          techField.classList.add('technology');
+-#          techBtn.classList.add('btn-icon', 'cancel-icon-active');
+-#          techBtn.setAttribute('id', 'remove-technology-btn');
+-#          techBtn.setAttribute('type', 'button');
+-#          techSpan.textContent = lastVal;
+-#          valArr = [];
+-#          techField.append(techBtn);
+-#          techField.append(techSpan);
+-#          container.append(techField);
+-#          techBtn.addEventListener('click', function () {
+-#            techField.remove();
+-#          })
+-#        }
+-#      })
+-#    }
+-#    createField(technologyContainer);
+-#  }
+-#
+-#  function addFields() {
+-#    addField()
+-#  }
+-#
+-#  $(document).on('page:load', addFields).ready(addFields);

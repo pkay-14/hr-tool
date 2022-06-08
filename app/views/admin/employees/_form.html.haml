@@ -1,0 +1,313 @@
+= form_for [:admin, @user], :url => @user.new_record? ? admin_employees_path(@user) : admin_employee_path(@user) , :html => { :class => 'edit-user-form profile-form', :id => 'master-form' } do |f|
+  -#- if @user.errors.any?
+  -#  #error_explanation
+  -#    %h2= "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
+  -#    %ul
+  -#      - @user.errors.full_messages.each do |msg|
+  -#        %li
+      .row-fluid= msg
+  =render :partial =>'shared/errors', locals: {target: @user}
+  %ul.profile-form-list{data:{user_id: @user.id}}
+
+    =f.hidden_field :employee_id, :value => @user.id, id: 'employee-id'
+    %li.mm-profile-form__item.profile-form__item--big
+      = f.label :photo, class: "profile-edit-form-label"
+      .profile-form__image-container
+        .profile-form__image
+          = image_tag((@user.photo.path(:small_retina).present? ? @user.photo.url(:small_retina) : "user_icon_placeholder@2x.png") , class: "profile__user-img img-circle pull-left", alt: "User photo" )
+        .profile-form__buttons
+          .file-wrapper.table-top-btn.btn-add-photo
+            %span.filename Replace
+            %input#photo{type: 'file'}
+          = link_to "Delete", "#", class: "table-top-btn btn-delete delete-photo", data: {} if current_user.is_hr_manager?
+
+    %li.mm-profile-form__item.profile-form__item--big
+      = f.label :first_name, class: "profile-edit-form-label profile-edit-form-label--mandatory"
+      .input-medium-size.profile-form__input-wrap
+        = f.text_field :first_name, class: 'profile-form__input'
+        %p#first-name-error-text.first-name-error__text required field
+    %li.mm-profile-form__item.profile-form__item--big
+      = f.label :last_name, class: "profile-edit-form-label profile-edit-form-label--mandatory"
+      .input-medium-size.profile-form__input-wrap
+        = f.text_field :last_name, class: 'profile-form__input'
+        %p#last-name-error-text.last-name-error__text required field
+    %li.mm-profile-form__item.profile-form__item--big
+      = f.label :country, class: "profile-form-label profile-edit-form-label--mandatory"
+      .input-medium-size.profile-form__input-wrap
+        = f.select :country_id, options_from_collection_for_select(Country.all, 'id', 'name', selected: f.object&.country_id), {}, {class: 'country-profile-form__select'}
+    %li.mm-profile-form__item.profile-form__item--big
+      = f.label :city, class: "profile-edit-form-label profile-edit-form-label--mandatory"
+      .input-medium-size.profile-form__input-wrap
+        .cities-select-wrap#citiesSelectParent
+          = f.select :office_id, options_from_collection_for_select(f.object.country&.offices, 'id', 'name', selected: f.object&.office_id), {}, {class: 'office-profile-form__select select2-js'}
+    %li.mm-profile-form__item.profile-form__item--big.profile-form__item-align-start.profile-form__item-edit-technology
+      .profile-form-label
+        %label.profile-edit-form-label.profile-edit-form-label-bold.profile-form__label-technology Technologies
+      %ul#skills.m-l-15
+        = f.fields_for :skills do |skill|
+          %li.skill
+            =render 'skill_fields', f: skill
+        %li.links.add_skill_link
+          .top-buttons.m-t-20
+            =link_to_add_association '+ add skill', f, :skills, class: 'table-top-btn-m-0'
+    = render 'people_partner', f: f
+  %ul.profile-form-list{data:{user_id: @user.id}}
+    %li.profile-form-list__title Career history
+    - unless @user.new_record?
+      = render 'changes_date', f: f
+      = render 'working_status', f: f
+    = render 'company_division', f: f
+    = render 'community', f: f
+    = render 'position', f: f
+    = render 'additional_position', f: f
+
+  %ul.profile-form-list{data:{user_id: @user.id}}
+    %li.profile-form-list__title Employment Information
+    - unless @user.new_record?
+      = render 'dismissed', f: f
+      = render 'left_reason', f: f
+    = render 'english_level', f: f
+    %li.mm-profile-form__item
+      = f.label :comments, class: "profile-edit-form-label"
+      .profile-form__item-input-wrap
+        .custom-textarea
+          = f.text_area :comments, :class => 'text_field profile-form__textarea profile-form__textarea--custom'
+    -#-if current_user.is_hr_manager?
+    -#  %li.profile-form__item
+    -#    = f.label :compensation, class: "profile-edit-form-label"
+    -#    .input-medium-size.profile-form__input-wrap
+    -#      -if current_user.is_hr_manager? && current_user.not_hr_test?
+    -#        = f.text_field :sallary, class: 'profile-form__input'
+    %ul.profile-form-list{data:{user_id: @user.id}}
+      %li.profile-form-list__title Vacations
+      %li.mm-profile-form__item
+        = f.label "Vacation days per year", class: "profile-edit-form-label"
+        .profile-form__item-input-wrap.mm-no-border
+          .input-medium-size.profile-form__input-wrap
+            - if @vacation_days_per_year.present?
+              = f.text_field :vacation_days_per_year, value: @vacation_days_per_year, class: 'profile-form__input'
+            - else
+              = f.text_field :vacation_days_per_year, class: 'profile-form__input'
+
+      %li.mm-profile-form__item
+        = f.label "Vacation days #{@current_year}", class: "profile-edit-form-label"
+        .profile-form__item-input-wrap
+          .input-medium-size.profile-form__input-wrap
+            = f.object.remaining_vacation_days_current_year
+      %li.mm-profile-form__item
+        = f.label "Vacation days #{@current_year - 1}", class: "profile-edit-form-label"
+        .profile-form__item-input-wrap
+          .input-medium-size.profile-form__input-wrap
+            = f.object.vacation_days_past_year
+      %li.mm-profile-form__item
+        .profile-edit-form-label
+          Additional vacations
+        .profile-form__item-input-wrap
+          %ul#additional_vacations
+            = f.fields_for :additional_vacations do |additional_vacation|
+              %li.additional_vacation.profile-form__item-ml
+                =render 'additional_vacation_fields', f: additional_vacation
+            %li.links.add_additional_vacation_link.top-buttons
+              =link_to_add_association 'add additional vacations', f, :additional_vacations, class: 'table-top-btn-m-0'
+    %ul.profile-form-list.mm-no-border{data:{user_id: @user.id}}
+      %li.profile-form-list__title Sick days
+      %li.mm-profile-form__item
+        = f.label "Sick days per year", class: "profile-edit-form-label"
+        .profile-form__item-input-wrap.mm-no-border
+          .input-medium-size.profile-form__input-wrap
+            - if @sick_days_per_year.present?
+              = f.text_field :sick_days_per_year, value: @sick_days_per_year, class: 'profile-form__input'
+            - else
+              = f.text_field :sick_days_per_year, class: 'profile-form__input'
+      %li.mm-profile-form__item
+        = f.label "Sick days available", class: "profile-edit-form-label"
+        .profile-form__item-input-wrap
+          .input-medium-size.profile-form__input-wrap
+            = f.text_field :sick_days_remaining, class: 'profile-form__input'
+      %li.mm-profile-form__item.profile-form__item--big
+        = f.label "Unpaid leave", class: "profile-edit-form-label"
+        .input-medium-size.profile-form__input-wrap
+          = f.text_field :days_off, class: 'profile-form__input'
+
+      %li.mm-profile-form__item.profile-form__item--big.retrospective_date
+        %label.profile-edit-form-label Last Performance Review period
+        .profile-form__input-wrap
+          .input-append.input-append--flex.date.project-form__block.apr__block-dates
+            -if @user.retrospective_date
+              = f.text_field :retrospective_date, :value => @user.retrospective_date.strftime("%d.%m.%Y"), "data-format"=>"dd.MM.yyyy", class: 'profile-form__input text_field', "readonly"=>"readonly"
+            -else
+              = f.text_field :retrospective_date, "data-format"=>"dd.MM.yyyy", class: 'profile-form__input text_field', "readonly"=>"readonly"
+            %span.add-on
+              %i.apr-date__icon.icon-calendar
+      %li.mm-profile-form__item.profile-form__item--big.birthday
+        = f.label :birthday, class: "profile-edit-form-label"
+        .profile-form__input-wrap
+          .input-append.input-append--flex.date.project-form__block.apr__block-dates
+            -if @user.birthday
+              = f.text_field :birthday, :value => @user.birthday.strftime("%d.%m.%Y"), "data-format"=>"dd.MM.yyyy", class: 'profile-form__input', placeholder: 'dd.mm.yyyy'
+            -else
+              = f.text_field :birthday, "data-format"=>"dd.MM.yyyy", class: 'profile-form__input', placeholder: 'dd.mm.yyyy'
+            %span.add-on
+              %i.apr-date__icon.icon-calendar
+
+  %ul.profile-form-list{data:{user_id: @user.id}}
+    %li.profile-form-list__title Contacts
+    %li.mm-profile-form__item
+      = f.label 'Personal email', class: "profile-edit-form-label"
+      .profile-form__item-input-wrap.mm-no-border
+        .input-medium-size.profile-form__input-wrap
+          = f.text_field :email, class: 'profile-form__input', type: 'email'
+    %li.mm-profile-form__item
+      = f.label 'Corporate email', class: "profile-edit-form-label profile-edit-form-label--mandatory"
+      .profile-form__item-input-wrap
+        .input-medium-size.profile-form__input-wrap
+          = f.text_field :moc_email, class: 'profile-form__input', type: 'email'
+          %p#corporate-email-error-text.corporate-email-error__text required field
+          %p#corporate-email-error-text--domain.corporate-email-error__text--domain domain must be @masterofcode.com
+    %li.mm-profile-form__item
+      = f.label :tel_number, class: "profile-edit-form-label profile-edit-form-label--mandatory"
+      .profile-form__item-input-wrap
+        .input-medium-size.profile-form__input-wrap
+          = f.text_field :tel_number, class: 'profile-form__input'
+          %p#phone-number-error-text.phone-number-error__text required field
+    -#%li.profile-form__item
+    -#  = f.label :resume, class: "profile-edit-form-label"
+    -#  .input-medium-size.profile-form__input-wrap
+    -#    = f.text_area :resume_url, class: 'profile-form__textarea'
+
+
+      %input#imgVal.img-val{type: 'text', name: 'user[photo]'}
+  %ul.profile-form-list{data:{user_id: @user.id}}
+    %input#imgVal.img-val{type: 'text', name: 'user[photo]'}
+    %li.profile-form-list__title Roles in MModule:
+    %li.mm-profile-form__item
+      = f.label :can_interview, class: "profile-edit-form-label"
+      .profile-form__item-input-wrap.mm-no-border
+        = f.check_box :is_interviewer?, class: 'mm-checkbox'
+    %li.mm-profile-form__item
+      = f.label :is_manager, class: "profile-edit-form-label"
+      .profile-form__item-input-wrap
+        = f.check_box :is_manager?, class: 'mm-checkbox'
+    %li.mm-profile-form__item
+      = f.label :is_hr_manager, class: "profile-edit-form-label"
+      .profile-form__item-input-wrap
+        = f.check_box :is_hr_manager?, class: 'mm-checkbox'
+    %li.mm-profile-form__item
+      = f.label :is_lead, class: "profile-edit-form-label"
+      .profile-form__item-input-wrap
+        = f.check_box :is_lead?, class: 'mm-checkbox'
+    %li.mm-profile-form__item
+      = f.label :is_admin, class: "profile-edit-form-label"
+      .profile-form__item-input-wrap
+        = f.check_box :is_admin?, class: 'mm-checkbox'
+    %li.mm-profile-form__item
+      = f.label :is_support, class: "profile-edit-form-label"
+      .profile-form__item-input-wrap
+        = f.check_box :is_support, class: 'mm-checkbox'
+    %li.mm-profile-form__item
+      = f.label :is_hr_lead, class: "profile-edit-form-label"
+      .profile-form__item-input-wrap
+        = f.check_box :is_hr_lead?, class: 'mm-checkbox'
+    %li.mm-profile-form__item
+      = f.label :is_people_partner, class: "profile-edit-form-label"
+      .profile-form__item-input-wrap
+        = f.check_box :is_people_partner?, class: 'mm-checkbox'
+    %li.mm-profile-form__item
+      = f.label "Show in Load Calendar", class: "profile-edit-form-label"
+      .profile-form__item-input-wrap
+        = f.check_box :show_in_load_calendar, class: 'mm-checkbox'
+    %li.mm-profile-form__item
+      = f.label 'Send time tracking reminders', class: "profile-edit-form-label"
+      .profile-form__item-input-wrap
+        = f.check_box :send_time_tracking_reminders, class: 'mm-checkbox'
+    %li.mm-profile-form__item
+      = f.label :show_non_english_name, 'Show non-English name', class: "profile-form-label"
+      .profile-form__item-input-wrap
+        = f.check_box :show_non_english_name, class: 'mm-checkbox'
+
+  %ul.profile-form-list.mm-no-border{data:{user_id: @user.id}}
+    %li.profile-form-list__title Information about agreement
+    %ul.profile-form-list{:id => "hired-info"}
+      %li.mm-profile-form__item.hired-at
+        = f.label :hired_at, 'Agreement signed at', class: "profile-edit-form-label profile-edit-form-label--mandatory"
+        .profile-form__item-input-wrap.mm-no-border
+          .profile-form__input-wrap
+            .input-append.input-append--flex.date.project-form__block.apr__block-dates.profile-form__input--agreement-date
+              -if @user.hired_at
+                = f.text_field :hired_at, :value => @user.hired_at.strftime("%d.%m.%Y") , :class => 'text_field profile-form__input', "data-format"=>"dd.MM.yyyy", "readonly"=>"readonly"
+              -else
+                = f.text_field :hired_at, :class => 'text_field profile-form__input', "data-format"=>"dd.MM.yyyy", "readonly"=>"readonly"
+              %span.add-on
+                %i.apr-date__icon{"data-time-icon"=>"icon-time", "data-date-icon"=>"icon-calendar"}
+              %p#date-agreement-error-text.date-agreement-error__text Please, specify the date
+      %li.mm-profile-form__item
+        = f.label :reference, class: "profile-edit-form-label space-b-30"
+        .profile-form__item-input-wrap
+          .input-medium-size.profile-form__input-wrap.profile-form__input-wrap-reference
+            = f.select :reference, User::REFERENCE, {}, {class: 'profile-form__select'}
+            .reference-additional-field
+              = f.text_area :reference_additional, class: 'text_field profile-form__textarea profile-form__textarea--custom-550'
+
+  .mm-bottom-btn-container
+    - if @user.new_record?
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), admin_employees_path(), :class => 'mm-button mm-button-gray'
+    - else
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), admin_employee_path(@user), :class => 'mm-button mm-button-gray'
+    %button#update-master__button.mm-button.mm-button-orange.m-l-15.update-button{type: 'submit'} Update user
+  .modal-croppie
+    .modal-croppie-result
+      .result-img-container
+        %img.result-img{src: ''}
+      %button.btn-ok.mm-button.mm-button-orange{type: 'button'} Ok
+    %button.btn-icon.cancel-icon.btn-close-modal-croppie{type: 'button'}
+    .modal__inner
+      #demo.demo
+      %button.btn-result.mm-button.mm-button-orange{type: 'button'} Result
+
+  .mm-modal-custom#mm-modal--career-notifications
+    .mm-modal__title
+      %h3.title Career notifications
+      = link_to 'Cancel', "#",  class: 'btn-icon cancel-icon mm-modal-cancel-btn'
+    .mm-modal-body--remove-master
+      %p
+        You are going to make changes that will be recorded to the master’s Career History, and it will trigger notifications to emails for specified people. Select whom to notify.
+      .mm-modal__checkboxes-container
+        .mm-modal__checkboxes-block.space-b-10
+          = check_box_tag 'email_keys[sysadmin]', '1', true, class: 'mm-modal__checkbox'
+          SysAdmins
+        .mm-modal__checkboxes-block.space-b-10
+          = check_box_tag 'email_keys[people_partner]', '1', true, class: 'mm-modal__checkbox'
+          Old & new people partners
+        .mm-modal__checkboxes-block.space-b-10
+          = check_box_tag 'email_keys[master]', '1', true, class: 'mm-modal__checkbox'
+          Master
+      .mm-modal__buttons-between.m-t-40
+        %button.mm-button.mm-button-gray.mm-modal-cancel-btn{type:"button", 'aria-label'=>"Close"}
+          Cancel
+        %button#update-master__button.mm-button.mm-button-orange.m-l-15.update-button--popup{type: 'submit'} Proceed
+
+.mm-modal-custom#mm-modal
+  .modal-dialog.modal-sm
+    .modal-content
+      .mm-modal__title
+        %h3.modal-title
+          Delete Photo?
+        %button.mm-modal-cancel-btn.close-modal{type:"button", 'aria-label'=>"Close"}
+    .modal-body
+      %p.centered Are you sure?
+      .mm-modal__buttons-between
+        %button.mm-button.mm-button-gray.close-modal{type:"button", 'aria-label'=>"Close"}
+          Cancel
+        %a.mm-button.mm-button-orange#delete-photo
+          Yes. Delete
+
+
+.mm-modal-custom#mm-modal--wrong-format
+  .mm-modal__title
+    %h3.title Wrong format
+    = link_to 'Cancel', "#",  class: 'btn-icon cancel-icon close-modal--wrong-format'
+  .mm-modal-body--remove-master
+    %p
+      This file format is not supported by the System.
+    .mm-modal__buttons.m-t-55
+      %button.mm-button.mm-button-orange.close-modal--wrong-format{type: 'button'} Ok

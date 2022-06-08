@@ -1,0 +1,8 @@
+<% if @comment.valid? %>
+    $('#new_comment').hide();
+    $('#comments_container').prepend("<%= escape_javascript(render partial: 'comment', object: @comment)%>");
+    $('#new_comment').html("<%= escape_javascript(render :partial => 'comment_form', locals: {comment: @new_comment})%>");
+    showAndScrollTo('employee_comments');
+<% else %>
+    $('#new_comment').html("<%= escape_javascript(render :partial => 'comment_form', locals: {comment: @comment})%>");
+<% end %>

@@ -1,0 +1,24 @@
+#employee-vacation-box
+  .row-fluid.gray-bg
+    .container
+      %h3.text-center
+        = @vacation.employee.full_name
+  .container.main
+    %ul.inline.text-center
+      = form_for [:manager, @vacation], :url => {:action => "update"} do |f|
+        -#%li
+          -# = f.select :employee_id, options_from_collection_for_select(User.all, 'id', 'full_name')
+          -#= @vacation.employee.full_name
+        %li
+          .input-append.date
+            = f.text_field :from , class: 'text_field span2', "data-format"=>"dd.MM.yyyy"
+            %span.add-on
+              %i.datepicker--icon-calendar
+        %li
+          .input-append.date
+            = f.text_field :to, :class => 'text_field span2', "data-format"=>"dd.MM.yyyy"
+            %span.add-on
+              %i.datepicker--icon-calendar
+        - f.hidden_field :_id, value: @vacation._id
+        %li
+          = f.submit class: "btn btn-default-gray-light btn-edit"

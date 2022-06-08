@@ -1,0 +1,40 @@
+.month_stats
+  .batch-info{data: {batch_token: batch_token}}
+  - if users.present?
+    .tab-content.tab-content--no-overflow#myTabContent
+      .hr-table-wrap.tab-pane.fade.active.in#All
+        %table.hr-table.calendar-table{cellpadding: '0'}
+          %thead
+            %tr.hr-table__head-row--height
+              %th.mm-th-table-top.hr-table__cell--space-l-10{class:"calendar-dev-name"}
+                .dev-name__wrap
+                  %button.sort-name__button{'data-sort-name' => ''}
+                    Name
+                    %i.btn-icon.sort-icon.m-l-5
+              - (from_date..to_date).each do |d|
+                %th.days.table-text-main-color.hr-table__cell--25.hr-table__cell--align-c.hr-table__cell--no-space-h.hr-table__th--nth-bg.mm-size-10{class: (d.saturday? || d.sunday?) ? 'weekend' : d.today? ? 'current-day' : ''}
+                  = d.strftime("%a")
+                  %br
+                  = d.strftime("%e")
+              - unless teammates
+                %th.total-days.hr-table__cell--25.hr-table__cell--align-c.hr-table__th--nth-bg.mm-size-12
+                  - if master_cabinet?
+                    Total
+                  - else
+                    %button.sort-total__button{'data-sort-total' => ''}
+                      Total
+                      %i.btn-icon.sort-icon.m-l-5
+          %tbody.employee-load
+            = render :partial  => "month_stats_body", locals: { users_batch: users_batch, jira_data: jira_data }
+  - else
+    .text-center
+      %h3 No Results Found
+.row-fluid
+  .span6
+  .span6
+    %span
+    = image_tag("ajax-loader.gif", class: "spinner")
+- unless master_cabinet? && !teammates
+  .moc-paginate
+    = select_tag :limit, options_for_select([['10', 10], ['25', 25], ['50', 50], ['100', 100]], params[:per_page] ? params[:per_page] : current_user.pagination_per_page || 25), class: 'items-on-page dropdown limit-dropdown', autocomplete: :off
+    = paginate users, :window => 2, :params => {:controller => 'manager/calendar', :action => 'index_filters'}

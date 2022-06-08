@@ -1,0 +1,50 @@
+= form_for [:admin, @country], :url => @country.new_record? ? admin_countries_path(@country) : admin_country_path(@country) , :html => { :class => 'edit-user-form profile-form mm-modal__form' } do |f|
+  -#- if @user.errors.any?
+  -#  #error_explanation
+  -#    %h2= "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
+  -#    %ul
+  -#      - @user.errors.full_messages.each do |msg|
+  -#        %li
+      .row-fluid= msg
+  -#=render :partial =>'shared/errors', locals: {target: @user}
+  %ul.mm-modal__list
+
+    =f.hidden_field :country_id, :value => @country.id, id: 'country-id'
+
+    %li.mm-modal__item
+      %label.mm-modal__label
+        Name
+        = f.text_field :name, class: 'mm-modal__input mm-modal__input-countries countries__input '
+    %li.d-flex.m-t-15
+      %label.mm-modal__label-208
+        Vacation day per year
+        = f.text_field :vacation_days_per_year, {class: 'mm-modal__input-208 countries__input '}
+      %label.mm-modal__label-208.m-l-15
+        Sick days per year
+        = f.text_field :sick_days_per_year, {class: 'mm-modal__input-208 countries__input '}
+    %li.mm-modal__item.m-t-15
+      %label.mm-modal__label-208
+        Offices
+        %ul#offices
+          = f.fields_for :offices do |office|
+            %li.office-fields__item
+              =render 'office_fields', f: office
+          %li.links.add_additional_office_link.top-buttons
+            =link_to_add_association 'add office', f, :offices, class: 'table-top-btn table-top-btn-m-0'
+    %li.mm-modal__item.m-t-15
+      %label.mm-modal__label
+        Holidays
+        %ul#holidays
+          - holiday_years = @country.holidays.pluck(:date).map {|date| date.year}.uniq.sort
+          %label.mm-modal__label-208
+            = select_tag 'holiday_year', options_for_select(holiday_years, Date.today.year), class: 'md countries__select'
+            = f.fields_for :holidays, f.object.holidays.sort_by {|hash| hash['date']} do |holiday|
+              %li.holiday{:class => holiday.object.date.year}
+                =render 'holiday_fields', f: holiday
+          %li.links.add_holiday_link.top-buttons
+            =link_to_add_association 'add holiday', f, :holidays, class: 'table-top-btn table-top-btn-m-0'
+
+    %li.mm-modal__buttons-between
+      = link_to t('.cancel', :default => t("helpers.links.cancel")), admin_countries_path, :class => 'mm-button mm-button-gray'
+      = f.submit nil, :class => 'mm-button mm-button-orange'
+

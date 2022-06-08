@@ -1,0 +1,13 @@
+<tr>
+  <td width="20"></td>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      Hi <%= @vacation.employee.full_name %>,<br>
+      We are sad to inform that your requested time off has been rejected.<br>
+      The Project Managers have strong arguments for you to take time off in some other period of time,
+      as you are needed on the projects <%= @vacation.time_range_to_s %>.<br>
+      Please contact your Project Managers for more details.
+    </span>
+  </td>
+  <td width="20"></td>
+</tr>

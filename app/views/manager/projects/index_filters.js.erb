@@ -1,0 +1,414 @@
+$(".projects").html('<%= escape_javascript(render :partial => "projects", locals: { projects: @projects } )%>');
+
+$(".open-all-project-form").removeClass("hideProject");
+
+ function clear_date_events() {
+    $("[data-load-id] .clear").on("click", function() {
+      var data = {
+        load: {}
+      };
+      var load_id = $(this).closest('[data-load-id]').data('load-id');
+      if ($(this).parent().hasClass('from-date')) {
+        data['date'] = 'from';
+      } else {
+        data['date'] = 'to';
+      }
+
+      $.ajax({
+        url: "/manager/projects/load/" + load_id + '/clear_date',
+        type: "POST",
+        data: data
+      }).done(function () {
+        $(this).closest('td').children('.date-text').remove();
+      });
+    });
+    $(".member-row .from-date .clear").on('click', function () {
+          $(this).closest('td').children('.clear').hide();
+    })
+
+    $(".member-row .to-date .clear").on('click', function () {
+      $(this).closest('td').children('.clear').hide();
+    })
+  };
+
+  clear_date_events();
+
+
+$("[data-expand-project-id]").on("click", function() {
+  var project_id,
+			caret = $(this).children('i');
+  project_id = $(this).data("expandProjectId");
+  $("[data-project-members = " + project_id + "]").toggleClass("hide");
+  if ($("[data-project-members = " + project_id + "]").hasClass('hide')) {
+		caret.addClass('icon-caret-down').removeClass('icon-caret-up');
+	}
+		else {
+		caret.removeClass('icon-caret-down').addClass('icon-caret-up');
+	};
+  var allMemberRows = $("#projects .member-row").length,
+      hideMemberRows = $("#projects .member-row.hide").length,
+      shownMemberRows = $("#projects .member-row").not( ".hide" ).length;
+  if (allMemberRows == hideMemberRows == shownMemberRows) {
+    $(".open-all-project-form").addClass("hideProject");
+  } else {
+    $(".open-all-project-form").removeClass("hideProject");
+  }
+
+
+  /*var allMemberRows = $("#projects .member-row").length,
+      hideMemberRows = $("#projects .member-row.hide").length,
+      shownMemberRows = $("#projects .member-row").not( ".hide" ).length;
+  if (allMemberRows == hideMemberRows) {
+    $(".open-all-project-form .show_name").addClass("hide");
+    $(".open-all-project-form .hide_name").removeClass("hide");
+  } else if (allMemberRows == shownMemberRows) {
+    $(".open-all-project-form .show_name").addClass("hide");
+    $(".open-all-project-form .hide_name").removeClass("hide");
+  } else {
+    $(".open-all-project-form .show_name").removeClass("hide");
+    $(".open-all-project-form .hide_name").addClass("hide");
+  }
+*/
+
+  $(`[data-project-members=${project_id}] .from-date, [data-project-members=${project_id}] .to-date`).datetimepicker().on('changeDate', function(ev) {
+    const self = $(this);
+    const dateField = document.createElement('span');
+    const date_value = self.find('input').val();
+    const load_id = self.closest('[data-load-id]').data('load-id');
+    let data;
+
+    self.find('.date-text').remove();
+    self.find('.clear').remove();
+    dateField.classList.add("date-text");
+    self.append(dateField);
+    self.datetimepicker('hide');
+    self.find('.date-text').text(date_value);
+
+    if (self.hasClass('from-date')) {
+      data = {
+        load: {
+          from: date_value
+        }
+      };
+    } else {
+      data = {
+        load: {
+          to: date_value
+        }
+      };
+    }
+    $.ajax({
+      url: "/manager/projects/load/" + load_id,
+      type: "PUT",
+      data: data
+    });
+    $.ajax({
+      url: 'projects/load/' + load_id + '/warning',
+      type: "GET",
+      data: {}
+    });
+  });
+
+  function createDeleteButton() {
+    $(`[data-project-members=${project_id}] .to-date`).datetimepicker().on('changeDate', function() {
+      const self = $(this);
+      const clearField = document.createElement('button');
+
+      clearField.classList.add("clear");
+      self.append(clearField);
+      clear_date_events();
+    });
+  }
+
+  createDeleteButton()
+});
+$('.delete-project-btn').click(function(){
+	var project_id = $(this).parent().parent().find('.project-name').data("expandProjectId");
+	$('#delete-item').attr('data-expand-project-id', project_id);
+});
+$('.project-row .from-date, .project-row .to-date').datetimepicker().on('changeDate', function(ev) {
+  var data, date_value, project_id, self, dateField, clearField ;
+  data;
+  self = $(this);
+  self.find('.date-text').remove();
+  self.find('.clear').remove();
+  dateField = document.createElement('span');
+  clearField = document.createElement('button');
+  dateField.classList.add("date-text");
+  clearField.classList.add("clear");
+  self.append(dateField);
+  self.append(clearField);
+  self.datetimepicker('hide');
+  date_value = self.find('input').val();
+  project_id = self.parent().find('[data-expand-project-id]').data('expand-project-id');
+  self.find('.date-text').text(date_value);
+
+  if (self.hasClass('from-date')) {
+    data = {
+      project: {
+        from: date_value
+      }
+    };
+  } else {
+    data = {
+      project: {
+        to: date_value
+      }
+    };
+  }
+  $.ajax({
+    url: "/manager/projects/" + project_id,
+    type: "PUT",
+    data: data
+  })
+  removeDateProject();
+});
+removeDateProject();
+
+function removeDateProject () {
+  $(".project-row .delete-project-btn").on("click", function() {
+    var data = {
+      project: {}
+    };
+
+    var project_id = $(this).closest('.project-row').find('[data-expand-project-id]').attr('data-expand-project-id');
+    if ($(this).parent().hasClass('from-date')) {
+      data['date'] = 'from';
+    } else {
+      data['date'] = 'to';
+    }
+
+    $.ajax({
+      url: "/manager/projects/" + project_id + '/clear_date',
+      type: "POST",
+      data: data
+    }).done(function () {
+      $(this).closest('td').children('.date-text').remove();
+    });
+  });
+  $(".project-row .from-date .clear").on('click', function () {
+    $(this).closest('td').children('.clear').hide();
+  })
+  $(".project-row .to-date .clear").on('click', function () {
+    $(this).closest('td').children('.clear').hide();
+  })
+}
+
+$('#delete-item').on("click", function(e) {
+  var data;
+  data = {};
+  data['manager_id'] = $('[data-current-manager]').attr('data-current-manager');
+  data['status'] = $('[data-current-status]').attr('data-current-status');
+  data['search_query'] = $('#projects .search-form input').val();
+  $.ajax({
+    url: "/manager/projects/search",
+    type: "GET",
+    data: data
+  })
+
+});
+
+$('#projects .comment-icon').on("click", function(e) {
+  var project_id;
+  e.preventDefault();
+  project_id = $(this).closest('.project-row').find('[data-expand-project-id]').attr('data-expand-project-id');
+  $.ajax({
+    url: "/manager/projects/" + project_id + "/send_for_feedbacks",
+    type: "POST",
+    data: {}
+  });
+  return;
+});
+
+$('.btn-remove-master').on("click", function () {
+  const parentRowEl = this.closest('[data-project-members]');
+  const tableNameEl = parentRowEl.querySelector('[data-master-name]');
+  const popupNameEl = document.querySelector('[data-deleting-name]');
+
+  popupNameEl.textContent = `${tableNameEl.textContent}'s`;
+  $('.master-remove-icon').attr('data-load-id', $(this).attr('data-load-id'))
+   $('#confirm-modal-master').css('display', 'block');
+   $('.mm-background-overlay').css('display', 'block');
+});
+$('.master-remove-icon').on('click', function () {
+  var load_id = $(this).attr('data-load-id');
+  $.ajax({url: "/manager/projects/load/" + load_id, type: "DELETE", data: {}}).done(function () {
+    $('tr[data-load-id="' + load_id + '"]').remove();
+    $('.mm-background-overlay').css('display', 'none');
+  });
+});
+
+
+$('.st-member-name').on("click", function(e) {
+  return $(this).siblings('.select-wrapper').find('[data-user-list="initail"]').select2("open");
+});
+
+$('[data-user-list="initail"]').on("select2:opening", function(e) {
+  console.log('ON OPENING erb');
+  $(this).parent().siblings('.st-member-name').hide();
+  $(this).parent().removeClass('hidden');
+  $('.select2-results__option').each(function() {
+    if($(this).text() === '') {
+       $(this).hide();
+    }
+  })
+});
+
+$('[data-user-list="initail"]').on("select2:close", function(e) {
+  console.log('ON CLOSE erb');
+  $(this).parent().addClass('hidden');
+  $(this).parent().siblings('.st-member-name').show();
+
+});
+
+$('[data-user-list="initail"]').select2({
+  data: <%= @employee_for_select2 %>
+});
+
+$('[data-user-list="initail"]').on("select2:select", function(e) {
+  var load_id, master_id;
+  $(this).parent().siblings('.st-member-name').text(e.params.data.text).show();
+  master_id = e.params.data.id;
+  load_id = $(this).closest('[data-load-id]').attr('data-load-id');
+  $.ajax({
+    url: `/manager/projects/load/${load_id}`,
+    type: "PUT",
+    data: {
+      load: {
+        employee_id: master_id
+      }
+    }
+  });
+  $.ajax({
+    url: 'projects/load/' + load_id + '/warning',
+    type: "GET",
+    data: {}
+  });
+});
+
+$(".best_in_place").best_in_place();
+
+$('.member-load .best_in_place').best_in_place().bind('ajax:success', function() {
+  var load_id;
+  load_id = $(this).data('loadId');
+  return $.ajax({
+    url: 'projects/load/' + load_id + '/warning',
+    type: "GET",
+    data: {}
+  });
+});
+
+$("[data-load-id] .clear").on("click", function() {
+  var data, load_id;
+  data = {
+    load: {}
+  };
+  load_id = $(this).closest('[data-load-id]').data('load-id');
+  if ($(this).parent().hasClass('from-date')) {
+    data['date'] = 'from';
+  } else {
+    data['date'] = 'to';
+  }
+  return $.ajax({
+    url: "/manager/projects/load/" + load_id + '/clear_date',
+    type: "POST",
+    data: data
+  });
+});
+
+$(".project-row .clear").on("click", function() {
+  var data, project_id;
+  data = {
+    project: {}
+  };
+  project_id = $(this).closest('.project-row').find('[data-expand-project-id]').attr('data-expand-project-id');
+  if ($(this).parent().hasClass('from-date')) {
+    data['date'] = 'from';
+  } else {
+    data['date'] = 'to';
+  }
+  return $.ajax({
+    url: "/manager/projects/" + project_id + '/clear_date',
+    type: "POST",
+    data: data
+  });
+});
+
+<% if @manager_id == current_user.id.to_s %>
+  $('#projects-wrap').sortable({
+  items: 'tr.project-row',
+  placeholder: 'emptySpace',
+  helper: 'clone',
+  update: function(event, ui) {
+    var data;
+    $('[data-expand-project-id]').each(function() {
+      var project_id, project_row;
+      project_id = $(this).attr('data-expand-project-id');
+      project_row = $('[data-expand-project-id=' + project_id + ']').parent();
+      return $('[data-project-members=' + project_id + ']').insertAfter(project_row);
+    });
+    $('.save-proj-bt').removeClass('hide');
+    data = {};
+    data['projects'] = {};
+    $('#projects-wrap tr.project-row').each(function() {
+      var index, project_id;
+      project_id = $(this).find('[data-expand-project-id]').attr('data-expand-project-id');
+      index = +$(this).index();
+      return data['projects'][project_id] = index;
+    });
+    return $.ajax({
+      url: "projects/update_positions",
+      type: "POST",
+      data: data
+    });
+  }
+  });
+<% end %>
+
+$('#projects .items-on-page').on("change", function(e) {
+  var sortingOrder = sortingSandbox.getSortingOrder();
+  var data;
+  data = {};
+  data['manager_id'] = $('[data-current-manager]').attr('data-current-manager');
+  data['status'] = $('[data-current-status]').attr('data-current-status');
+  data['search_query'] = $('#projects .search-form input').val();
+  data['per_page'] = $('#projects .items-on-page').val();
+  if (sortingOrder !== undefined) {
+    data['status_order'] = sortingOrder === 1 ? 'asc' : 'desc';
+  }
+  return $.ajax({
+    url: "/manager/projects/search",
+    type: "GET",
+    data: data
+  }).done(function () {
+      highlightOption()
+  });
+
+});
+
+var statusSortingOrder = sortingSandbox.getSortingOrder();
+if (statusSortingOrder !== undefined) {
+  sortingSandbox.toggleSortingIcon('[data-sorting-icon]');
+}
+
+$('[data-sorting-control]').on('click', function() {
+  var reqRout = '/manager/projects/search';
+  var payload = {
+    manager_id: $('[data-current-manager]').attr('data-current-manager'),
+    status: $('[data-current-status]').attr('data-current-status'),
+    search_query: $('#projects .search-form input').val(),
+    per_page: $('#projects .items-on-page').val()
+  };
+  sortingSandbox.sort(reqRout, payload);
+});
+
+function highlightOption() {
+    var option = document.querySelectorAll('.items-on-page option')
+    option.forEach(function (i) {
+        if(i.selected === true) {
+            i.style.color = "#FD5D32"
+        }
+    })
+}
+
+$(document).ready(highlightOption);

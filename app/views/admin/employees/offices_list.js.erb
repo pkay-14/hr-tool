@@ -1,0 +1,4 @@
+$('.office-profile-form__select').empty();
+<% @offices.each do |office| %>
+$('.office-profile-form__select').append($('<option value="<%= office.id %>"><%= office.name %></option>'));
+<% end %>

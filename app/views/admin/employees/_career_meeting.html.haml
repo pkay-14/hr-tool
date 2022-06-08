@@ -1,0 +1,9 @@
+- if (current_user.is_hr_manager? || (current_user.is_manager? && meeting.visible_by_managers?)) && meeting.comment.present?
+  .row-fluid.feedback-row.career-comments-row{data: {meeting_id: meeting.id}}
+    %span.span2.date-career-label
+      = meeting.date.strftime("%d.%m.%Y")
+    %span.span8
+      = meeting.comment
+    %span.span2
+      = link_to "Delete", "#", class: "btn-icon trash-icon", data: {'toggle'=>"modal", 'target'=>"#confirm-modal-meeting", confirmation: 'Are you sure?'}
+

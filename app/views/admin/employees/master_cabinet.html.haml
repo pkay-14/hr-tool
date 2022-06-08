@@ -1,0 +1,107 @@
+#master-profile.profile-page.main-page
+  .content-container
+    .row-fluid.contractor
+      .container.main
+        .content-block.contractor
+          .master-cabinet-header--container
+            .head-part--inline-left
+              .mm-avatar
+                = image_tag((@user.photo.path(:small_retina).present? ? @user.photo.url(:small_retina) : "user_icon_placeholder@2x.png") , class: "user-img profile__user-img img-circle", alt: "User photo" )
+              .master-title-wrap
+                %ul.profile-title-list
+                  %li
+                    %h3.profile-title
+                      = @user.full_name
+
+            .head-part--time-off-info--section
+              .time-off-info--container
+                .caption--container
+                  Vacation days<br>earned
+                .value--container
+                  = @user.earned_vacation_days
+
+              .time-off-info--container
+                .caption--container
+                  Sick days<br>available
+                .value--container
+                  = "#{@user.sick_days_remaining}"
+
+              - if @user.count_unpaid_leave(Date.today.year) != 0
+                .time-off-info--container
+                  .caption--container
+                    Unpaid leave<br>used
+                  .value--container
+                    = "#{@user.count_unpaid_leave(Date.today.year)}"
+
+              .time-off-info--container
+                .caption--container
+                  %button#masters-cabinet-time-off-info-button.table-top-btn.mm-btn-white Time off details
+
+          .profile-info-box.border-radius-0.info-box.mm-no-border{data:{user_id: @user.id}}
+
+            %ul.profile-form-list.mm-no-border
+              .row-fluid
+                %span.span6
+                  %ul.profile-form-list.mm-no-border
+                    .vacation-mobile__container
+                      = render :partial => 'vacation_info', :locals => {:user => @user, :current_year => Date.today.year}
+                      = render :partial => 'master_form', :locals => {:user => @user, :current_year => Date.today.year}
+                %span.span6
+                  %ul.profile-form-list
+                    = render :partial => 'holidays', :locals => {:holidays => @holidays, :current_year => Date.today.year}
+
+  #masters-cabinet-time-off-details--popup.masters-cabinet-time-off-details--popup.mm-modal-custom.d-none
+    .mm-modal__title
+      %h3.title
+        = "Time off details on #{Date.today.strftime("%d.%m.%Y")}"
+      %button.btn-icon.cancel-icon.close-modal{'data-close-popup' => ''}
+    .time-off-details-popup-body--container
+      .time-off-details--table-container
+        %table.time-off-details--table
+          %thead.time-off-details--table--header
+            %th.column.column-1
+              .bold-text.mm-size-14
+                Vacation days
+            %th.column.column-2
+              .mm-bold.mm-size-14
+                Earned
+              .text-color--inactive.mm-size-12.regular-text
+                = "as of #{Date.today.strftime("%d.%m.%Y")}"
+            %th.column.column-3
+              .mm-bold.mm-size-14
+                Available
+              .text-color--inactive.mm-size-12.regular-text
+                by the end of the year
+          %tbody
+            %tr.border-grey--b
+            - @timeoff_details[:vacation_info].each do |vacation_info|
+              %tr
+                %td.column.column-1
+                  %span.regular-text.mm-size-14
+                    = "in #{vacation_info[:year]}"
+                %td.column.column-2
+                  %span.regular-text.mm-size-14
+                    = vacation_info[:earned_vacation]
+                %td.column.column-3
+                  %span.regular-text.mm-size-14
+                    = "#{vacation_info[:available_vacation]}"
+                  %span.regular-text.mm-size-14.text-color--inactive
+                    = " / #{vacation_info[:total_for_year]}"
+
+      - if @timeoff_details[:additional_vacations].length > 0
+        .additional-info--container
+          .additional-days-caption--container
+            %span.regular-text.mm-size-14
+              Additional days<br>
+            %span.regular-text.mm-size-12.text-color--inactive
+              to the existing available vacation
+          .additional-days--container
+            - @timeoff_details[:additional_vacations].each do |additional_vacation|
+              .additional-day--describe
+                %span.regular-text.mm-size-14
+                  = "#{additional_vacation[:days]}"
+                %span.regular-text.mm-size-14.text-color--inactive
+                  = " / #{additional_vacation[:comment]}"
+
+    .time-off-details-popup--button--container
+      %button.mm-button.mm-button-orange{'data-close-popup' => ''} Ok

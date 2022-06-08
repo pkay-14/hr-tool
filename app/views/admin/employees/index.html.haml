@@ -1,0 +1,31 @@
+= javascript_include_tag 'admin/lawyer_info'
+#employee.employee-page-index.employees-page.main-page
+  .content-container
+    .row-fluid
+      .container
+        %section.menu-wrapper.filters-bar.filters-bar--flex
+          = render 'employee_filters'
+
+    .container.main.masters-container
+      .top-row
+        %section.all-masters-wrapper
+          %h2.title.no-margin Masters
+
+          .emails-sent
+          = flash[:emails_sent] if flash[:emails_sent]
+
+          .top-buttons.top-without-buttons-mobile
+            - if current_user.is_hr_manager?
+              .top-buttons-container
+                %button#export-to-csv--button.table-top-btn.mm-btn-white Export to csv
+                =link_to '+ Add Master', new_admin_employee_path,  class: 'table-top-btn add-master-btn mm-btn-white'
+                =link_to 'Legal Docs', legal_documents_admin_employees_path, :class => 'table-top-btn mm-btn-white'
+            .search-container
+              .hr-search.search-form.search-item
+                =text_field_tag 'search_query', params[:search_query] ? params[:search_query] : '', {class: 'search__field', placeholder: 'Search'}
+              .open-dropdowns
+                %button#open-right-menu.open-right-menu
+
+
+      .employees-partial
+        = render partial: 'employee_list', locals: { users: @users }

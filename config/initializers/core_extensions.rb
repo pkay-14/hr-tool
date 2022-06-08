@@ -1,0 +1,1 @@
+Float.include CoreExtensions::Float

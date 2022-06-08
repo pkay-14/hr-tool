@@ -1,0 +1,30 @@
+<tr>
+  <td style="font-family: Arial,serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 18px;
+    letter-spacing: 0;
+    text-align: center;
+    color: #646464">
+      <span>
+        Dear <%= @user.first_name %>,
+        <br>
+        <br>
+        Master of Code Global strives to evolve feedback culture that helps us build a strong community with healthy culture and collaboration.
+        <br>
+        <br>
+        As a part of  Performance Management and Appraisal System it is high time to ask for your <b>feedback about your peers</b>, Masters you were closely collaborating for the past 6 months. Please, provide your feedback on <%= @master.full_name %> by <%= @session.to.strftime('%d.%m.%Y') %>.
+        <br>
+        <br>
+        <a href="<%= apr_feedbacks_url(params: { master: true, tab: 'request' }, host: masters_url_host) %>" target="_blank" rel="noopener" style="color: #FD5D32; text-decoration: none;">Fill in the form for all Masters listed in your cabinet in MastersModule</a>
+        <br>
+        <br>
+        If you have any questions or comments, feel free to contact your People Partner.
+        <br>
+        <br>
+        <br>
+        Thank you!
+      </span>
+  </td>
+</tr>

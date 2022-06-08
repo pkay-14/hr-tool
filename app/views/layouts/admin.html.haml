@@ -1,0 +1,141 @@
+!!! 5
+%html(lang="en")
+  %head
+    %meta(charset="utf-8")
+    %meta(http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1")
+    %meta(name="viewport" content="width=device-width, initial-scale=1.0")
+    %title= content_for?(:title) ? yield(:title) : "HR Module"
+    = csrf_meta_tags
+    -# configure axios (based on "csrf_meta_tags" (CSRF Token))
+    = javascript_pack_tag "setupAxios"
+
+    / Le HTML5 shim, for IE6-8 support of HTML elements
+    /[if lt IE 9]
+    -# = javascript_include_tag "//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.6.1/html5shiv.js"
+
+    = stylesheet_link_tag "https://fonts.googleapis.com/css2?family=Roboto&display=swap", :media => "all"
+    = stylesheet_link_tag "application", :media => "all"
+    = favicon_link_tag 'apple-touch-icon-144x144-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '144x144'
+    = favicon_link_tag 'apple-touch-icon-114x114-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '114x114'
+    = favicon_link_tag 'apple-touch-icon-72x72-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png', :sizes => '72x72'
+    = favicon_link_tag 'apple-touch-icon-precomposed.png', :rel => 'apple-touch-icon-precomposed', :type => 'image/png'
+    = favicon_link_tag 'favicon.ico', :rel => 'shortcut icon'
+    = javascript_include_tag "application"
+
+    -# this file is needed to make webpack work
+    = javascript_pack_tag "common"
+    -#= javascript_pack_tag "admin"
+    -# we need to connect style as a separate file only in staging or production
+    -# in dev mode we use 'style-loader' which insert all stylys inline in head
+    -# - if is_not_dev_env?
+      -# = stylesheet_pack_tag "admin"
+
+    -#= javascript_include_tag "http://code.jquery.com/ui/1.10.3/jquery-ui.js"
+    -#= stylesheet_link_tag "http://code.jquery.com/ui/1.10.3/themes/smoothness/jquery-ui.css", :media => "all"
+
+    = yield :head
+
+
+  %body
+    -#.div#vue-app
+    = include_gon(:init => true)
+    .mm-background-overlay
+    #wrap
+      - if user_signed_in?
+        %header.hr-header
+          .mm-nav-container
+            .hr-header__wrap
+              .mm-menu-master.mm-size-12
+                - if current_user.is_employee?
+                  - unless current_user.has_only_master_role? || request.subdomain == 'masters'
+                    - path = current_user.is_admin? ? admin_hardwares_path : root_path
+                    .mm-master-img-container
+                      = image_tag((current_user.photo.path(:small_retina).present? ? current_user.photo.url(:small_retina) : "user_icon_placeholder@2x.png") , class: "user-img profile__user-img img-circle img-circle-not-hover", alt: "User photo" )
+                    .mm-master__link.mm-menu__link-name.mm-size-12
+                      = "#{current_user.first_name} #{current_user.last_name}"
+                    %button#open-bottom-menu.burger-btn
+                    %a.mm-master__link.mm-size-12.mm-menu__link--transparency.mm-btn-off{:href => destroy_user_session_path, 'data-method' => :delete}
+                  - else
+                    .mm-master-img-container
+                      = image_tag((current_user.photo.path(:small_retina).present? ? current_user.photo.url(:small_retina) : "user_icon_placeholder@2x.png") , class: "user-img profile__user-img img-circle img-circle-not-hover", alt: "User photo" )
+                    %a.mm-master__link.mm-menu__link-name.mm-size-12
+                      = " #{current_user.first_name} #{current_user.last_name}"
+                    %button#open-bottom-menu.burger-btn
+                    %a.mm-master__item.mm-size-12.mm-menu__link--transparency.mm-btn-off{:href => destroy_user_session_path, 'data-method' => :delete}
+
+                - else
+                  %a.mm-menu__item.mm-menu__link--transparency.mm-btn-off{:href => destroy_user_session_path, 'data-method' => :delete}
+
+
+              %ul.mm-menu
+                %li.mm-menu__item-close-menu
+                  %button#mm-btn-close-menu.mm-btn-close-menu
+                - if switcher_access?
+                  - if time_off_approves_only?
+                    - path = manager_vacation_approve_index_path
+                    #role-switcher-container.role-switcher__container
+                      .role-switcher__block
+                        %a#role-switcher__link-team.role-switcher__link{:href => master_cabinet? ?  path: "#{admin_employee_path(current_user.id)}?master=true"} MOCG Team
+                        %a#role-switcher__link-profile.role-switcher__link{:href => master_cabinet? ?  path: "#{admin_employee_path(current_user.id)}?master=true"} My Profile
+                  - else
+                    #role-switcher-container.role-switcher__container
+                      .role-switcher__block
+                        %a#role-switcher__link-team.role-switcher__link{:href => master_cabinet? ?  path: "#{admin_employee_path(current_user.id)}?master=true"} MOCG Team
+                        %a#role-switcher__link-profile.role-switcher__link{:href => master_cabinet? ?  path: "#{admin_employee_path(current_user.id)}?master=true"} My Profile
+                -if current_user.is_employee? && master_cabinet?
+                  %li.mm-menu__item{:class => active_page("#{admin_employee_path(current_user.id)}#{url_params}")}
+                    %a.mm-menu__link{:href => "#{admin_employee_path(current_user.id)}#{url_params}" } Summary
+                  %li.mm-menu__item{:class => active_page("#{manager_vacations_path}#{url_params}")}
+                    %a.mm-menu__link{:href => "#{manager_vacations_path}#{url_params}"} Time Off
+                  %li.mm-menu__item{:class => active_page("#{manager_calendar_index_path}#{url_params}")}
+                    %a.mm-menu__link{:href => "#{manager_calendar_index_path}#{url_params}"} Load
+                  - unless current_user.country&.name.eql?'Canada'
+                    %li.mm-menu__item{:class => active_page("#{manager_overtimes_path}#{url_params}")}
+                      %a.mm-menu__link{:href => "#{manager_overtimes_path}#{url_params}"} Overtimes
+                  %li.mm-menu__item{:class => active_page("#{admin_career_histories_path}#{url_params}&user_id=#{current_user.id}")}
+                    %a.mm-menu__link{:href => "#{admin_career_histories_path}#{url_params}&user_id=#{current_user.id}"} Career History
+
+                -elsif request.subdomain.in?(%w(mm ppmm))
+                  -if (current_user.is_hr_manager? || current_user.is_manager? || current_user.is_lead?)
+                    -unless (current_user.is_lead? && !(current_user.is_manager? || current_user.is_hr_manager?))
+                      -#%li.mm-menu__item{:class => active_page( manager_master_interviews_path)}
+                      -#  %a.mm-menu__link{:href => manager_master_interviews_path} Interviews
+                    %li.mm-menu__item{:class => active_page(manager_projects_path)}
+                      %a.mm-menu__link{:href => manager_projects_path} Projects
+                    %li.mm-menu__item{:class => active_page(manager_calendar_index_path)}
+                      %a.mm-menu__link{:href => manager_calendar_index_path}
+                        Load Calendar
+                  -if (current_user.is_hr_manager? || current_user.is_manager? || current_user.is_lead? || current_user.is_designer?)
+                    %li.mm-menu__item{:class => active_page(manager_vacations_path)}
+                      %a.mm-menu__link{:href => manager_vacations_path} Time Off
+                    -if current_user.is_hr_manager?
+                      %li.mm-menu__item{:class => active_page(manager_overtimes_path)}
+                        %a.mm-menu__link{:href => manager_overtimes_path} Overtimes
+                  -if time_off_approve_access?
+                    %li.mm-menu__item{:class => active_page(manager_vacation_approve_index_path)}
+                      %a.mm-menu__link{:href => manager_vacation_approve_index_path, :style => 'position: relative'}
+                        Time Off to Approve
+                        - unattended_vacations_approves_quantity = current_user.unattended_approves.size
+                        - unless unattended_vacations_approves_quantity.zero?
+                          %span.mm-badge
+                            = unattended_vacations_approves_quantity
+                  -if current_user.is_manager? || current_user.is_people_partner?
+                    %li.mm-menu__item{:class => active_page(manager_overtime_approve_index_path)}
+                      %a.mm-menu__link{:href => manager_overtime_approve_index_path, :style => 'position: relative'}
+                        Overtimes to Approve
+                        - unattended_overtimes_approves_quantity = current_user.unattended_approves('overtime').size
+                        - unless unattended_overtimes_approves_quantity.zero?
+                          %span.mm-badge
+                            = unattended_overtimes_approves_quantity
+                  -if current_user.is_hr_manager?
+                    %li.mm-menu__item{:class => active_page(admin_countries_path)}
+                      %a.mm-menu__link{:href => admin_countries_path} Countries
+
+
+      = bootstrap_flash
+      = yield
+    -#%footer
+    -#  .row-fluid
+    -#    .container
+    -#      %p.copyright
+    -#        = "#{Date.today.strftime('%Y')} &#169; Master of Code".html_safe

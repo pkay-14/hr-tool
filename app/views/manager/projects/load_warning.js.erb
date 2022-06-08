@@ -1,0 +1,9 @@
+<% if @load&.warning? %>
+  noty({
+    text: '<%= @load&.employee&.full_name %> has load more than 100%',
+    type: 'warning',
+    theme: 'relax',
+    layout: 'center',
+    timeout: '2000'
+    })
+<% end %>

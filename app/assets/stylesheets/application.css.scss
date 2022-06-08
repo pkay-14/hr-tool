@@ -1,0 +1,564 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or vendor/assets/stylesheets of plugins, if any, can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the top of the
+ * compiled file, but it's generally better to create a new file per style scope.
+ *
+ *= require select2
+ *= require jquery-ui
+ *= require font-awesome
+ *= require_tree .
+ *= require_self
+ *= require croppie.css
+ *= require global-spinner.css
+ *= require bootstrap-datetimepicker.css
+ */
+
+@import "./shared/variables.css.scss";
+
+html,
+body {
+  font-family: $main_font;
+  font-size: $main_font_size;
+  background: #F1F1F1;
+  height: 100%; /* needed for container min-height */
+}
+ul {
+  font-family: $main_font;
+  font-size: $main_font_size;
+  font-weight: 600;
+}
+form,table {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+#wrap {
+  display: flex;
+  min-height: 100%;
+  height: auto;
+  box-sizing: border-box;
+
+  @media (max-width: 991px) {
+    flex-direction: column;
+  }
+}
+
+#wrap > div {
+  min-height: calc(100% - 195px);
+}
+.calc-min-h {
+  min-height: calc(100% - 55px) !important;
+}
+.calc-min-h-temp {
+  min-height: calc(100% - 135px) !important;
+}
+
+/*----------------- logo screen-----------------*/
+
+#wrapper {
+  height: 100%;
+  .login-wrapper {
+    background: asset-url("bg_login.jpg") no-repeat center;
+    background-size: cover;
+    height: 100%;
+    min-height: 100%;
+    display: flex;
+    .login-box {
+      margin: auto;
+      .moc-logo {
+        display: block;
+        height: 118px;
+        width: 118px;
+        margin: 0 auto 56px;
+      }
+      .moc-id-btn {
+        display: block;
+        width: 301px;
+        height: 65px;
+        border: 2px solid white;
+        text-align: center;
+        line-height: 61px;
+        color: white;
+        font-size: 18px;
+        font-weight: 500;
+        background: asset-url("mocid_icon.png") no-repeat 52px center;
+        background-size: 26px 31px;
+        padding-left: 22px;
+        &:hover,
+        &:focus {
+          color: white;
+          text-decoration: none;
+          opacity: 0.8;
+        }
+      }
+      .bk-module-title {
+        color: $main_corporate_color;
+        text-align: center;
+        font-size: large;
+        margin-bottom: 20px;
+      }
+    }
+  }
+}
+
+/*----------------------------------------------*/
+
+.main{
+  margin-bottom: 90px;
+}
+
+.brand{
+  span{
+    display:inline !important;
+  }
+}
+
+//.btn-default-white,
+//.btn-default-white:hover,
+//.btn-default-white:focus,
+//.btn-default-white:visited{
+//  background: $main-font-color;
+//  border-radius: 5px;
+//  color: #000000;
+//  text-shadow: none;
+//}
+
+.btn-default-gray,
+.btn-default-gray:hover,
+.btn-default-gray:focus,
+.btn-default-gray:visited {
+  color: $main-font-color;
+  background: #A7A7A7;
+  text-shadow: none;
+}
+
+.btn-default-gray-light {
+  color: #000000;
+  background: $gray-light-bg;
+  text-shadow: none;
+  border: none;
+  &:hover,
+  &:focus,
+  &:visited {
+    color: #000000;
+    background: $gray-light-bg;
+    text-shadow: none;
+    border: none;
+  }
+}
+
+.btn-default-save,
+.btn-default-save:hover,
+.btn-default-save:focus,
+.btn-default-save:visited {
+  color: $main-font-color;
+  background: $approve;
+  text-shadow: none;
+  border: none;
+}
+
+.btn-approve:hover {
+  background: $approve;
+  color: $main-font-color;
+}
+
+.btn-edit:hover {
+  background: #FC5D33;
+  color: $main-font-color;
+}
+
+.btn-not-approved:hover {
+  background: $not_approved;
+  color: $main-font-color;
+}
+
+.btn-new-design {
+  color: #000000;
+  background: none;
+  text-shadow: none;
+  border: none;
+  box-shadow: none;
+  &:hover {
+    text-decoration: underline;
+  }
+  &:focus,
+  &:active {
+    color: $main_corporate_color;
+    background: $gray-bg;
+    text-decoration: none;
+  }
+}
+/*-------------breadcrumbs------------------*/
+.btn-wrapper {
+  padding: 10px 0;
+  .btn-new-design{
+    color: $gray-breadcrumbs;
+    &:hover{
+      background-color: transparent;
+      text-decoration: underline;
+    }
+    &.active{
+      color: $main_corporate_color;
+      background: transparent;
+      box-shadow: none;
+    }
+  }
+}
+
+.mm-btn-wrapper, .mm-btn-back-wrapper, .mm-btn-back-wrapper-apr {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+
+  @media (max-width: 991px) {
+    padding: 12px 0;
+  }
+}
+
+.mm-btn-back-wrapper {
+  padding: 19px 15px;
+  @media (max-width: 991px) {
+    padding: 12px 0;
+  }
+}
+.mm-btn-back-wrapper-apr {
+  padding: 19px 0;
+}
+
+.mm-btn-wrapper-mobile {
+  @media (max-width: 991px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/*-------------------checkbox, checkboxes---------------*/
+/*-------------------info boxes-------------------------*/
+
+.interview-wrapper {
+  margin-top: 30px;
+  margin-bottom: 30px;
+  padding: 30px;
+  background: $main-font-color;
+  border-radius: 5px;
+  .questions-header,
+  .questions-footer{
+    width:100%;
+    padding: 0 30px;
+    margin: 0 -30px;
+  }
+  .questions-header{
+    padding-bottom:20px;
+    margin-bottom:30px;
+    border-bottom: 1px solid $gray-light-bg;
+  }
+  .questions-footer{
+    padding-top:20px;
+    margin-top:30px;
+    border-top: 1px solid $gray-light-bg;
+  }
+  .questions-with-answers{
+    counter-reset: point;
+    margin:0;
+    li{
+      list-style: none;
+      margin-bottom:25px;
+      &:last-child{
+        margin-bottom:0;
+      }
+      .question:before{
+        display:inline;
+        font-size: 16px;
+        content: counter(point)'.';
+        counter-increment: point 1;
+      }
+      .question{
+        font-size: 16px;
+        font-weight: 600;
+      }
+      .answer{
+        font-weight: 400;
+        margin: 15px 0;
+      }
+    }
+  }
+  .interview-status,
+  .input-append.date {
+    width: 100%;
+  }
+  .text-input {
+    textarea {
+      width: 100%;
+    }
+  }
+}
+
+//---------------------
+//bootstrap overrides for candidates and masters profiles
+//---------------------
+.info-box {
+  .row-fluid {
+    margin-right: -30px;
+  }
+}
+
+.row-fluid-mobile {
+  @media (max-width: 991px) {
+    background-color: #F1F1F1;
+  }
+}
+
+footer {
+  .copyright {
+    margin: 0;
+    padding: 0;
+    line-height: 55px;
+  }
+}
+
+.comment-head {
+  border-bottom: 1px dotted #BBBBBB;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.comment-author {
+  color: #555;
+}
+.comment-date {
+  font-style: italic;
+  color: #777;
+}
+.comment-body {
+  margin-bottom: 15px;
+  margin-top: 4px;
+  padding-left: 12px;
+
+}
+#overlay {
+  position:absolute;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  font-family: Arial, sans-serif;
+  z-index: 9999999;
+  font-size: 14px;
+}
+
+.popup-box {
+  position: absolute;
+  border-radius: 5px;
+  background: $main-font-color;
+  display: none;
+  box-shadow: 1px 1px 5px rgba(0,0,0,0.2);
+  font-family: Arial, sans-serif;
+  z-index: 9999999;
+  font-size: 14px;
+}
+
+.popup-box .close {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  font-family: Arial, Helvetica, sans-serif;
+  font-weight: bold;
+  cursor: pointer;
+  color: #434343;
+  padding: 20px;
+  font-size: 20px;
+}
+
+.popup-box .close:hover {
+  color: #000;
+}
+
+.popup-box h2 {
+  padding: 0;
+  margin: 0;
+  font-size: 18px;
+}
+.popup-box .top {
+  padding: 20px;
+}
+
+.popup-box .bottom {
+  background: #eee;
+  border-top: 1px solid #e5e5e5;
+  padding: 20px;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+
+#blackout {
+  background: rgba(0,0,0,0.3);
+  position: absolute;
+  top: 0;
+  overflow: hidden;
+  z-index: 999999;
+  left: 0;
+  display: none;
+}
+.edit_interview_feedback{
+  h3 {
+    margin: 30px 0;
+  }
+  .send-feedback {
+    float:right;
+    margin-top: 15px;
+    margin-bottom:0px;
+  }
+  .btn {
+    margin: 30px 0;
+  }
+}
+.load-indicator {
+  height: 20px;
+}
+.no-load {
+  background: #73EF78;
+}
+
+.high-load-non-billable {
+  background: repeating-linear-gradient( 45deg, #00bf99, #00bf99 2px, green 2px, green 4px );
+}
+
+.half-loaded {
+  background: #FCE258;
+}
+
+.high-load {
+  background: #FF4E5D;
+}
+
+.loaded {
+  background: #FFBE3F;
+}
+
+.vacation {
+  background: #4CB0F9;
+}
+
+.half-day {
+  background: #4ccce0;
+}
+
+.sick {
+  background: #AE97F0;
+}
+
+.half-day-sick {
+  background: #EEC2F2;
+}
+
+.half-day-vacation-and-sick {
+  background: linear-gradient(to right bottom, #eec2f2 0%, #eec2f2 48%, #4ccce0 52%, #4ccce0 100%);
+}
+
+.booked {
+  background: #512da8;
+}
+
+.compensatory-holiday {
+  background: #387AFB;
+}
+
+.weekend {
+  color: #DFDFDF;
+}
+.login-logo {
+  margin-top:80%;
+}
+th {
+  background:#F4F4F4;
+}
+.eng-flag {
+  background:url(eng_flag.png) 5px 5px no-repeat;
+  padding:5px 0 5px 35px;
+}
+.ukr-flag {
+  background:url(ukr_flag.png) 5px 5px no-repeat;
+  padding:5px 0 5px 35px;
+}
+
+ul.control-group > li {
+  list-style: none;
+  padding: 15px 0;
+}
+
+.hidden {
+  display: none;
+}
+.input-append.date .add-on i,
+.input-prepend.date .add-on i {
+  display: inherit !important;
+}
+
+.thank-p:first-child {
+  font-weight: 700;
+}
+
+.file-wrapper{
+  box-sizing: border-box;
+  max-width: 220px;
+  position: relative;
+  input[type=file]{
+    opacity:0;
+    width:100%;
+    position:absolute;
+    left:0;
+    top: 0;
+  }
+}
+
+.centered{
+  text-align:center;
+}
+/*-------------modal-----------------*/
+#wrap > .mm-modal-custom.fade.in{
+  min-height: 220px;
+}
+
+.modal-header{
+  background: $main-corporate-color;
+  border-radius: 6px 6px 0 0;
+  .btn-icon.cancel-icon:hover {
+    background-color: $main-font-color;
+  }
+  color: $main-font-color;
+}
+.modal.fade, .mm-modal-custom.fade {
+  z-index: -1;
+}
+.modal.fade.in, .mm-modal-custom.fade.in{
+  z-index: 1050;
+}
+.loader{
+  background:asset-url("ajax-loader.gif") center no-repeat rgba(0, 0, 0, 0.8);
+}
+
+.main.feedback-comment {
+  position: relative;
+  font-size: 18px;
+  color: #666;
+  h3 {
+    display: inline-block;
+    color: #333;
+  }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  background-color: #FFFFFF;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+#account-report-sending-modal {
+  min-height: unset !important;
+  display: none;
+}

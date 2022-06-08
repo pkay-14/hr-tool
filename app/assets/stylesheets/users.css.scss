@@ -1,0 +1,255 @@
+// Place all the styles related to the Users controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+/* EDIT USER */
+
+.edit-user-form {
+  margin: 0 auto !important;
+  float: none;
+}
+
+//#fancybox-overlay{
+//  opacity: 1 !important;
+//  background-color: rgb(255, 255, 255) !important;
+//}
+//#fancybox-wrap{
+//  top: 0px !important;
+//  left: 20px !important;
+//  z-index: initial !important;
+//  padding: 10px !important;
+//}
+
+#modal {
+  display: none
+}
+
+ul#skills {
+  li.skill:first-child {
+    label{
+      width:80px;
+      display:block;
+    }
+  }
+  div.links{
+    margin-top: 10px;
+    float: right;
+    margin-right: 10px;
+  }
+  label{
+    display: none;
+    float: none;
+    text-align: left;
+  }
+  .controls.skill-level{
+    margin-left: 80px;
+  }
+}
+ul#contact-events {
+  li.contact-event:first-child {
+    label{
+      width:100px;
+      display:block;
+    }
+  }
+  div.links{
+    margin-top: 10px;
+    float: right;
+    margin-right: 10px;
+  }
+  ul.inline.nested-fields{
+    margin-top: 10px;
+  }
+  .contact-event-date{
+    width: 100px;
+  }
+  .contact-event-comment{
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 0;
+  }
+  label{
+    display: none;
+    float: none;
+    text-align: left;
+  }
+  .controls.contact-level{
+    margin-left: 80px;
+  }
+}
+
+.contact-event-comment-wrap {
+  width: 100%;
+  max-width: 455px;
+  box-sizing: border-box;
+}
+
+ul#additional_vacations {
+  li.additional_vacation:first-child {
+    label{
+      width:80px;
+      display:block;
+    }
+  }
+  div.links{
+    margin-top: 10px;
+    float: right;
+    margin-right: 10px;
+  }
+  ul.inline.nested-fields{
+    margin-bottom: 15px;
+  }
+
+  .additional-vacation__list {
+    display: flex;
+    align-items: center;
+  }
+
+  .additional-vacation__item--year {
+    font-weight: 400;
+  }
+
+  .additional-vacation-comment {
+    width: 345px;
+
+    @media (max-width: 576px) {
+      width: 285px;
+    }
+  }
+  .additional-vacation-assigned_by{
+    width: 180px
+  }
+  label{
+    display: none;
+    float: none;
+    text-align: left;
+  }
+}
+
+#bank_accounts {
+  li.bank_account:first-child {
+    label{
+      width:85px;
+      display:block;
+    }
+  }
+  div.links{
+    margin-top: 10px;
+    float: right;
+    margin-right: 10px;
+  }
+  ul.inline.nested-fields{
+    margin-top: 10px;
+  }
+  .sm {
+    width: 75px;
+  }
+  .md {
+    width: 115px;
+  }
+  .bg {
+    width: 235px;
+  }
+  label{
+    display: none;
+    float: none;
+    text-align: left;
+  }
+}
+
+.margin_left_15px {
+  margin-left: 15px !important;
+}
+
+.margin_right_135px {
+  margin-right: 135px !important;
+}
+
+.vertical-align-middle{
+  vertical-align: middle !important;
+}
+
+.check-question label{
+	width: 350px;
+}
+
+.test-task{
+  padding-left: 40px;
+  display: initial;
+}
+
+.employees-search-partial{
+  .search_form{
+     #search_query{
+        float:left;
+        margin-right: 30px;
+     }
+  }
+}
+
+.wrap-test{
+  overflow: hidden;
+  position: relative;
+}
+
+tr:hover td > .short-dots:after{
+  background: #f5f5f5;
+}
+
+.preposition{
+  margin: 0 5px;
+
+  @media (max-width: 580px) {
+    display: block;
+  }
+}
+
+.reference-additional-field {
+  display: initial;
+  width: 100%;
+  margin-left: 20px ;
+  padding-right: 15px;
+
+  @media (max-width: 580px) {
+    padding: 0;
+  }
+}
+
+.controls{
+  .email-validation-error{
+    border-color: rgb(229, 97, 97);
+  }
+  .email-validation-error:focus{
+    border-color: rgb(229, 97, 97);
+    box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(229, 97, 97, 0.6);
+  }
+}
+
+.left-at{
+    .controls{
+      display: inline-flex;
+      select{
+        margin-right: 10px;
+      }
+      .input-append.date{
+        margin-left: 10px;
+      }
+    }
+}
+
+.highlight {
+  background-color: yellow;
+}
+
+.horizontalline {
+
+  border-bottom: #eeeeee solid 1px;
+}
+.verticalline {
+  border-right: #eeeeee solid 1px;
+
+}
+.padding-up-down-10px{
+  padding-bottom: 10px;
+  padding-top: 10px;
+}

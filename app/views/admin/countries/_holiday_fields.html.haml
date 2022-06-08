@@ -1,0 +1,13 @@
+%ul.mm-holidays-fields.mm-modal__list.inline.nested-fields
+  %li
+    = f.label :date, :class => 'control-label skill-name__label space-b-5'
+    - value = f.object.persisted? ? f.object.date.try(:strftime,"%d.%m.%Y") : Date.today.strftime('%d.%m.%Y')
+    .input-append.date.mm-date-fields.project-form__block
+      = f.text_field :date, value: value, "data-format"=>"dd.MM.yyyy", class: "mm-modal__date-130 countries__input"
+      %span.add-on.countries__input
+        %i.datepicker--icon-calendar
+  %li.mm-modal__item
+    = f.label :title, :class => 'control-label space-b-5'
+    = f.text_field :title, title: 'title', class: 'mm-modal__input-208 countries__input'
+  %li.vertical-align-btn
+    = link_to_remove_association 'remove', f, :class => 'btn-icon cancel-icon'

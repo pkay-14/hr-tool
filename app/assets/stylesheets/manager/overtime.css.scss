@@ -1,0 +1,93 @@
+@import "../shared/variables.css.scss";
+
+.hidden-info {
+  display: block;
+  visibility: hidden;
+  height: 0;
+  width: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+.overtime-hours{
+  width: 100%;
+}
+.confirmed {
+    color: $approve;
+  }
+.dismissed {
+    color: $not-approved;
+  }
+.pending {
+    color: $request;
+  }
+
+.status {
+  width: 400%;
+}
+
+.mm-overtime-name {
+  margin: 0 0 5px 0;
+}
+.skills-list, .master-skill {
+  color: $main-text-color;
+}
+
+.no-data-message{
+  padding: 10px 15px;
+}
+
+.link {
+  font-weight: bold;
+  font-size: 15px;
+  margin-bottom: 5px;
+  margin-left: 10px;
+}
+
+table.aui {
+  margin: 10px;
+  padding: 0;
+  width: 100%;
+  background-color: $main-font-color;
+  min-height:300px;
+  max-height:500px;
+  border-radius: 6px;
+  vertical-align: middle;
+  border: 1px solid black;
+
+  //border-collapse: collapse;
+
+  thead>tr {
+    background-color: #FFFFFF;
+
+  }
+
+  thead>tr>th.number {
+    border: solid 1px #F1F1F1;
+  }
+
+  thead>tr>th.string {
+    padding: 2px 7px;
+    border: solid 1px #F1F1F1;
+  }
+
+  tbody>tr>td {
+    border: 1px solid #F1F1F1;
+  }
+
+  tbody>tr>td.number {
+    border-right: solid 1px #F1F1F1;
+    border-left: solid 1px #F1F1F1;
+  }
+
+  tbody>tr>td.bold_number {
+    border-right: solid 1px #F1F1F1;
+    border-left: solid 1px #F1F1F1;
+    font-weight: bold;
+  }
+
+  tbody>tr>td.string {
+    border-right: solid 1px #F1F1F1;
+    border-left: solid 1px #F1F1F1;
+  }
+}

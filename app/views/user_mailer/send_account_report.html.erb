@@ -1,0 +1,62 @@
+<tr>
+  <td width="20"></td>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none;">
+      Шановний майстре! <br>
+      Як Ваш бухгалтер-консультант, інформую Вас про надходження коштів на рахунок та сплату податків. <br>
+      <%= "На поточний доларовий рахунок в #{@account_report['bank_ua']} #{@account_report['funds_receipt_date']} Ви отримали $#{@account_report['account_sum']}." %>
+      <br>
+      <br>
+      Витрати: <br>
+      <ul>
+        <li>
+          <%= "#{@account_report['single_tax']} грн — сплата єдиного податку;" %>
+        </li>
+        <% if @account_report['esv'].present? %>
+          <li>
+            <%= "#{@account_report['esv']} грн — сплата ЄСВ (пенсійний внесок);" %>
+          </li>
+        <% end %>
+        <li>
+           <%= "#{@account_report['bookkeeper_services']} грн — бухгалтерські послуги;" %>
+        </li>
+        <% if @account_report['workplace_rent'].present? %>
+          <li>
+            <%= "#{@account_report['workplace_rent']} грн — оренда робочого місця;" %>
+          </li>
+        <% end %>
+        <% if @account_report['equipment_rent'].present? %>
+          <li>
+            <%= "#{@account_report['equipment_rent']} грн — оренда обладнання;" %>
+          </li>
+        <% end %>
+        <% if @account_report['insurance'].present? %>
+            <li>
+              <%= "#{@account_report['insurance']} грн — послуги страхування;" %>
+            </li>
+        <% end %>
+        <% if @account_report['relative_insurance'].present? %>
+            <li>
+              <%= "#{@account_report['relative_insurance']} грн — послуги страхування рідних;" %>
+            </li>
+        <% end %>
+        <li>
+         <%= "#{@account_report['bank_services']} грн — банківські послуги." %>
+        </li>
+      </ul>
+      <%= "На картку ви отримали #{@account_report['card_sum']} грн (до вашого відома, середньозважений курс в #{@account_report['bank_ua']} склав #{@account_report['currency_rate']} грн)." %>
+      <br>
+      <br>
+
+      -- <br>
+      Best regards, <br>
+      Irina Reznichenko, <br>
+      <br>
+      mob. +38 097 483 56 55 <br>
+      mob. +38 093 353 24 10 <br>
+      skype:  ira_rez85 <br>
+      email: <a href="mailto:irina.reznichenko@masterofcode.com" target="_blank">irina.reznichenko@<wbr>masterofcode.com</a>
+    </span>
+  </td>
+  <td width="20"></td>
+</tr>

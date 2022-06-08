@@ -1,0 +1,109 @@
+// Place all the styles related to the project controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+@import "./shared/variables.css.scss";
+
+.select2-dropdown {
+  border:none;
+  width: auto;
+  min-width: 100px;
+  max-width: 200px;
+  &.select2-dropdown--below {
+    .select2-search--dropdown {
+      position: absolute;
+      top: -28px;
+      padding: 0;
+      input.select2-search__field {
+        display: block;
+        height: 28px;
+      }
+    }
+  }
+  .select2-results {
+    width: 300px;
+    border: 1px solid #aaa;
+    background: $main-font-color;
+
+    .select2-results__option{
+      font-weight:400;
+      font-size: 12px;
+    }
+
+  }
+}
+.container.main .create-form {
+  h3.new-project {
+    float: none;
+  }
+}
+
+#tags_list a {
+  cursor: pointer;
+}
+
+#tags_list {
+  float: right;
+}
+
+.new-project-container {
+  position: absolute;
+  display: none;
+}
+
+.mm-new-project__form {
+  padding: 15px;
+}
+
+.mm-date-project {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.show {
+  display: flex;
+}
+
+.project-icon-calendar {
+  width: 20px;
+  height: 20px;
+  background: url("data:image/svg+xml,%3Csvg width='18' height='18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='9' cy='9' r='9' fill='%23F1F1F1'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M12.2045 4.91817h.4591c.5049 0 .9181.41318.9181.91818v7.34535c0 .505-.4132.9182-.9181.9182H5.31817c-.505 0-.91818-.4132-.91818-.9182V5.83635c0-.505.41318-.91818.91818-.91818h.45908V4h.91818v.91817h4.59087V4h.9182v.91817zM5.31817 13.1817h7.34543V7.21361H5.31817v5.96809zm1.37726-4.59083h.91817v.91817h-.91817v-.91817zm.00002 1.83643h.91817v.9181h-.91817v-.9181zm2.75444-1.83639h-.91817v.91817h.91817v-.91817zm-.91817 1.83639h.91817v.9181h-.91817v-.9181zm2.75448-1.83639h-.9182v.91817h.9182v-.91817zm-.9182 1.83639h.9182v.9181h-.9182v-.9181z' fill='%23BABABA'/%3E%3C/svg%3E") center no-repeat;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+}
+.clear {
+  width: 20px;
+  height: 20px;
+  background: url("data:image/svg+xml,%3Csvg width='18' height='18' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='9' cy='9' r='9' fill='%23F1F1F1'/%3E%3Cpath fill-rule='evenodd' clip-rule='evenodd' d='M9.84834 8.99996L14.0717 4.7765l-.8485-.84852-4.22338 4.22345-4.22339-4.22345-.84853.84852 4.2234 4.22346-4.22357 4.22364.84854.8485 4.22355-4.2236 4.22358 4.2236.8485-.8485-4.22356-4.22364z' fill='%23BABABA'/%3E%3C/svg%3E") center no-repeat;
+  border: none;
+  &:focus {
+    outline: none;
+  }
+}
+
+.mm-modal__buttons-project {
+  margin-top: 40px!important;
+  justify-content: space-between!important;
+}
+@media (max-width: 991px) {
+  .new-project-container {
+    display: none;
+    width: 100%;
+    .new_project {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .new-project-form__list {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .new-project-form__item {
+      width: 100%;
+    }
+  }
+}

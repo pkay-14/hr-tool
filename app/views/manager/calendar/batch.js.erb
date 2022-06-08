@@ -1,0 +1,28 @@
+if ($('.batch-info').data('batch-token') === '<%= @batch_token %>') {
+  $('.calendar-table tbody').append('<%= j render :partial => "month_stats_body",
+   locals: { users_batch: @users_batch, jira_data: @jira_data, teammates: @teammates } %>');
+
+  $('.imployee-info i').slice(-<%= @users_batch.count %>).click(function () {
+      $(this).closest("tr").nextUntil("[data-main='info']").toggleClass('hide-calendar-employee-projects');
+      if ($(this).hasClass("icon-caret-down") && $(this).closest("tr").nextUntil("[data-main='info']").length === 0) {
+          var user_id = $(this).closest("tr").data('userId');
+          var data = {};
+          data['date'] = $('#calendar time').attr('datetime');
+          $.ajax({
+              url: "/manager/calendar/user_load_detailed/" + user_id,
+              type: "GET",
+              data: data
+          });
+      }
+
+      return $(this).toggleClass('icon-caret-down icon-caret-up');
+  });
+
+  $('.load-indicator').popover();
+
+  var current_day = $('table th.current-day');
+  var current_day_index = current_day.index();
+  current_day.closest('table')
+      .find('td:nth-child(' + (current_day_index + 1) + ')')
+      .addClass('current-day');
+}

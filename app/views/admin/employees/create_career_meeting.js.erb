@@ -1,0 +1,3 @@
+$('#career-comment-form form')[0].reset()
+$('#career-comment-form').before("<%= j render 'career_meeting', meeting: @meeting %>")
+$('[data-type=retrospective_date] .span10').text('<%= @next_meeting_date %>')

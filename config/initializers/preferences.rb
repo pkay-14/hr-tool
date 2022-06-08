@@ -1,0 +1,1 @@
+JIRA_CONFIGURATION = Rails.application.secrets.jira

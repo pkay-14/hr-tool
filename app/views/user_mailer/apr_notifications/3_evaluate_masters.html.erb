@@ -1,0 +1,24 @@
+<tr>
+  <td height="45" colspan="3" align="center">
+    <span mc:edit="content_1" style="color:#646464; font-size:16px; font-family: Arial, sans-serif; font-weight: 400; line-height: 18px; -webkit-text-size-adjust:none;">
+      Dear Evaluator,
+      <br>
+      <br>
+      Following MOCG Performance Management and Appraisal System, you are involved in the Performance Evaluation process as <b>an Evaluator</b>. Why we came to you: you closely work with masters on a daily basis, and you can evaluate their contribution and productivity in terms of projects/tasks/team development strategy and individual efficiency. Specifically, you can evaluate the masters on your project(s) you were in close collaboration for in the last 3 months. <a href="<%= apr_feedbacks_url(params: { master: true, tab: 'request' }, host: masters_url_host) %>" target="_blank" rel="noopener" style="color:#FD5D32; text-decoration: none">Please, evaluate Masters listed in MastersModule</a>:
+      <br>
+      <ul>
+        <% Apr::Feedback.by_user_session(@session.apr_user_sessions.pluck(:id)).by_evaluator(@user).in(completed: false).each do |feedback| %>
+          <% next if feedback.apr_user_session.not_active? %>
+          <li style="text-align: left"><%= feedback.master&.full_name %></li>
+        <% end %>
+      </ul>
+      by <%= @session.to.strftime('%d.%m.%Y') %>.
+      <br>
+      If you have any questions or comments, feel free to contact your People Partner.
+      <br>
+      <br>
+      <br>
+      Thank you!
+    </span>
+  </td>
+</tr>

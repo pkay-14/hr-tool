@@ -1,0 +1,63 @@
+.dropdown-container.dropdown-container-no-space
+  .mobile-top-row
+    %h3.menu-title Filters
+    .close-dropdowns
+      %button#close-right-menu.close-right-menu
+  .dropdown-block.dropdown-block-208#vacation-status-filter
+    %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_status: ''}}
+      Any status
+    %ul.hr-dropdown__menu.dropdown-menu
+      %li.dropdown__item.hide{ data: { status: '' } }
+        Any status
+      %li.dropdown__item{ data: { status: 'approved' } }
+        Approved
+      %li.dropdown__item{ data: { status: 'rejected' } }
+        Rejected
+      %li.dropdown__item{ data: { status: 'pending' } }
+        Pending
+
+  .dropdown-block.dropdown-block-208#vacation-type-filter
+    %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_category: ''}}
+      Any type
+    %ul.hr-dropdown__menu.dropdown-menu
+      %li.dropdown__item.hide{ data: { category: '' } }
+        Any type
+      %li.dropdown__item{ data: { category: 'vacation' } }
+        Vacation
+      %li.dropdown__item{ data: { category: 'sick' } }
+        Sick leave
+      %li.dropdown__item{ data: { category: 'days-off' } }
+        Unpaid leave
+
+  - unless master_cabinet?
+    .dropdown-block.dropdown-block-208#vacation-project-filter
+      %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_project: ''}}
+        Any project
+      %ul.hr-dropdown__menu.dropdown-menu
+        %li.dropdown__item.hide{ data: { project: '' } }
+          Any project
+        - full_projects_list.each do |name|
+          %li.dropdown__item{ data: { project: name } }
+            = name
+
+  .dropdown-block-date
+    %label.mm-label-datepicker
+      From
+    #vacation-date-from.input-append.input-append--flex.date.project-form__block.apr__block-dates{'data-datepicker-days-off-from' => ''}
+      %input#time-off-from-date.profile-form__input{"data-format"=>"dd.MM.yyyy", placeholder: 'dd.mm.yyyy', :name => "From"}
+      %span.add-on
+        %i.apr-date__icon.icon-calendar
+  .dropdown-block-date.m-l-15
+    %label.mm-label-datepicker
+      To
+    #vacation-date-to.input-append.input-append--flex.date.project-form__block.apr__block-dates{'data-datepicker-days-off-to' => ''}
+      %input#time-off-to-date.profile-form__input{"data-format"=>"dd.MM.yyyy", placeholder: 'dd.mm.yyyy', :name => "To"}
+      %span.add-on
+        %i.apr-date__icon.icon-calendar
+
+
+  .menu-bottom-button
+    %button.btn-show-result#close-right-menu-btn Show
+-#.search-form
+-#  =text_field_tag 'search_query', params[:search_query] ? params[:search_query] : ''
+-#  %i.icon-search

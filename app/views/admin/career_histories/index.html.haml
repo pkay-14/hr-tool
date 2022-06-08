@@ -1,0 +1,40 @@
+.main-page
+  .content-container
+    .container.masters-container
+      .content-block
+        .row-fluid
+          -if !master_cabinet? && current_user.is_hr_manager?
+            .container
+              .mm-btn-wrapper
+                = link_to 'Back', admin_employee_path(@user.id), :class => 'mm-btn-back__link'
+          %section.all-masters-wrapper.title-border
+            %h2.title.no-margin Career history
+        .hr-table-wrap
+          %table.hr-table
+            %thead
+              %tr.hr-table__head-row
+                %th.mm-th-table-top.career.career-date Date
+                %th.mm-th-table-top.career.career-division Company division
+                %th.mm-th-table-top.career.career-community Community
+                %th.mm-th-table-top.career.career-position Position
+                -#%th.mm-th-table-top.career.career-action
+              - unless @career_histories.blank?
+                - @career_histories.each do |career_history|
+                  %tr.hr-table__body-row
+                    %td.hr-table__cell-center.career-table.mm-size-12.table-text-main-color
+                      %span.mm-name.mm-name--not-link
+                        = "#{career_history.beginning_date} - #{career_history.finish_date}"
+                    %td.hr-table__cell-center.career-table.mm-size-12.table-text-main-color
+                      %span
+                        = career_history.company_division.blank? ? 'none' : career_history.company_division
+                    %td.hr-table__cell-center.career-table.mm-size-12.table-text-main-color
+                      %span
+                        = career_history.community.blank? ? 'none' : career_history.community
+                    %td.hr-table__cell-center.career-table.mm-size-12.table-text-main-color
+                      %span
+                        = career_history.position.blank? ? 'none' : career_history.position
+
+                    -#%td.hr-table__cell-center.career-table.mm-size-12.table-text-main-color.text-align-c
+                    -#  - if current_user.is_hr_manager?
+                    -#    = link_to 'Delete', admin_career_history_path(id: career_history.id, params: {user_id: @user.id}), method: :delete, class: 'btn-icon cancel-icon', data: {confirm: "Are you sure you want to delete career info?", "toggle" => "popover", "hint" => "Delete", "content" => "Delete"}
+

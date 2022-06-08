@@ -1,0 +1,286 @@
+/*
+  *=require twitter-bootstrap-static/bootstrap
+
+  Use Font Awesome icons (default)
+  To use Glyphicons sprites instead of Font Awesome, replace with "require twitter-bootstrap-static/sprites"
+
+*/
+
+@import "./shared/variables.css.scss";
+
+.btn-primary,
+.btn-danger,
+.btn-success,
+.btn-warning {
+    color: #fff;
+}
+
+ul.action-links {
+    margin: 0 !important;
+}
+ul {
+  margin: 0;
+}
+
+footer .row-fluid {
+  background: $main_corporate_color;
+  color: $main-font-color;
+}
+
+table {
+  background-color: $table-bg;
+}
+
+.panel-title {
+  line-height: 29px;
+}
+
+.btn-default,
+.btn-default:hover,
+.btn-default:focus,
+.btn-default:visited{
+  background: $main_corporate_color;
+  border-bottom: 3px solid #c89688;
+  border-radius: 5px;
+  color: $main-font-color;
+  letter-spacing: 1px;
+}
+
+.nav {
+  margin: 0;
+  li>a:hover,
+  li>a:focus {
+    background: none;
+  }
+}
+
+.media {
+  a {
+    width: 15%;
+  }
+}
+
+tr>td:first-child {
+  border-left: none;
+}
+
+.accordion-heading .accordion-toggle {
+  padding: 0;
+}
+
+.accordion-group {
+  border: none;
+}
+select {
+  width: 220px;
+}
+
+select.select-mini {
+  width: 80px;
+}
+
+.input-append input, .input-append select, .input-append .uneditable-input{
+  width:179px;
+}
+
+//awesome fonts overrides
+//------------------------------------------------------------
+.icon-plus {
+  font-size: $main_font_size - 4;
+}
+
+.ui-autocomplete {
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.dropdown-menu {
+  z-index: 9999;
+}
+
+.modal-backdrop {
+  display: none;
+}
+
+.nav-tabs>.active>a, .nav-tabs>.active>a:hover, .nav-tabs>.active>a:focus {
+  color: #FFFFFF;
+  background-color: #E7522C;
+  border: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.nav li > a:hover, .nav li > a:focus {
+  color: #FFFFFF;
+  background: #E7522C;
+  border: none;
+  text-decoration: none;
+  outline: none;
+}
+
+.nav-tabs>li>a {
+  border-radius: 42px;
+  border: none;
+}
+
+textarea, input[type="text"],
+input[type="password"],
+input[type="datetime"],
+input[type="datetime-local"],
+input[type="date"],
+input[type="month"],
+input[type="time"],
+input[type="week"],
+input[type="number"],
+input[type="email"],
+input[type="url"],
+input[type="search"],
+input[type="tel"],
+input[type="color"],
+.uneditable-input {
+  border: 1px solid #DEDEDE;
+  &:hover, &:focus, &:active {
+    border: 1px solid #DEDEDE;
+  }
+}
+
+//bootstrap datepicker
+
+.dropdown-menu {
+  min-width: 204px;
+  background-color: #F1F1F1;
+}
+body {
+
+  .bootstrap-datetimepicker-widget {
+    width: auto;
+    padding: 0;
+  }
+
+  .table-condensed {
+    background-color: #F1F1F1;
+  }
+
+  .bootstrap-datetimepicker-widget > .table-condensed th, .table-condensed td {
+    padding: 10px;
+  }
+
+  .bootstrap-datetimepicker-widget td.active.active {
+    background-color: #ffffff;
+    color: #E7522C;
+  }
+
+  .bootstrap-datetimepicker-widget td.active:hover,
+  .bootstrap-datetimepicker-widget td.active:hover:hover,
+  .bootstrap-datetimepicker-widget td.active:active,
+  .bootstrap-datetimepicker-widget td.active:hover:active,
+  .bootstrap-datetimepicker-widget td.active:hover.active,
+  .bootstrap-datetimepicker-widget td.active.disabled,
+  .bootstrap-datetimepicker-widget td.active:hover.disabled,
+  .bootstrap-datetimepicker-widget td.active[disabled],
+  .bootstrap-datetimepicker-widget td.active:hover[disabled] {
+    background-color: #E7522C;
+    color: #ffffff;
+  }
+
+  .bootstrap-datetimepicker-widget td span.active:hover,
+  .bootstrap-datetimepicker-widget td span.active:active,
+  .bootstrap-datetimepicker-widget td span.active.active,
+  .bootstrap-datetimepicker-widget td span.active.disabled,
+  .bootstrap-datetimepicker-widget td span.active[disabled] {
+    background-color: #ffffff;
+    color: #E7522C;
+    background-image: none;
+  }
+
+  .bootstrap-datetimepicker-widget td.active, .bootstrap-datetimepicker-widget td.active:hover {
+    background-image: none;
+    background-color: #ffffff;
+    color: #E7522C;
+  }
+
+  .bootstrap-datetimepicker-widget .datepicker-days {
+    display: table-cell;
+    background-color: #f1f1f1;
+    padding: 10px;
+  }
+
+  .bootstrap-datetimepicker-widget .datepicker-months span,
+  .bootstrap-datetimepicker-widget .datepicker-years span {
+    background-color: #FFFFFF;
+    border-radius: 0;
+  }
+
+  .bootstrap-datetimepicker-widget .datepicker-years span {
+    width: 44px;
+  }
+
+  .bootstrap-datetimepicker-widget td, .bootstrap-datetimepicker-widget th {
+    border-radius: 0;
+    background-color: #FFFFFF;
+    display: inline-block;
+    margin: 0.5px;
+    font-size: 14px;
+    font-weight: 400;
+  }
+
+  .bootstrap-datetimepicker-widget td.active,
+  .bootstrap-datetimepicker-widget td.active:hover {
+    background-image: none;
+    background-color: #E7522C;
+    color: #ffffff;
+  }
+
+  .bootstrap-datetimepicker-widget td.day:hover,
+  .bootstrap-datetimepicker-widget td.hour:hover,
+  .bootstrap-datetimepicker-widget td.minute:hover,
+  .bootstrap-datetimepicker-widget td.second:hover {
+    background-color: #E7522C;
+    color: #ffffff;
+  }
+
+  .bootstrap-datetimepicker-widget td span:hover {
+    background-color: #E7522C;
+    color: #ffffff;
+  }
+
+  .table-condensed thead tr {
+    display: flex;
+    justify-content: space-between;
+  }
+
+
+  .table-condensed thead tr .prev,
+  .table-condensed thead tr .next,
+  .bootstrap-datetimepicker-widget th.switch {
+    margin: 0;
+    padding: 9px 13px;
+  }
+
+  .table-condensed thead tr .prev {
+    border-radius: 4px 0 0 4px;
+    border: 1px solid #E5E5E5;
+  }
+
+  .table-condensed thead tr .next {
+    border-radius: 0 4px 4px 0;
+    border: 1px solid #E5E5E5;
+  }
+
+  .bootstrap-datetimepicker-widget th.switch {
+    width: 100%;
+    border-top: 1px solid #E5E5E5;
+    border-bottom: 1px solid #E5E5E5;
+    pointer-events: none;
+  }
+
+  .bootstrap-datetimepicker-widget .dow {
+    padding: 10px;
+    background-color: #F1F1F1;
+  }
+
+  .picker-switch.accordion-toggle {
+    display: none;
+  }
+}
+

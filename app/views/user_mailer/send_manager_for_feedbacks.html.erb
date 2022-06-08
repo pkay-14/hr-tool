@@ -1,0 +1,13 @@
+<tr>
+  <td width="20"></td>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      Привет! Оставь фидбеки по мастерам, которые работали с тобой на проекте <%= @project.name %>.
+      <br/>
+      <% @loads.each do |l| %>
+        <p><%= l.employee.full_name %> - <%= link_to 'Оставить фидбек', new_manager_master_feedback_url(project_id: @project.id.to_s, master_id: l.employee.id.to_s) %></p>
+      <% end %>
+    </span>
+  </td>
+  <td width="20"></td>
+</tr>

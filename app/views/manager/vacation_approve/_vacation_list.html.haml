@@ -1,0 +1,75 @@
+.hr-table-wrap.general-table
+  %table.hr-table.table-responsive
+    %thead.vacation-table-inner-responsive
+      %tr.hr-table__head-row.hr-table__head-row--height.table-tr-responsive
+        %th.mm-th-table-top.hr-table__cell--space-l-10.name.vacation-th-responsive Name
+        %th.mm-th-table-top.type-of-vocation.vacation-th-responsive Type
+        %th.mm-th-table-top.type-of-vocation.vacation-th-responsive Status
+        %th.mm-th-table-top.from-date.vacation-th-responsive From
+        %th.mm-th-table-top.to-date.vacation-th-responsive To
+        %th.mm-th-table-top.type-of-vocation.vacation-th-responsive Half-day?
+        %th.mm-th-table-top.action.vacation-btn-responsive Notes
+        %th.mm-th-table-top.action.vacation-th-responsive Actions
+    - @vacation_approves.each do |approve|
+      -# - if approve.is_approved.nil?
+      %tr.hr-table__body-row.hr-table__body-row--white.table-tr-responsive
+        %td.hr-table__cell.hr-table__cell--space-l-10.name.table-td-responsive
+          %span.span-responsive Name
+          .wrap-test.short-dots.vacation-name
+            %ul.media-list
+              %li.media.text-left
+                = link_to image_tag((approve.vacation.employee.photo.path(:small_retina).present? ? approve.vacation.employee.photo.url(:small_retina) : "user_icon_placeholder@2x.png") , class: "media-object media-object--break img-circle", alt: "User photo" ), admin_employee_path(approve.vacation.employee), :class => 'pull-left master-photo'
+                .media-body
+                  %h4.media-heading.media-name
+                    = link_to approve.vacation.employee.full_name.empty? ? "No Name" : approve.vacation.employee.full_name, admin_employee_path(approve.vacation.employee), class: "mm-name"
+                  %ul.skills-list.mm-size-12.table-text-main-color
+                    - approve.vacation.employee.skills.each do |s|
+                      %li
+                        = s.name
+                        %span.mm-size-12.table-text-secondary-color
+                          = "- #{s.level.present? ? s.level : 'Unknown level'}"
+
+        %td.hr-table__cell.table-td-responsive
+          %span.span-responsive Type
+          = Vacation::VACATION_CATEGORIES.dig(approve.vacation.category)
+        - if approve.vacation.approved?
+          %td.hr-table__cell.table-td-responsive{:class => "approved"}
+            %span.span-responsive Status
+            Approved
+        - elsif approve.vacation.rejected?
+          %td.hr-table__cell.table-td-responsive{:class => "not-approved"}
+            %span.span-responsive Status
+            Rejected
+        - else
+          %td.hr-table__cell.table-td-responsive
+            %span.span-responsive Status
+            Pending
+        %td.hr-table__cell.table-td-responsive
+          %span.span-responsive From
+          = approve.vacation.from.strftime("%d.%m.%Y")
+        %td.hr-table__cell.table-td-responsive
+          %span.span-responsive To
+          = approve.vacation.to.strftime("%d.%m.%Y")
+        %td.hr-table__cell.table-td-responsive
+          %span.span-responsive Half-day
+          = approve.vacation.half_day? ? 'Yes' : 'No'
+        %td.vacation-notes__td-responsive.hr-table__cell.table-td-responsive
+          %span.span-responsive Notes
+          %p.vacation-notes__text
+            = approve.vacation.notes
+        %td.hr-table__cell.table-td-responsive
+          %span.span-responsive.btn-container
+          - if approve.vacation.status.nil? && approve.is_approved.nil?
+            = link_to 'Approve', approve_manager_vacation_approve_path(approve), method: :post, class: 'btn-icon check-icon mm-btn-approve'
+            = link_to 'Reject', comment_form_manager_vacation_approve_url(approve), class: 'btn-icon cancel-icon mm-btn-reject'
+          -# #my-modal.modal.hide.fade{:title => "Coment"}
+          -#   =form_for [:manager, approve], url: manager_vacation_approve_path(id: approve._id, approved: "no"), remote: true do |f|
+          -#     .modal-header
+          -#       %button.close{"aria-hidden" => "true", "data-dismiss" => "modal", :type => "button"} ×
+          -#       %h3#myModalLabel Please provide your comment.
+          -#     .modal-body
+          -#       Please provide your comment.
+          -#       = f.text_field :comment
+          -#     .modal-footer
+          -#       %button.btn{"aria-hidden" => "true", "data-dismiss" => "modal"} Close
+          -#       = f.submit 'Create', class: 'btn',  "data-dismiss" => "modal"

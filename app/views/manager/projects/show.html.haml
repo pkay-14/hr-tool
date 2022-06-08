@@ -1,0 +1,132 @@
+#master-profile.profile-page.main-page
+  .content-container
+    .container.main
+      .content-block
+        .row-fluid
+          .container
+            .mm-btn-wrapper
+              = link_to 'Back', manager_projects_path, :class => 'mm-btn-back__link'
+              .top-buttons
+                -if current_user.is_hr_manager? || current_user.is_manager?
+                  = link_to 'Edit', manager_edit_project_path(@project), :class => 'table-top-btn'
+        .project-top-container
+          -# .photo-wrapper
+          -#   = image_tag((@user.photo.path(:small_retina).present? ? @user.photo.url(:small_retina) : "user_icon_placeholder@2x.png") , class: "user-img img-circle pull-left", alt: "User photo" )
+          -#   = link_to "Delete", "#", class: "btn-icon trash-icon delete-photo", data: {'toggle'=>"modal", 'target'=>"#confirm-modal"} if current_user.is_hr_manager?
+
+          .project-info__block
+            %h3.project-info__title
+              = "Project #{@project.name}"
+            %span
+              = @project.category
+
+          %ul.project-info__list
+            %li.project-info__item
+              %span.project-info__label
+                From:
+              - if @project.from
+                %span.project-info__label.project-info__label-dark
+                  = @project.from.strftime("%d.%m.%Y")
+            %li.project-info__item
+              %span.project-info__label
+                To:
+              - if @project.to
+                %span.project-info__label.project-info__label-dark
+                  = @project.to.strftime("%d.%m.%Y")
+            %li.project-info__item
+              %span.project-info__label
+                Manager:
+              %span.project-info__label.project-info__label-dark
+                = @project&.manager&.full_name
+          -# -if @user.resume_url.present?
+          -#   = link_to 'Resume', @user.resume_url, {:class => 'btn-icon resume-icon', :target => "_blank", data: {"toggle" => "popover", "hint" => "", "content" => "Resume"}}
+          -#   -if current_user.is_hr_manager? || current_user.is_office_manager?
+          -#     %li= link_to 'Delete', admin_employee_path(@user), :method => :delete,  :class => 'btn-icon cancel-icon', :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }
+
+        .info-box.profile-info-box{data:{project_id: @project.id}}
+          %ul.profile-form-list
+            %li.profile-form__item
+              %span.profile-form-label
+                Status:
+              %span.span10
+                = @project.status
+            %li.profile-form__item
+              %span.profile-form-label
+                Description:
+              %span.span10
+                = @project.description || '—'
+            %li.profile-form__item
+              %span.profile-form-label
+                Technology stack:
+              %span.span10
+                = @project.technology_stack.present? ? @project.technology_stack : '—'
+            %li.profile-form__item
+              %span.profile-form-label
+                Masters:
+              %span.span10
+                - @project.loads.map(&:employee).uniq.compact.each do |e|
+                  = link_to e.full_name, admin_employee_path(e)
+                  %br
+
+            %li#business-domains.profile-form__item
+              %span.profile-form-label
+                Business domains:
+              %span#business-domains__span.span10
+                = @project.business_domains.present? ? @project.business_domains : ''
+            %li#graylog-names.profile-form__item
+              %span.profile-form-label
+                Graylog names:
+              %span#graylog-names__span.span10
+                = @project.graylog_names.present? ? @project.graylog_names : ''
+            %li#errbit-keys.profile-form__item
+              %span.profile-form-label
+                Errbit keys:
+              %span#errbit-keys__span.span10
+                = @project.errbit_keys.present? ? @project.errbit_keys : ''
+            %li#project-url.profile-form__item
+              %span.profile-form-label
+                Project url:
+              %span#project-url__span.span10
+                = link_to @project.project_url || ''
+        -#    %li.profile-form__item
+        -#      %span.profile-form-label-big
+        -#        Masters:
+        -#
+        -#      .top-buttons
+        -#        = link_to "+ Add Master", manager_create_project_load_path(@project.id), method: :post, data: { remote: true }, class: 'table-top-btn'
+        -#.hr-table-wrap
+        -#  %table#sortableTable.hr-table{'data-sortable-table' => ''}
+        -#    %thead
+        -#      %tr.hr-table__head-row.hr-table__head-row--height
+        -#        %th.mm-th-table-top.hr-table__cell--space-l-15 Master
+        -#        %th.mm-th-table-top Role
+        -#        %th.mm-th-table-top.hr-table__cell--align-c.from-date From
+        -#        %th.mm-th-table-top.hr-table__cell--align-c.to-date To
+        -#        %th.mm-th-table-top#sortableCellJs
+        -#          .d-flex.cursor-point{'data-sorting-control' => ''}
+        -#            %span.space-r-5 Load
+        -#            %i.fa.fa-sort.d-flex.align-center{'data-sorting-icon' => ''}
+        -#        %th.mm-th-table-top Billable
+        -#        %th.mm-th-table-top
+        -#
+        -#    %tbody.container#projects-wrap
+        -#      = render partial: 'load', collection: @project.loads.includes(:employee).sorted, locals: { project: @project }
+        -#
+        -#      .mm-modal-custom#mm-modal
+        -#        .modal-dialog.modal-sm
+        -#          .modal-content
+        -#            .mm-modal__title
+        -#              %h3.overtime-approval__title Warning!
+        -#              %button.mm-modal-cancel-btn.close-modal{type:"button"}
+        -#            .modal-body
+        -#              %h4.uppercase.centered.danger-color Delete master
+        -#              %p.centered
+        -#                Are you sure you want to delete master from the project?
+        -#              .mm-modal__buttons
+        -#                %button.mm-button.mm-button-orange.master-remove-icon.close-modal{type:"button", 'data-dismiss'=>"modal"}
+        -#                  Yes. Delete
+        -#
+
+
+
+

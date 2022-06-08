@@ -1,0 +1,73 @@
+.hr-table-wrap.general-table
+  %table.hr-table.candidate-summary.table-responsive
+    %thead.table-inner-responsive
+      %tr.hr-table__head-row.hr-table__head-row--height.table-tr-responsive
+        %th.mm-th-table-top.hr-table__cell--space-l-10.table-td-white-bg Name
+        %th.mm-th-table-top.type Type
+        %th.mm-th-table-top From
+        %th.mm-th-table-top To
+        %th.mm-th-table-top Half-day?
+        %th.mm-th-table-top.status.vacation-status Status
+        %th.mm-th-table-top.vacation-actions
+      %tbody
+        -unless @vacations.nil?
+          - @vacations.each do |vacation|
+            -if vacation.employee.present?
+              %tr.hr-table__body-row.table-tr-responsive
+                %td.hr-table__cell.hr-table__cell--space-l-10.master-info.mm-master-info-container.table-td-responsive
+                  %span.span-responsive Name
+                  .mm-master-photo
+                    = vacations_photo_link_access(vacation.employee)
+                  .mm-master-info
+                    %h5.mm-name.no-margin
+                      = vacations_name_link_access(vacation.employee)
+                    %ul.skills-list.mm-size-12.table-text-main-color
+                      - vacation.employee.skills.each do |s|
+                        %li
+                          = s.name
+                          %span.mm-size-12.table-text-secondary-color
+                            = "- #{s.level.present? ? s.level : 'Unknown level'}"
+                %td.hr-table__cell.mm-size-12.table-text-main-color.type.table-td-responsive
+                  %span.span-responsive Type
+                  - if vacation.category.try(:capitalize) == 'Days-off' && vacation.from.year > Date.today.year && !vacation.sick_leave_unpaid && !vacation.explicit
+                    = 'Vacation'
+                  - else
+                    = Vacation::VACATION_CATEGORIES.dig(vacation.category)
+                %td.vacation-td-responsive.hr-table__cell.date-from.table-td-responsive
+                  %span.span-responsive From
+                  = vacation.from.strftime("%d.%m.%Y")
+                %td.vacation-td-responsive.hr-table__cell.date-to.table-td-responsive
+                  %span.span-responsive To
+                  = vacation.to.strftime("%d.%m.%Y")
+                %td.vacation-td-responsive.hr-table__cell.table-td-responsive
+                  %span.span-responsive Half-day?
+                  = vacation.half_day? ? 'Yes' : 'No'
+                - if vacation.approved?
+                  %td.hr-table__cell.mm-size-12.table-text-main-color.status.vacation-status.approved.table-td-responsive
+                    %span.span-responsive.table-text-main-color Status
+                    Approved
+                - elsif vacation.rejected?
+                  %td.hr-table__cell.mm-size-12.table-text-main-color.status.vacation-status.rejected.table-td-responsive
+                    %span.span-responsive.table-text-main-color Status
+                    Rejected
+                - else
+                  %td.hr-table__cell.mm-size-12.table-text-main-color.status.vacation-status.request.table-td-responsive
+                    %span.span-responsive.table-text-main-color Status
+                    .mm-status-container
+                      Pending
+                      %ul.not-approved-managers
+                        %li
+                          Approve awaiting from:
+                        -vacation.not_approved_managers.each do |name|
+                          %li
+                            =name
+
+                %td.vacation-td-responsive.hr-table__cell.hr-table__td--text-right.actions.vacation-actions.table-td-responsive
+                  %span.span-responsive.btn-container
+                  - if current_user.is_hr_manager? || (vacation.status.nil? && master_cabinet?)
+                    .vacation-actions-container
+                      .hr-action-buttons
+                        = link_to 'Delete', "#{manager_vacation_path(vacation._id)}#{@master_cabinet_param}", method: :delete, data: {confirm: "Are you sure?"}, class: 'btn-icon trash-icon'
+
+.moc-paginate
+  = paginate @vacations

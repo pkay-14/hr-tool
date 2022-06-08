@@ -1,0 +1,112 @@
+%section.vacation-request-form.hide
+  .vacation-popup{ class: ("vacation-popup--height" if master_cabinet?)}
+    .top-modal-row
+      %h3.vacation-popup__title.no-margin Time off request
+      =link_to 'Cancel', "#",  class: 'cancel-adding btn-icon cancel-icon cancel-icon--no-bg'
+    .modal-content-container
+      %form.form-inline.vacation-forms{:action => '/api/v1/vacations/create', :method => 'post', :id=>"new_vacation", :'accept-charset'=>"UTF-8"}
+        %ul.form.vacation-fields-list.vacation-fields-list--column
+          %li.vacation-fields__item.vacation-fields__item--space-b
+            - if master_cabinet?
+              %input{:type=>"hidden", :value=>"true", :name=>"master", :id=>"master"}
+              %input{:type=>"hidden", :value=>current_user.id.to_s, :name=>"master_id", :id=>"vacation_master_id"}
+            - else
+              %label.vacation-label
+                %p.vacation-label__text Master
+                .eployee-select-wrap#eployeeSelectParent
+                  -#= f.select :master_id,options_from_collection_for_select(@employee, 'id', 'full_name'), {}, {class: 'select2-js', 'data-select-employees' => ''}
+                  %select.select2-js{'data-select-employees'=>"", :name=>"master_id", :id=>"vacation_master_id"}
+                    =options_from_collection_for_select(@employee, 'id', 'full_name')
+          %li.vacation-fields__item.vacation-fields__item--space-b.d-none
+            -#%select.vacation-select{'data-type'=>'', :name=>'category', :id=>'vacation_category'}
+            -#  %option{:value=>'vacation'}Vacation
+            -#  %option{:value=>'sick'}Sick leave
+          %li.vacation-fields__item.vacation-fields__item--space-b
+            %label.vacation-label
+              %p.vacation-label__text Type
+              %ul.vacation__list.vacation-select
+                %li.vacation__item
+                  Vacation
+                  %input.vacation-select{'data-type'=>'', :type=>'radio', :value=>'vacation', :name=>'category', :id=>'vacation_category_vacation'}
+                %li.vacation__item
+                  Sick leave
+                  %input.vacation-select{'data-type'=>'', :type=>'radio', :value=>'sick', :name=>'category', :id=>'vacation_category_sick'}
+                %li.vacation__item
+                  Unpaid leave
+                  %input.vacation-select{'data-type'=>'', :type=>'radio', :value=>'days-off', :name=>'category', :id=>'vacation_category_unpaid'}
+                  //= f.radio_button :category, 'unpaid', class: 'vacation-select', 'data-type' => ''
+
+        .vacation-fields__item.space-b-10{'data-total-days-container' => ''}
+          //%p.vacation-label__text.vacation-label__text--error.d-none{'data-total-days-error' => ''}
+          .vacation-days-left.vacation-days-last{'data-current-year' => ''}
+            %p.vacation-year
+              = "Total days in #{@current_year}:"
+              %span.vacation-days#current= @employee.first.remaining_vacation_days_current_year
+            %p.vacation-year.vacation-past-year
+              = "Total days in #{@past_year}:"
+              %span.vacation-days#past= @employee.first.vacation_days_past_year
+
+
+
+        %ul.vacation-fields-list.vacation-fields-list--space-between.vacation-fields-list--space-b.vacation-fields-list--align-c
+          %li.vacation-fields__item.vacation-fields__item--md
+            %label.vacation-label
+              %p.vacation-label__text From
+              -# .input-append.date.vacation-date-box
+              .input-append.vacation-date-box{'data-datepicker' => '', 'data-current-datepicker' => ''}
+                %input.text_field.vacation-date-inp{'data-format'=>"dd.MM.yyyy", 'data-start-date'=>"", 'data-date'=>"", :autocomplete=>"off", :type=>"text", :name=>"from", :id=>"vacation_from"}
+                %span.add-on.vacation-calendar-ic
+                  %i.datepicker--icon-calendar
+          %li.vacation-fields__item.vacation-fields__item--md.vacation-fields__item--order
+            %label.vacation-label
+              %p.vacation-label__text To
+              -# .input-append.date.vacation-date-box
+              .input-append.vacation-date-box{'data-datepicker' => '', 'data-launch-datepicker' => ''}
+                %input.text_field.vacation-date-inp{'data-format'=>"dd.MM.yyyy", 'data-end-date'=>"", 'data-date'=>"", :autocomplete=>"off", :type=>"text", :name=>"to", :id=>"vacation_to"}
+                %span.add-on.vacation-calendar-ic
+                  %i.datepicker--icon-calendar
+
+          %li.vacation-fields__item.vacation-fields__item--sm.vacation-fields__item-spaace-t-desctop
+            %label.vacation-label.vacation-label--inline
+              %p.vacation-label__text.vacation-label__text--grey.vacation-label__text--space-r{'data-half-day-text' => ''} Half-day
+              -#%input{:name=>"half_day", :disabled=>"disabled", :type=>"hidden", :value=>"0"}
+              %input{:type=>"hidden", :value=>"0", :name=>"half_day", :id=>"vacation_half_day_hidden"}
+              %input{'data-half-day'=>"", :type=>"checkbox", :value=>"1", :name=>"half_day", :id=>"vacation_half_day"}
+
+        .vacation-fields__item.vacation-fields__item--height-sm.vacation-fields__item--inline.vacation-fields__item--space-b.vacation-fields__item--total
+          %p.vacation-label__text--error.mm-size-12{'data-days-error' => ''}
+          %p.table-text-main-color.mm-size-12{'data-days-text' => ''}
+          %span.vacation-days.vacation-label__text--bold.m-l-4{'data-days-number' => ''}
+
+        #vacation-fields__container--unpaid-message
+          %p.mm-size-12.vacation-fields__text--unpaid-message
+            - if master_cabinet?
+              You still have unused vacation days available.
+              %br
+              Please, consider taking those first.
+            - else
+              Master still has unused vacation days available.
+              %br
+              Please, consider taking those first.
+
+        .vacation-fields__item.vacation-fields__item--space-b
+          %label.vacation-label
+            %p.vacation-label__text Notes:
+            %textarea.vacation-textarea{:rows => '4', :name=>"notes", :id=>"vacation_notes"}
+
+        .vacation-fields__item.space-b-10{'data-total-days-container' => ''}
+          %p.vacation-label__text.vacation-label__text--error.d-none{'data-total-days-error' => ''}
+
+        .vacation-fields__item.space-b-10{'data-duplicate-days-container' => ''}
+          %p.vacation-label__text.vacation-label__text--error.d-none{'data-duplicate-days-error' => ''}
+            You've already requested Time Off for the selected date(s). Please remove the previous request first, or select another date(s).
+
+        .vacation-fields__item.d-none{'data-not-paid-block' => ''}
+          %label.vacation-label.vacation-label--inline
+            %input{ :type=>'checkbox', 'data-not-paid-days' => '', class: 'space-r-10' }
+            %p.vacation-label__text{'data-not-paid-days-text' => ''}
+
+        %ul.vacation-popup__actions-list
+          %li.vacation-popup__actions-item
+          -#%button.mm-button.mm-button-orange{ type: 'submit', disabled: '', 'data-vacation-submit-btn': '' } Submit
+          %button#add-vacation-request-submit-btn.mm-button.mm-button-orange{ type: 'button', disabled: '', 'data-vacation-submit-btn': '' } Submit

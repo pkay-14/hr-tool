@@ -1,0 +1,10 @@
+- if f.object&.has_people_partner? || !master_cabinet?
+  %li.mm-profile-form__item
+    = f.label :people_partner, class: "profile-edit-form-label profile-edit-form-label--mandatory #{master_cabinet? ? 'profile-form-label--sm' : ''}"
+    .profile-form__item-input-wrap
+      .input-medium-size.profile-form__input-wrap
+        - if master_cabinet?
+          = f.object.get_people_partner.full_name
+        -else
+          = f.select :people_partner_id, options_from_collection_for_select(User.people_partners, 'id', 'full_name', selected: f.object&.people_partner_id), {:include_blank => true}, {class: 'profile-form__select'}
+          %p#people-partner-error-text.people-partner-error__text required field

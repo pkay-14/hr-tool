@@ -1,0 +1,7 @@
+%li.mm-profile-form__item
+  = f.label :working_status, class: "profile-edit-form-label"
+  .profile-form__item-input-wrap
+    .input-medium-size.profile-form__input-wrap
+      = f.select :working_status, options_for_select(User::MASTER_STATUSES, @user.get_working_status), {class: 'profile-form__select'}
+      %p.status-change-error__text Please, update the Master status to “Ex Master”
+      %p.status-change-error__text--ex Please, update the Ex Master's status to “Master”

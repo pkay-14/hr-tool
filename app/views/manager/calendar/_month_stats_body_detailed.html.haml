@@ -1,0 +1,82 @@
+- unless current_user.is_client?
+  - jira_user_id = user_id(jira_data, user)
+  - user_projects = user.loads_project_list(@date)
+  - user_projects.each do |project|
+    - if project
+      - if jira_data.present?
+        - jira_project_id = project_id(jira_data, project)
+      %tr.hr-table__body-row.hr-table__body-row--border-v{class: "employee-involved-projects"}
+        %td.hr-table__cell
+          %p.mm-size-10.table-text-main-color
+            -if (current_user.is_hr_manager? || current_user.is_manager? || current_user.is_lead?)
+              = link_to project.name, manager_project_path(project)
+            - else
+              = project.name
+            %span.table-text-secondary-color
+              = "- #{project.actual_loads(@date)&.get_roles(user)&.join(', ')}"
+            - project_is_billable = true
+            - if project.loads.is_not_billable?(user, @date)
+              - project_is_billable = false
+            - unless project_is_billable
+              %p.mm-size-10.load-green-text Not paid
+            - if project.status == 'Pause'
+              %p.yellow-font-style= project.status
+          %p.mm-size-10.table-text-secondary-color= project.manager.present? ? project.manager.full_name : 'unassigned'
+
+        - (1..Time.days_in_month(@date.month, @date.year)).each do |day_number|
+          - hours = project_date_time(jira_data, jira_user_id, jira_project_id, Date.new(@date.year, @date.month, day_number))
+          - today = @holidays.is_holiday?("#{@date.year}-#{@date.month}-#{day_number}".to_date, user.country) ? '' : define_day_for_project(@date, day_number, user, project)
+          - if today.to_i < 0
+            %td.hr-table__cell.hr-table__cell--no-space-h.hr-table__td--nth-bg{style: 'color: #03CBB3'}
+              ="#{hours} #{today.to_i.abs}%"
+          - else
+            - if project.status == 'Pause'
+              - color = '#FFA100'
+            - elsif today == 'Plan'
+              - color = 'purple'
+            - elsif !project_is_billable
+              - color = '#03CBB3'
+            - else
+              - color = ''
+            %td.hr-table__cell.hr-table__cell--no-space-h.hr-table__td--nth-bg{style: "color: #{color}"}
+              ="#{hours} #{today}"
+        %td.hr-table__cell.hr-table__cell--no-space-h.hr-table__td--nth-bg
+          = project_month_time(jira_data, jira_user_id, jira_project_id, @date)
+  - if jira_data.present?
+    - unmapped_user_projects(jira_data, jira_user_id)&.each do |jira_project_data|
+      %tr.hr-table__body-row.hr-table__body-row--border-v{class: "employee-involved-projects"}
+        %td.hr-table__cell
+          %p
+            = jira_data['jira_projects']&.find_by(id: jira_project_data['project_id'])&.name
+        - (1..Time.days_in_month(@date.month, @date.year)).each do |day_number|
+          - hours = project_date_time(jira_data, jira_user_id, jira_project_data['project_id'], Date.new(@date.year, @date.month, day_number))
+          %td.hr-table__cell.hr-table__cell--no-space-h.hr-table__td--nth-bg{style: ''}
+            = "#{hours}"
+        %td.hr-table__cell.hr-table__cell--no-space-h.hr-table__td--nth-bg
+          = project_month_time(jira_data, jira_user_id, jira_project_data['project_id'], @date)
+  - user_has_projects = true
+  - unless user_projects.present?
+    - unless jira_user_id
+      - user_has_projects = false
+  - if user_has_projects == false
+    %tr.hr-table__body-row.hr-table__body-row--border-v{class: "employee-involved-projects"}
+      %td.hr-table__cell
+        %p
+          = 'no projects'
+        - (1..Time.days_in_month(@date.month, @date.year)).each do |day_number|
+          %td.hr-table__cell.hr-table__cell--no-space-h.hr-table__td--nth-bg{style: ''}
+        %td.hr-table__cell.hr-table__cell--no-space-h.hr-table__td--nth-bg
+- if jira_data.present?
+  - show_total_day_time = user_month_time(jira_data, jira_user_id, @date).present?
+  - if show_total_day_time
+    %tr.hr-table__body-row.hr-table__body-row--border-v{class: "employee-involved-projects"}
+      %td.hr-table__cell.title-total-per-day.hr-table__td--nth-bg
+        %p
+          Total Time
+      - (1..Time.days_in_month(@date.month, @date.year)).each do |day_number|
+        - hours = day_time(jira_data, jira_user_id, Date.new(@date.year, @date.month, day_number))
+        %td.hr-table__cell.hr-table__cell--no-space-h.hr-table__td--nth-bg.total-per-day
+          = "#{hours}"
+      %td.hr-table__cell.hr-table__cell--no-space-h.hr-table__td--nth-bg
+
+

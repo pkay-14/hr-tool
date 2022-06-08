@@ -1,0 +1,31 @@
+%li.profile-form__item.profile-form__item--column{data:{type: 'vacation_days'}, class: user.vacation_days.present? ? '' : 'hidden'}
+  .profile-form__row
+    %span.profile-form-label{class: master_cabinet? ? 'profile-form-label--sm' : ''}
+      Total Vacation days:
+    %span.span9.profile-form__span-ml-0
+      = sanitize "#{user.vacation_days_past_year} (in #{current_year - 1}) <br/>" if user.vacation_days_past_year.present? && user.vacation_days_past_year > 0
+      = sanitize "#{user.remaining_vacation_days_current_year} (in #{current_year}) <br/>"
+  - additional_vacations = user.get_additional_vacations(Date.today.year)
+  - if additional_vacations.present?
+    .profile-form__row
+      %span.profile-form-label{class: master_cabinet? ? 'profile-form-label--sm' : ''}
+        Additional vacations:
+      .span9.profile-form__span-ml-0.profile-form-additional__container
+        = render partial: "admin/employees/additional_vacation", collection: additional_vacations, as: :additional_vacation
+  .profile-form__row
+    %span.profile-form-label{class: master_cabinet? ? 'profile-form-label--sm' : ''}
+      Vacation days earned:
+    %span.span9.profile-form__span-ml-0
+      = user.earned_vacation_days
+%li.profile-form__item{data:{type: 'sick_days'}, class: user.sick_days.present? ? '' : 'hidden'}
+  %span.profile-form-label{class: master_cabinet? ? 'profile-form-label--sm' : ''}
+    Sick days:
+  %span.span9.profile-form__span-ml-0
+    -# = "#{user.sick_days} (in #{current_year}) "
+    = "#{user.sick_days_remaining} (in #{current_year}) "
+
+%li.profile-form__item{data:{type: 'days_off'}, class: user.days_off.present? ? '' : 'hidden'}
+  %span.profile-form-label{class: master_cabinet? ? 'profile-form-label--sm' : ''}
+    Unpaid leave:
+  %span.span9.profile-form__span-ml-0
+    = "#{user.count_unpaid_leave(Date.today.year)} (in #{current_year}) "

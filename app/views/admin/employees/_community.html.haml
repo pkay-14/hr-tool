@@ -1,0 +1,9 @@
+%li.mm-profile-form__item
+  = f.label :community, class: "profile-edit-form-label profile-edit-form-label--mandatory #{master_cabinet? ? 'profile-form-label--sm' : ''}"
+  .profile-form__item-input-wrap
+    .input-medium-size.profile-form__input-wrap
+      - if master_cabinet?
+        = user.community
+      - else
+        = f.select :community, ['none'] + division_communities(f.object.company_division), {}, {class: 'profile-form__select', disabled: f.object.company_division.in?(['none', nil])}
+        %p#community-error-text.community-error__text required field

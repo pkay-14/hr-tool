@@ -1,0 +1,37 @@
+- users_batch&.each do |user|
+  - if jira_data.present?
+    - jira_user_id = user_id(jira_data, user)
+  - if user.present?
+    %tr.hr-table__body-row.hr-table__body-row--border-v{:data => { :main => 'info', :user_id => user.id.to_s}}
+      -#TODO: create classes "saturday, sunday, current-day" for td el for proper change bg-color
+      %td.hr-table__cell.dev-data
+        .row-fluid.imployee-info.imployee-info--flex
+          .imployee-info__wrap
+            -if (current_user.is_hr_manager? || current_user.is_manager? || current_user.is_lead?)
+              %p.no-margin= link_to user.full_name, admin_employee_path(user), class: 'mm-name'
+            - else
+              %p.no-margin= user.full_name
+            - if user.position.present? && !user.position.eql?('none')
+              %p.master-skills.table-text-main-color
+                = user.position
+            - user.skills.each do |s|
+              %p.master-skills.table-text-main-color
+                = s.name
+                %span.table-text-secondary-color
+                  = "- #{s.level.present? ? s.level : 'unknown-lvl'}"
+          .imployee-info__caret
+            - unless (current_user.is_client? || master_cabinet?)
+              %i.icon-caret-down.icon-caret-down-calendar
+
+      - (1..Time.days_in_month(@date.month, @date.year)).each do |day_number|
+        %td.hr-table__cell.hr-table__cell--no-space-h.hr-table__td--nth-bg
+          = @holidays.is_holiday?("#{@date.year}-#{@date.month}-#{day_number}".to_date, user.country) ? compensatory_holiday : define_day(@date, day_number, user)
+      - unless teammates
+        %td.hr-table__cell.hr-table__td--nth-bg.hr-table-estimated.table-text-main-color.mm-size-12.total-hours
+          - if jira_data.present?
+            - hours = user_month_time(jira_data, jira_user_id, @date)
+            = "#{hours}/#{hours_to_days(hours)}" if hours.present?
+          %p.estimated_time
+            = "out of #{user.planned_time_for_month(@date)}h/#{user.working_days_for_month(@date)}d"
+        - if master_cabinet?
+          = render :partial => "month_stats_body_detailed", locals: { user: user, jira_data: jira_data }

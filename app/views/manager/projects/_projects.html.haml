@@ -1,0 +1,104 @@
+.hr-table-wrap.overflow-visible
+  %table#sortableTable.hr-table{'data-sortable-table' => ''}
+    %thead
+      %tr.hr-table__head-row.hr-table__head-row--height
+        %th.mm-th-table-top.hr-table__cell--space-l-10 Project
+        %th.mm-th-table-top Manager
+        %th.mm-th-table-top.hr-table__cell--align-c.from-date From
+        %th.mm-th-table-top.hr-table__cell--align-c.to-date To
+        %th.mm-th-table-top#sortableCellJs
+          .d-flex.align-center.cursor-point{'data-sorting-control' => ''}
+            %span.space-r-5
+              Status
+            %i.btn-icon.sort-icon{'data-sorting-icon' => '', 'data-projects-sorting' => ''}
+
+        %th.mm-th-table-top Category
+        %th.mm-th-table-top#sortableCellJs Load
+        %th.mm-th-table-top.not_paid Billable
+        %th.mm-th-table-top
+    %tbody.container#projects-wrap
+      - only_lead = (current_user.is_lead? && !(current_user.is_manager? || current_user.is_hr_manager?))
+      - projects.each do |project|
+        =cache ['projects', project, only_lead] do
+          %tr.hr-table__body-row.hr-table__body-row--white.hr-table__body-row--hover.project-row.table-tr-responsive{'data-sortable-row' => ''}
+            %td.table-td-responsive.hr-table__cell-center.hr-table__cell--size-md.hr-table__cell--space-l-10.project-name{data: {"expand-project-id" => project.id.to_s}}
+              %i.projects-icon-caret-down
+              = link_to project.name, manager_project_path(project), class: 'mm-name mm-name-project'
+            %td.hr-table__cell-center.manager
+              - if project.manager&.is_left?
+                .inactive{ :style => "color: grey;" }
+                  = project.manager&.full_name
+              - else
+                = project.manager&.full_name
+            %td.table-td-responsive.hr-table__cell-center.hr-table__cell--align-c.from-date{'data-datepicker-proj' => '', 'data-current-datepicker-proj' => ''}
+              = hidden_field_tag :from, project.from.try(:strftime, "%d.%m.%Y"), "data-format"=>"dd.MM.yyyy", "data-start-date-proj"=>""
+              - if project.from
+                %span.date-text
+                  = project.from.strftime("%d.%m.%Y")
+            %td.table-td-responsive.hr-table__cell-center.hr-table__cell--align-c.to-date{'data-datepicker-proj' => '', 'data-launch-datepicker-proj' => ''}
+              = hidden_field_tag :to, project.to.try(:strftime, "%d.%m.%Y"), "data-format"=>"dd.MM.yyyy", "data-end-date-proj"=>""
+              - if project.to
+                %span.date-text
+                  = project.to.strftime("%d.%m.%Y")
+            %td.table-td-responsive.hr-table__cell-center.status
+              = project.status
+            %td.table-td-responsive.hr-table__cell-center.category
+              = project.category
+            %td.table-td-responsive.hr-table__cell-center
+            %td.table-td-responsive.hr-table__cell-center
+            %td.table-td-responsive.project-td-responsive.hr-table__cell-center.hr-table__cell--size-md.hr-table__td--bold.hr-table__td--text-right.actions.actions--fix-width
+              - unless only_lead
+                =link_to "Delete", "#", class: "btn-icon cancel-icon", data: {'toggle'=>"modal", 'target'=>"#confirm-modal-project", 'delete-project' => ''}
+            %tr.hr-table__body-row.hr-projects-table__body-row--grey.member-row.add-member.hide{data: {"project-members" => project.id.to_s}}
+              %td.hr-table__cell-center.hr-table__cell--size-sm.hr-table__cell--space-l-10{'colspan' => '1'}
+                .project-total-members.d-flex
+                  %i.project-icon-total-members
+                  %span.bold-text Total active Masters: #{get_total_masters(project)} (#{project.fte} FTE)
+              %td.hr-table__cell-center.hr-table__cell--size-sm{'colspan' => '8'}
+                - roles_info = dev_roles_info(project)
+                .project_members-num
+                  - unless roles_info.blank?
+                    - roles_info.each do |role, size|
+                      %span.m-r-35
+                        = "#{role} #{size}"
+              = render partial: 'load', collection: project.loads.includes(:employee).sorted, locals: { project: project }
+          %tr.hr-table__body-row.member-row.add-member.hide{data: {"project-members" => project.id.to_s}}
+            %td.hr-table__cell-center.hr-table__cell--size-sm.hr-table__cell--space-l-30.new-member{'colspan' => '9'}
+              - unless only_lead
+                = link_to "+ Add Master", manager_create_project_load_path(project.id), method: :post, data: { remote: true }, class: 'is-orange-link'
+
+.mm-modal-custom#confirm-modal-project
+  .modal-dialog.modal-sm
+    .modal-content
+      .mm-modal__title
+        %h3.overtime-approval__title Delete project
+        %button.close-project-modal.btn-icon.cancel-icon{type:"button", 'data-dismiss'=>"modal", 'aria-label'=>"Close"}
+      .modal-body
+        %p.mm-modal_text-delete-project Are you sure you want to delete the project?
+        .mm-modal__buttons-between
+          %button.mm-button.mm-button-gray.close-project-modal{type:"button", 'data-dismiss'=>"modal", 'aria-label'=>"Close"}
+            Cancel
+          %button.mm-button.mm-button-orange#delete-item{type:"button", 'data-dismiss'=>"modal"}
+            Yes, delete
+
+.mm-modal-custom#confirm-modal-master
+  .modal-dialog.modal-sm
+    .modal-content
+      .mm-modal__title
+        %h3.overtime-approval__title Delete record
+        %button.btn-icon.cancel-icon.close-project-modal{type:"button", 'data-dismiss'=>"modal", 'aria-label'=>"Close"}
+      .modal-body
+        %p.mm-modal_text-delete-master-record
+          Are you sure you want to delete
+          %span{'data-deleting-name' => ''} master's
+          load record?
+        .mm-modal__buttons-between
+          %button.mm-button.mm-button-gray.close-project-modal{type:"button", 'data-dismiss'=>"modal", 'aria-label'=>"Close"}
+            Cancel
+          %button.mm-button.mm-button-orange.master-remove-icon{type:"button", 'data-dismiss'=>"modal"} Yes, delete
+
+
+.moc-paginate
+  = select_tag :limit, options_for_select([['10', 10], ['25', 25], ['50', 50], ['100', 100]], params[:per_page] ? params[:per_page] : 25), class: 'items-on-page dropdown limit-dropdown', autocomplete: :off
+  = paginate @projects
+

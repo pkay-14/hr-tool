@@ -1,0 +1,8 @@
+%span
+  - if sick_days.to - sick_days.from == 0
+    = sanitize "<b>#{sick_days.half_day? ? 0.5 : 1.0}: </b>"
+  - else
+    = sanitize "<b>#{(sick_days.to - sick_days.from)+ 1.0}: </b>"
+
+  = "#{sick_days.from.strftime('%d')}/#{sick_days.from.strftime('%m')}/#{sick_days.from.strftime('%Y')} "
+

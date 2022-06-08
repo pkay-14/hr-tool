@@ -1,0 +1,304 @@
+@import "../shared/variables.css.scss";
+
+.month-year-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10px;
+}
+
+.month-year-wrapper-inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 60.5%;
+}
+
+.month-year-filter {
+  display: flex;
+  align-items: center;
+  height: 32px;
+  font-size: 14px;
+  border: 1px solid #E5E5E5;
+  box-sizing: border-box;
+  border-radius: 4px;
+}
+
+.month-year-link {
+  position: relative;
+  text-decoration: none;
+  padding: 16px 19px;
+
+  &:before {
+    content: " ";
+    position: absolute;
+    width: 6px;
+    height: 11px;
+  }
+}
+
+.month-year-link-left {
+  border-right: 1px solid #E5E5E5;
+  &:before {
+    top: 11px;
+    left: 15px;
+    background: url("data:image/svg+xml,%3Csvg width='7' height='11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.59619.999997L.999995 5.59619 5.59619 10.1924' stroke='%23BABABA' stroke-width='1.2'/%3E%3C/svg%3E") no-repeat;
+  }
+}
+
+.month-year-link-right {
+  border-left: 1px solid #E5E5E5;
+  &:before {
+    top: 11px;
+    right: 16px;
+    background: url("data:image/svg+xml,%3Csvg width='7' height='11' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M5.59619.999997L.999995 5.59619 5.59619 10.1924' stroke='%23BABABA' stroke-width='1.2'/%3E%3C/svg%3E") no-repeat;
+    transform: rotate(180deg);
+  }
+}
+
+.month-year-time {
+  width: 110px;
+  margin: 0 20px;
+  text-align: center;
+}
+
+.imployee-info {
+  position: relative;
+}
+
+.calendar-dev-name {
+  width: 259px;
+  padding: 10px;
+  text-align: left;
+}
+
+.dev-data{
+  padding: 5px 10px !important;
+
+}
+
+.employee-involved-projects td{
+  padding: 5px 0;
+}
+.employee-involved-projects p{
+  margin: 0;
+  padding: 0;
+}
+
+.green-font-style{
+  color: #00BF57;
+}
+
+.yellow-font-style{
+  color: #FFA100;
+}
+
+.dev-name,
+.dev-data,
+.employee-involved-projects td:first-child{
+  border-right: 1px solid #dddddd !important;
+}
+.employee-involved-projects td:not(:first-child){
+  font-size: 10px;
+  text-align: center;
+  &:not(.total-per-day){
+    color: #ABABAB;
+  }
+}
+
+.dev-data,
+.employee-involved-projects td:first-child{
+  background: $main-font-color !important;
+}
+
+.employee-involved-projects td:first-child{
+  padding-left: 20px;
+  font-size: 12px;
+  &:not(.total-per-day){
+    color: #686868;
+  }
+}
+
+.hide-calendar-employee-projects {
+  display: none;
+}
+
+.saturday {
+  background: #E0E0E0;
+}
+
+.sunday {
+  background: #D9D9D9;
+}
+
+[data-load-actual='0'] span {
+  color: #c4c4c4;
+}
+
+.imployee-info--flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.imployee-info__wrap {
+  width: 91.45%;
+  box-sizing: border-box;
+}
+
+.imployee-info__caret {
+  width: 12px;
+  height: 12px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.tab-content--no-overflow {
+  overflow: visible;
+}
+
+td.hr-table__cell.current-day, th.current-day.current-day {
+  background: #FFE6E0;
+}
+
+//new design
+
+.master-skills {
+  margin: 0;
+  padding: 0;
+  font-weight: 400;
+}
+
+.days {
+  font-weight: 400;
+}
+
+.dev-name__wrap {
+  position: relative;
+}
+
+.total-days {
+  position: relative;
+  font-weight: 400;
+  color: #BABABA;
+  padding: 17px 0 0 0;
+}
+
+.total-hours {
+  width: 105px;
+}
+
+.load-green-text {
+  color: #03CBB3;
+}
+
+.mm-table-emails {
+  padding: 0;
+}
+
+.sort-name__button, .sort-total__button {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  color: #BABABA;
+  font-size: 12px;
+  border: none;
+  &:hover, &:active, &:focus {
+    border: none;
+  }
+
+  .fa-sort {
+    margin-left: 5px;
+  }
+}
+
+
+@media (max-width: 991px) {
+  .month-year-wrapper {
+    flex-direction: column-reverse;
+    align-items: center;
+    padding: 0 0 15px 0;
+  }
+
+  .month-year-filter {
+    margin-top: 20px;
+    background-color: #FFFFFF;
+    border: none;
+  }
+
+  //.days {
+  //  display: none;
+  //}
+
+  .dev-name,
+  .dev-data,
+  .employee-involved-projects td:first-child{
+    border-right: none !important;
+  }
+
+  .total-hours, .total-days {
+    background-color: #FFFFFF !important;
+  }
+
+  .total-days.total-days {
+    width: 40px;
+    padding: 0;
+  }
+}
+
+@media (max-width: 415px) {
+  .month-year-filter {
+    width: 100%;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    padding: 0;
+    margin-top: 20px;
+    background-color: #FFFFFF;
+    border: none;
+  }
+
+  .month-year-wrapper-inner {
+    width: 100%;
+  }
+
+  .month-year-link {
+    padding: 20px 0;
+  }
+
+  .month-year-link-left {
+    &:before {
+      top: 15px;
+      left: -22px;
+    }
+  }
+
+  .month-year-link-right {
+    &:before {
+      top: 15px;
+      right: -22px;
+    }
+  }
+}
+
+.hr-table-estimated.hr-table-estimated {
+  font-size: 12px;
+}
+
+.estimated_time, .pto {
+  margin: 0;
+  color: #989898;
+  font-size: 9px;
+  line-height: 10px;
+}
+
+.pto {
+  margin: 6px 0;
+}
+
+.pto_lp_text {
+  color: #373737;
+}
+

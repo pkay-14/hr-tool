@@ -1,0 +1,454 @@
+<p class="headers-color">Привет!</p>
+<p class="headers-color">Рады видеть Тебя в команде</p>
+<h1 class="emphasize">Master of Code Global!</h1>
+
+<p class="headers-color">Начнем? :)</p>
+<h2>Для начала жизненно-необходимая информация:</h2>
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+
+  <tr align="left">
+    <td width="35%">
+      <h3>Твой юзер-нейм:</h3>
+    </td>
+    <td width="65%" class="emphasize">
+      <td class="emphasize"><%= @user.account.email_login %></td>
+    </td>
+  </tr>
+  <tr align="left">
+    <td>
+      <h3>Пароль:</h3>
+    </td>
+    <td class="emphasize"><%= @user.account.email_password %></td>
+  </tr>
+
+  <tr><td height="30"></td></tr>
+
+  <tr>
+    <td colspan="2">
+      <h2>Русурсы:</h2>
+    </td>
+  </tr>
+
+  <tr align="left">
+    <td>
+      <h3>Corporate email:</h3>
+    </td>
+    <td class="emphasize"><%= @user.account.email_login %></td>
+  </tr>
+  <tr align="left">
+    <td>
+      <h3>Password:</h3>
+    </td>
+    <td class="emphasize"><%= @user.account.email_password %></td>
+  </tr>
+
+  <tr><td height="30"></td></tr>
+
+  <tr align="left">
+    <td>
+      <h3>XMPP HipChat:</h3>
+    </td>
+    <td class="emphasize">
+      <a href="<%= @user.account.hipchat_url %>"><%= @user.account.hipchat_url %></a></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="clarification">
+      (corporate IM - you need to register here with your corporate email)
+    </td>
+  </tr>
+
+  <tr><td height="30"></td></tr>
+
+  <tr align="left">
+    <td>
+      <h3>Seafile:</h3>
+    </td>
+    <td class="emphasize"><%= @user.account.seafile_login %></td>
+  </tr>
+  <tr align="left">
+    <td>
+      <h3>Password:</h3>
+    </td>
+    <td class="emphasize"><%= @user.account.seafile_password %></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="clarification">
+      (corporate file storage)
+    </td>
+  </tr>
+
+  <tr><td height="30"></td></tr>
+
+  <tr align="left">
+    <td>
+      <h3>Redmine:</h3>
+    </td>
+    <td class="emphasize"><%= @user.account.redmine_login %></td>
+  </tr>
+  <tr align="left">
+    <td>
+      <h3>Password:</h3>
+    </td>
+    <td class="emphasize"><%= @user.account.redmine_password %></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="clarification">
+      (corporate projects)
+    </td>
+  </tr>
+
+  <tr><td height="30"></td></tr>
+
+  <tr align="left">
+    <td>
+      <h3>GitLab:</h3>
+    </td>
+    <td class="emphasize"><%= @user.account.redmine_login %></td>
+  </tr>
+  <tr align="left">
+    <td>
+      <h3>Password:</h3>
+    </td>
+    <td class="emphasize"><%= @user.account.redmine_password %></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="clarification">
+      (corporate sources for developers)
+    </td>
+  </tr>
+
+  <tr><td height="30"></td></tr>
+
+  <tr>
+    <td colspan="2">
+      <h2>Доступ к корпоративной почте:</h2>
+    </td>
+  </tr>
+
+  <tr align="left">
+    <td>
+      <h3>Redmine и HipChat:</h3>
+    </td>
+    <td class="emphasize">
+      <a href=<%= @user.account.email_login %>><%= @user.account.email_login %></a></td>
+  </tr>
+
+  <tr><td height="30"></td></tr>
+
+  <tr align="left">
+    <td>
+      <h3>Сorporative email:</h3>
+    </td>
+    <td class="emphasize">
+      <a href="http://webmail.masterofcode.com">link</a></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="clarification">
+      (Ты всегда можешь изменить пароль в личных настройках.)
+    </td>
+  </tr>
+
+  <tr><td height="30"></td></tr>
+
+  <tr>
+    <td colspan="2">
+      <h2>Настройки:</h2>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2" >
+      email forwarding на gmail account в корпоративной почте. Зайти в Options – E-mail Forwarding (Enable forwarding , Keep a copy of a
+      forward message – NO) , indicate your gmail account in the forward list.
+      Есть небольшая просьба: не пользоваться меил-клиентами и проверять почту в браузере
+    </td>
+  </tr>
+
+  <tr><td height="30"></td></tr>
+
+  <tr align="left">
+    <td>
+      <h3>Redmine:</h3>
+    </td>
+    <td class="emphasize">
+      <a href="http://volleyball.comfortsteel.com/">link</a></td>
+  </tr>
+  <tr>
+    <td colspan="2" class="clarification">
+      (Tool tracker, для трекания тасков и времени, которое используется для выполнения задания)
+    </td>
+  </tr>
+
+  <tr><td height="30"></td></tr>
+
+  <tr>
+    <td>
+      <h3>HipChat:</h3>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <p>В Master ofCode основной канал всех внутренних коммуникаций и обмена информацией выступает HipChat. HipChat необходимо установить на компьютер (если его там нету), а так же на свой мобильный девайс, отлично синхронизируется с другими устройствами (iOS, Android, Windows).</p>
+      <p>
+        Регистрация в HipChat по ссылке ниже
+        (используя корпоративную почту masterofcode.com)
+        <a href="http://masterofcode.us6.list-manage.com/track/click?u=cf511858e026c21ece53aeb3c&id=ece763fe80&e=c469f4b957">link</a>
+        HipChat необходимо использовать каждый день, так как это наш основной канал коммуникаций.
+        <strong>Еще необходимо установить свое фото в профиле</strong>
+        <span class="clarification">(это позволит другим мастерам больше узнавать тебя)</span>,
+        для этого зайди в веб-версии в <a href="https://moc.hipchat.com/account">link</a>
+        В HipChat необходимо зайти в рум Info и всегда оставаться в нем, в Info мы оповощаем информацию, которая касается всех мастеров.
+      </p>
+      <p>
+        А еще в нем есть разные тематические румы, добавляйся в интересующие тебя румы. Так же необходимо зайти в рум офиса Paris/Matrosova - так как там часто обсуждаются организационные моменты по месту.
+      </p>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <h2>Правила, которых придерживается каждый Мастер в Master of Code:</h2>
+      <ol>
+        <li>Наш плодотворный день длится 8 часов.</li>
+        <li>
+          Все процедуры оформления отпусков, отгулов и опозданий, а также больничных описаны ниже:
+          <a href="http://volleyball.comfortsteel.com/projects/knowledge/wiki/Vacation_and_day-off_coordination">link</a>
+          Об отсутствии, отпусках и так далее, необходимо уведомлять на адрес hr@masterofcode.com с копией на менеджера проекта.
+        </li>
+        <li>
+          Мы всегда онлайн в HipChat и Skype  Важно всегда читать сообщения и реагировать на них, если они касаются именно Тебя (а особенно, если это менеджеры))
+        </li>
+        <li>
+          Есть румы, в которые желательно добавиться: Paris' office, Matrosova, Food chat, Info.
+        </li>
+        <li>
+          Каждый день необходимо трекать время в Redmine, в общем должно выходить не менее 7 часов, в идеале 8 часов. Заводить таски должен менеджер проекта. Если у текущего менеджера проекта таски закончились, разработчик/дизайнер должен сообщить об этом HR менеджеру (<strong>Лене Позывайло</strong> или <strong>Алене Викторовой</strong>). В случае отсутствия объяснений причины недостаточного количества затреканного времени могут быть штрафы с учетом коэффициента этого времени (хотя подобное на нашей практике встречалось несколько раз).
+        </li>
+        <li>
+          Мы очень ценим мнение каждого и ценим время каждого, по этому у нас есть свое приложение для оперативного сбора фидбеков MOC Pulse, оно является внутренней формой для голосования, и мы его разработали сами под наши нужды. В MOC Pulse мы общаемся цветами, что бы не тратить много времени :) Есть зеленый - когда все устраевает, желтый - когда у человека нейтральная позиция и красный - отрицание.
+          Зарегестрируйся на <a href="https://staticmocpulse.masterofcode.com">link</a>. Логины у всех - как логин в Redmine (email), пароль (временно на период тестирования) - 12345678
+          Если не удалось залогинится - обратитесь к <strong>Алене Викторовой</strong>
+        </li>
+        <li>
+          Делать бекапы данных, особенно очень желательно при выполнении потенциально небезопасных операций.
+        </li>
+        <li>
+          Не использовать не лицензированный софт, и если что-то необходимо, сообщать менеджеру <strong>Олегу Репетило</strong>.
+        </li>
+        <li>
+          Четко вести всю документацию.
+        </li>
+        <li>
+          Код должен быть аккуратным, понятным и хорошо структурированным, содержать в себе комментарии для объяснения интерфейса класса, метода или функции (для разработчиков).
+        </li>
+        <li>
+          Всегда самосовершенствоваться :)
+        </li>
+        <li>
+          Не бойся доносить свои мысли и идеи. Мы очень открыты и готовы помогать в решении проблем. Если есть тревожные моменты, просто расскажи о них HR менеджеру или своему менеджеру. Мы обязательно обратим внимание на проблему.
+        </li>
+      </ol>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2" >
+      <h2>Приятные бонусы:</h2>
+      <ol>
+        <li>
+          За талантливых кандидатов, которые с твоей помощью придут к нам - вознаграждение в сумме 100$ (Junior developer) и 250$ (Mid/Senior developer), после прохождения ними триального периода (2-3 месяца).
+        </li>
+        <li>
+          За генерацию идей, детали в описании проекта - <a href="http://volleyball.comfortsteel.com/projects/ideasformoc">link</a>
+          <span class="clarification">(идеи заводить на Лену Позывайло)или просто написать в лс)</span>
+        </li>
+        <li>
+          Посещение курсов английского языка с носителем языка 2 раза в неделю в первой половине дня, для этого напиши
+          Mark Thomas в <a href="skype:lanian22">skype</a>.
+          Он проведет с тобой собеседование и определит группу в которой ты будешь заниматься. Это бесплатные занятия, которые направлены на поднятие уровня английского языка у Мастеров. Время, потраченное на занятия можно затрекать тут:
+          <a href="http://volleyball.comfortsteel.com/projects/english/issues">link</a>
+        </li>
+        <li>
+          Мы за здоровый образ жизни, хорошее физическое состояние и вид, а также за отличное самочувствие, поэтому будем поддерживать в этом и тебя. Для этого у нас есть компенсация в размере 150 грн за абонемент в тренажерный зал, бассейн или другие секции.
+          How it works? - После прохождения триального периода  2-3 месяца тебе лишь нужно будет принести квитанцию с оплатой абонемента (в начале каждого месяца). В конце месяца ты получаешь компенсацию, размер которой будет зависеть от количества желающих и может меняться.
+          Все квитанции можно отдавать на ресепшене <strong>Насте Лисициной</strong> <a href="mailto:anastasiia.lisitsyna@masterofcode.com">anastasiia.lisitsyna@masterofcode.com</a>
+          Будем здоровее!:)
+        </li>
+        <li>
+          Каждую неделю у нас бывает фруктовый/ягодный день. Мы стараемся 	покупать сезонные фрукты, а иногда баловать себя молочными коктейлями (кстати, на кухне есть блендер, можно делать себе шейки, каждый день).
+          Примерно 2 пятницы в месяц у нас фан-вечер. В 19:00 мы собираемся вместе и играем в настольные игры и кушаем пиццу:) В HipChat есть FunRoom - там обычно поступают предложения собраться.
+          Кроме того, 2 раза в год (летом и зимой) мы организовываем масштабный ивент для всех, на котором всех ждет море сюрпризов!
+        </li>
+        <li>
+          Мы не забываем о важных событиях у тебя в жизни, к примеру, рождение ребенка, мы всегда рады поздравить и подарить подарок:)
+        </li>
+        <li>
+          Мы за развитие, по этмоу у нас есть практика код ревю, оно проходит планово по окончанию триального периода и далее раз в пол года, так же Code Review можно (чаще желательно) инициировать самому, можно написать на hr@masterofcode.com о желание, или можно попросить самому человека, мнение которого тебе бы было интересно при Code Review.
+          Еще Code Review не нужно бояться и надумывать лишнего, нужно воспринимать его как определение вектора развития и просто для уверенности того, что ты все делаешь правильно:)
+        </li>
+      </ol>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <h2>Так же ознакомься с информацией ниже:</h2>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="clarification">
+      (это больше касается разработчиков).
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      Если нет доступа, напиши к HR.
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <h3>Self development tasks description:</h3>
+      <ul>
+        <li>
+          <a href="http://volleyball.comfortsteel.com/projects/knowledge/wiki/Self_development_tasks">Self development tasks</a>
+        </li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <h3>Developers levels requirements and roles responsibilities:</h3>
+      <ul>
+        <li><a href="http://volleyball.comfortsteel.com/projects/knowledge/wiki/Developers_levels_and_roles">Developers levels and roles</a></li>
+        <li><a href="http://volleyball.comfortsteel.com/projects/knowledge/wiki/Time_tracking_flow">Time tracking flow</a></li>
+        <li><a href="http://volleyball.comfortsteel.com/projects/knowledge/wiki/Feature_status_flow">Feature status flow</a></li>
+        <li><a href="http://volleyball.comfortsteel.com/projects/knowledge/wiki/Bug_status_flow">Bug status flow</a></li>
+      </ul>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2">
+      <h3>Закачай и посмотри видео про эстимейты:</h3>
+      <ul>
+        <li>
+          <a href="ocean.comfortsteel.com/f/8b964c56c5/">link</a>
+        </li>
+      </ul>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2" class="clarification">
+      (Читать про эстимейты не обязательно, но для общего развития можно :))
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <ul>
+        <li><a href="http://volleyball.comfortsteel.com/projects/knowledge/wiki/Estimating_process_guidelines">Estimating process guidelines</a></li>
+        <li><a href="http://volleyball.comfortsteel.com/projects/knowledge/wiki/Estimating_process_description">Estimating process description</a></li>
+      </ul>
+    </td>
+  </tr>
+
+  <tr>
+    <td colspan="2" >
+      <h2>Контактная информация:</h2>
+      <p class="clarification">(желательно сохранить номера в телефоне)</p>
+      <dl class="contacts">
+        <dt>
+          <strong>Лена Позывайло</strong>
+          <span>(HR Manager)</span>
+        </dt>
+        <dd><a href="tel:+380939188215">093-918-82-15</a></dd>
+        <dt>
+          <strong>Алена Викторова</strong>
+          <span>(HR Manager)</span>
+        </dt>
+        <dd><a href="tel:+380939005597">093-900-55-97</a></dd>
+        <dt>
+          <strong>Богдан Сергиенко</strong>
+          <span>(CTO)</span>
+        </dt>
+        <dd><a href="tel:+380939005597">067-589-82-21</a></dd>
+        <dt>
+          <strong>Алена Лисицина</strong>
+          <span>(COO)</span>
+        </dt>
+        <dd><a href="tel:+380638484133">063-84-84-133</a></dd>
+        <dt>
+          <strong>Дмитрий Луханин</strong>
+          <span>(Project Manager)</span>
+        </dt>
+        <dd>
+          <a href="tel:+380938192715">093-819-27-15</a>
+          <a href="tel:+380504642075">050-464-20-75</a>
+        </dd>
+        <dt>
+          <strong>Олег Репетило</strong>
+          <span>(Project Manager)</span>
+        </dt>
+        <dd>
+          <a href="tel:+380683916294">068-391-62-94</a>
+          <a href="tel:+380636449135">063-644-91-35</a>
+        </dd>
+        <dt>
+          <strong>Павел Танцюра</strong>
+          <span>(Project Manager)</span>
+        </dt>
+        <dd>
+          <a href="tel:+380633422322">063-342-23-22</a>
+        </dd>
+        <dt>
+          <strong>Элина Верещак</strong>
+          <span>(Project Manager)</span>
+        </dt>
+        <dd>
+          <a href="tel:+380508713228">050-871-32-28</a>
+        </dd>
+        <dt>
+          <strong>Оксана Обойщик</strong>
+          <span>(Project Manager)</span>
+        </dt>
+        <dd>
+          <a href="tel:+380939515285">093-951-52-85</a>
+        </dd>
+        <dt>
+          <strong>Юлия Кудренко</strong>
+          <span>(Project Manager)</span>
+        </dt>
+        <dd>
+          <a href="tel:+380634455585">063-445-55-85</a>
+        </dd>
+        <dt>
+          <strong>Сергей Кусюмов</strong>
+          <span>(Project Manager)</span>
+        </dt>
+        <dd>
+          <a href="tel:+380636911250">063-691-12-50</a>
+        </dd>
+        <dt>
+          <strong>Анастасия Лисицина</strong>
+          <span>(Office manager)</span>
+        </dt>
+        <dd>
+          <a href="tel:+380631817624">063-18-17-624</a>
+        </dd>
+      </dl>
+    </td>
+  </tr>
+
+  <tr align="center">
+    <td colspan="2" >
+      <h2>Have a nice day!</h2>
+    </td>
+  </tr>
+
+  <tr align="center">
+    <td colspan="2" >
+      <p>Если возникли вопросы, нам можно написать на e-mail: <a href="mailto:hr@masterofcode.com">hr@masterofcode.com</a></p>
+    </td>
+  </tr>
+
+</table>

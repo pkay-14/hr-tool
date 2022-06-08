@@ -1,0 +1,68 @@
+<tr>
+  <td width="20"></td>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      Dear <%= @user.first_name %>,
+    </span>
+  </td>
+  <td width="20"></td>
+</tr>
+
+<tr>
+  <td height="35" colspan="3"></td>
+</tr>
+
+<tr>
+  <td width="20"></td>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      We were pleased to hear that you have accepted the offer for the position of <%= @user.position %> at Master of Code Team,
+      and that you’ll be joining us on <%= @onboarding_date.to_date.strftime("%A, %b %d") %>. Welcome aboard!
+    </span>
+  </td>
+  <td width="20"></td>
+</tr>
+
+<tr>
+  <td height="35" colspan="3"></td>
+</tr>
+
+<% if @user.city == 'Kyiv' %>
+  <tr>
+    <td width="20"></td>
+    <td>
+      <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+        You’ll be working closely with the HR team during your onboarding week in Cherkasy office and you will get to know about all the processes we have in place.
+        Cherkasy office address is: 7 Kryvalivska str.
+      </span>
+    </td>
+    <td width="20"></td>
+  </tr>
+<% else %>
+    <tr>
+      <td width="20"></td>
+      <td>
+      <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+        Office address is 7 Kryvalivska str., 3rd floor. On your first day please take your ID (or passport) with the ID code and indoor shoes.
+      </span>
+      </td>
+      <td width="20"></td>
+    </tr>
+<% end %>
+
+
+<tr>
+  <td height="35" colspan="3"></td>
+</tr>
+
+<tr>
+  <td width="20"></td>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      Don’t hesitate to call or email us if you have any questions:
+      Phone: +380631889607 <br>
+      Email: hr@masterofcode
+    </span>
+  </td>
+  <td width="20"></td>
+</tr>

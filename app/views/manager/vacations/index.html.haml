@@ -1,0 +1,37 @@
+#vacations.vacation-page-index.main-page
+  .content-container
+    .row-fluid
+      .container
+        %section.menu-wrapper.filters-bar.filters-bar--flex
+          = render 'vacation_filters'
+
+    .container.main
+      - if search_field_conditions || master_cabinet?
+        .top-row
+          %section.all-masters-wrapper
+            %h2.title Time Off list
+            .top-buttons
+              .top-buttons-container
+                - if csv_export_conditions
+                  %button#btn_export_vacations.table-top-btn.table-top-btn-m-0.mm-btn-white Export to csv
+                - if vacation_request_conditions
+                  = link_to '+ Add Request', "#",  class: 'open-request-form table-top-btn table-top-btn-m-0 mm-btn-white'
+                  = render 'add_vacation_request', current_manager: ":manager"
+              - unless master_cabinet?
+                .search-container
+                  .hr-search.search-form.search-item
+                    =text_field_tag 'query', params[:query] ? params[:query] : '', {class: 'search__field', placeholder: 'Search'}
+                  .open-dropdowns
+                    %button#open-right-menu.open-right-menu
+
+      #vacations_list
+        = render 'vacations'
+
+.mm-modal-custom#mm-modal-export-popup.d-none
+  .mm-modal__title
+    %h3.overtime-dismissal__title Export
+    = link_to 'Cancel', "#",  class: 'btn-icon cancel-icon', 'data-close-popup' => ''
+  .mm-modal-body-export
+    %p.mm-modal-body-export__text Please select date range for vacations to export
+    .mm-modal__buttons
+      %button.mm-button.mm-button-orange{type: 'button', 'data-close-popup' => ''} OK

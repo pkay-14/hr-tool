@@ -1,0 +1,46 @@
+.dropdown-container.dropdown-container-no-space
+  .mobile-top-row
+    %h3.menu-title Filters
+    .close-dropdowns
+      %button#close-right-menu.close-right-menu
+  .dropdown-block.dropdown-block-208#manager-filters
+    %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_manager: current_user.id.to_s}}
+      = current_user.full_name
+    %ul.hr-dropdown__menu.dropdown-menu
+      %li.dropdown__item{ data: { manager: 'All' } }
+        %label
+          All
+      -@current_managers.each do |manager|
+        %li.dropdown__item{ data: { manager: manager.id.to_s } }
+          %label
+            = manager.full_name
+      %li.dropdown__item{ data: { manager: '' } }
+        %label
+          = 'Unassigned'
+
+  .dropdown-block.dropdown-block-208
+    %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_status: "Any status"}}
+      Any status
+    %ul.hr-dropdown__menu.dropdown-menu
+      %li.dropdown__item{ data: { status: "Any status" } }
+        %label
+          Any status
+      -Project::STATUS.each do |status|
+        %li.dropdown__item{ data: { status: status } }
+          %label
+            = status
+
+    #tags.hide
+      %ul#tags_list
+        %li
+          - @popular_technologies.each do |t|
+            %a.technologies=t
+        %li
+          - @popular_domains.each do |d|
+            %a.domains=d
+        %li
+          - @popular_years.each do |y|
+            %a.years=y
+
+  .menu-bottom-button
+    %button.btn-show-result#close-right-menu-btn Show

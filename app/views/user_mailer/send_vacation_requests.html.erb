@@ -1,0 +1,23 @@
+<tr>
+  <td width="20"></td>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      <%= link_to @vacation.employee.full_name, admin_employee_url(@vacation.employee) %> requests time off <%= @vacation.time_range_to_s %>.<br>
+      <% if @vacation.notes.present? %>
+        Additional info: <%= @vacation.notes %><br>
+      <% end %>
+      Please confirm.
+    </span>
+  </td>
+  <td width="20"></td>
+</tr>
+
+<tr><td height="35" colspan="3"></td></tr>
+
+<tr>
+  <td width="20"></td>
+  <td align="center">
+    <%= link_to "Review in Masters Module", manager_vacation_approve_index_url, {style: "color:#ef4934; font:18px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:inline-block; margin-right:15px; text-decoration: none", method: :post} %>
+  </td>
+  <td width="20"></td>
+</tr>

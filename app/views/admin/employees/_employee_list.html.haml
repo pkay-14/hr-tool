@@ -1,0 +1,69 @@
+.hr-table-wrap
+  %table.hr-table
+    %thead
+      %tr.hr-table__head-row
+        %th.mm-th-table-top.hr-table__cell--padding-md.index.mm-index #
+        %th.mm-th-table-top.employee-name Name
+        %th.mm-th-table-top.contacts Contacts
+        %th.mm-th-table-top.current-projects Current projects
+        - if current_user.is_hr_manager?
+          %th.mm-th-table-top.out-of-load-th.mm-table__cell-bottom
+            .d-flex.cursor-point.out-of-load-wrap.text-align-c{'data-employee-sort-control' => 'show_in_load_calendar'}
+              %span.space-r-5
+                Show in LC
+              %i.lc-icon{'data-employee-sort-icon' => 'show_in_load_calendar'}
+          %th.mm-th-table-top.time-tracking-th
+            .d-flex.cursor-point.time-tracking-wrap.mm-table__cell-bottom{'data-employee-sort-control' => 'send_time_tracking_reminders'}
+              %span.time-tracking-text
+                Time tracking reminders
+              %i.time-tracking-icon{'data-employee-sort-icon' => 'send_time_tracking_reminders'}
+
+          %th.mm-th-table-top.copy_button.mm-table__cell-bottom.mm-legal-info Legal Info
+        - if current_user.is_admin?
+          %th.mm-th-table-top.copy_button
+
+    - users.each do |user|
+      %tr.hr-table__body-row
+        %td.hr-table__cell.hr-table__cell--padding-md.index.mm-size-12.table-text-secondary-color
+          = user.index_number
+        %td.hr-table__cell.employee-name
+          %table.hr-table__sub-table.no-paddings
+            %tr
+              %td.photo
+                %span.photo-span{"data-popwrapper" => ".img-popover", :rel => "popover", 'data-user-img' => 'user.photo.path(:medium).present?' ? '1' : ''}
+                  -if current_user.is_admin? && !current_user.is_manager?
+                    = image_tag((user.photo.path(:medium).present? ? user.photo.url(:medium) : "user_icon_placeholder@2x.png") , class: "user-img img-circle img-link", alt: "User photo" )
+                  -else
+                    = link_to image_tag((user.photo.path(:medium).present? ? user.photo.url(:medium) : "user_icon_placeholder@2x.png") , class: "user-img img-circle img-link", alt: "User photo" ), admin_employee_path(user), class: "candidate-name-url"
+              %td.mm-master-info
+                .user-info
+                  %h5
+                    -if current_user.is_admin? && !current_user.is_manager?
+                      =user.full_name.empty? ? "No Name" : user.full_name
+                    -else
+                      = link_to user.full_name.empty? ? "No Name" : user.full_name, admin_employee_path(user), class: "candidate-name-url mm-name"
+                  %ul.master-skills
+                    - user.skills.each do |s|
+                      %li.mm-size-12.table-text-main-color
+                        = s.name
+                        %span.table-text-secondary-color
+                          = "- #{s.level.present? ? s.level : 'Unknown level'}"
+        %td.hr-table__cell.contacts.mm-size-12.table-text-main-color
+          = user_contacts(user) if user.has_any_contact?
+        %td.hr-table__cell.current-projects.mm-size-12.table-text-main-color
+          = user.current_projects_list
+        - if current_user.is_hr_manager?
+          %td.hr-table__cell.out-of-load-td.mm-size-12.table-text-main-color
+            = best_in_place user, :show_in_load_calendar, as: :checkbox, url: admin_employee_path(user)
+          %td.hr-table__cell.time-tracking-td.mm-size-12.table-text-main-color
+            = best_in_place user, :send_time_tracking_reminders, as: :checkbox, url: admin_employee_path(user)
+          %td.hr-table__cell.mm-td-table-right.copy_button
+            %button.btn-copy{'data-master-id' => user.id.to_s}
+        - if current_user.is_admin?
+          %td.hr-table__cell
+            =link_to ' ', hardware_managments_admin_employee_url(user) , class: 'mm-settings-icon'
+    .img-popover
+      = image_tag "", alt: "User photo"
+.moc-paginate
+  = select_tag :limit, options_for_select([['10', 10], ['25', 25], ['50', 50], ['100', 100]], params[:per_page] ? params[:per_page] : 25), class: 'items-on-page dropdown limit-dropdown', autocomplete: :off
+  = paginate users

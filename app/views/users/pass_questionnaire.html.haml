@@ -1,0 +1,28 @@
+.candidate{data: {user_id: @user.id}}
+  %h4.text-center
+    Questions
+  %ol.question-list.pass_questionaire
+    -if @user.has_questions?
+      .panel-group#accordion
+        - @questions.each do |question|
+          .panel.panel-default
+            .panel-heading
+              %h4.panel-title
+                %a{'data-toggle'=>"collapse", 'data-parent' => "#accordion", href: "##{question.id}"}
+                  %li{ data: { question_id: question.id }, class: "#{'submited-question' unless @user.candidate_questionnaire.get_answer(question).text.blank?}" }
+                    =question.send(@user.candidate_questionnaire.language_method(question))
+                    -# = question.text_ua
+            .panel-collapse.collapse{:id =>question.id}
+              .panel-body
+                .answer-wrapper
+
+  =link_to 'Finish', complete_questionnaire_user_path, {:class => 'complete-questionnaire btn btn-default'}
+
+#modal
+  .container
+    .interview-wrapper
+      .questionnaire-complete
+        %p.thank-p.text-center
+          Thank You!
+        %p.thank-p.text-center
+          Have a good day:)

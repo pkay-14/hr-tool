@@ -1,0 +1,22 @@
+= form_for @notification, url: admin_notifications_path do |f|
+  %ul.profile-form-list
+    %li.profile-form__item
+      = f.label :title, class: "profile-form-label"
+      %span.span9.input-medium-size
+        = f.text_field :title
+    %li.profile-form__item
+      = f.label :category, class: "profile-form-label"
+      %span.span9.input-medium-size
+        = f.collection_select :category, @categories, :first, :last
+    %li.profile-form__item
+      = f.label :description, class: "profile-form-label"
+      %span.span9.input-medium-size
+        = f.text_area :body
+    %li.profile-form__item
+      = f.label :image, class: "profile-form-label"
+      %span.span9
+        .file-wrapper.btn.btn-default.btn-edit
+          %span.filename Choose image
+          = f.file_field :image
+  .text-center
+    = f.submit "Send Email", class: "btn btn-default-gray-light btn-edit"

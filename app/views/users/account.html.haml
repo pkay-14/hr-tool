@@ -1,0 +1,47 @@
+.new-employee-form-wrapper
+  %h2
+    = @user.full_name
+  =form_for @user,:html => { :class => ''} do |f|
+    %fieldset
+      =f.fields_for :account do |ac|
+        .form-group
+          =ac.label :hipchat_url ,class: 'control-label'
+          .controls
+            =ac.text_field :hipchat_url
+        .form-group
+          =ac.label :redmine_login ,class: 'control-label'
+          .controls
+            =ac.text_field :redmine_login
+        .form-group
+          =ac.label :redmine_password,class: 'control-label'
+          .controls
+            =ac.text_field :redmine_password
+        %hr
+        .form-group
+          =ac.label :email_login ,class: 'control-label'
+          .controls
+            =ac.text_field :email_login
+        .form-group
+          =ac.label :email_password,class: 'control-label'
+          .controls
+            =ac.text_field :email_password
+        %hr
+        .form-group
+          =ac.label :git_login ,class: 'control-label'
+          .controls
+            =ac.text_field :git_login
+        .form-group
+          =ac.label :git_password,class: 'control-label'
+          .controls
+            =ac.text_field :git_password
+        %hr
+        .form-group
+          =ac.label :seafile_login ,class: 'control-label'
+          .controls
+            =ac.text_field :seafile_login
+        .form-group
+          =ac.label :seafile_password,class: 'control-label'
+          .controls
+            =ac.text_field :seafile_password
+      .form-actions.text-center
+        =f.submit class: 'btn btn-default-gray-light btn-edit'

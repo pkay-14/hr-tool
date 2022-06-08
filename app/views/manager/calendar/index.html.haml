@@ -1,0 +1,25 @@
+%div#calendar.main-page
+  .content-container
+    .master-cabinet{data: {master_cabinet: master_cabinet?.to_s}}
+    .row-fluid
+      .container
+        %section.menu-wrapper.filters-bar.filters-bar--flex.general-dropdown
+          = render 'calendar_filters', current_tech: "All", current_status: "All", current_company_division: "All",
+           current_community: "All"
+    .container.main.load-container
+      .row-fluid.top-row
+        %section.text-r.month-year-wrapper
+          .month-year-wrapper-inner
+            %h2.title Load Calendar
+            %span.month-year-filter
+              %a#month-year-left.month-year-link.month-year-link-left
+              %time.month-year-time{:datetime=>@date.strftime('%Y-%m-%d')}
+                = "#{@date.strftime('%B')} #{@date.year}"
+              %a#month-year-right.month-year-link.month-year-link-right
+          - unless master_cabinet?
+            .search-container
+              #search-item.search-item
+                =text_field_tag 'search_query', params[:search_query] ? params[:search_query] : '', {class: 'search__field', placeholder: 'Search'}
+              .open-dropdowns
+                %button#open-right-menu.open-right-menu
+      #stats.position--relative

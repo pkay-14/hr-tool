@@ -1,0 +1,2 @@
+<% class_name = @message == 'The letter has been sent.' ? 'alert-success' : 'alert-danger' %>
+$('#onboarding_email_message').attr('class', 'alert <%= class_name %>').html('<%= @message  %>')

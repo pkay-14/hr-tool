@@ -1,0 +1,11 @@
+project_div = $('[data-expand-project-id=<%= @project.id.to_s %>]').closest('.project-row')
+
+<% if @project.from.nil? %>
+  project_div.find('.from-date .date-text').html('')
+  project_div.find('.from-date .clear').html('')
+<% end %>
+
+<% if @project.to.nil? %>
+  project_div.find('.to-date .date-text').html('')
+  project_div.find('.to-date .clear').html('')
+<% end %>

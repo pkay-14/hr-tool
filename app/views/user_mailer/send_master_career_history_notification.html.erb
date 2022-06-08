@@ -1,0 +1,24 @@
+<tr style="text-align: center;">
+  <td width="20"></td>
+  <td>
+    <span edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none;">
+      <%= "This email is to inform you that your Community/Position in MOCG has changed as of #{@career.start_date&.strftime('%d.%m.%Y')}" %>
+      <br>
+      <ul style="list-style: none; margin-right: 50px;">
+      <b><%= "New record:"%></b>
+        <li>Company division: <%="#{@career.company_division.blank? ? 'none' : @career.company_division}"%></li>
+        <li>Position: <%="#{@career.position.blank? ? 'none' : @career.position}"%></li>
+        <li>Community: <%="#{@career.community.blank? ? 'none' : @career.community}"%></li>
+      </ul>
+
+      <ul style="list-style: none; margin-right: 50px;">
+      <b><%= "Old record:"%></b>
+        <li>Company division: <%="#{@previous_career.company_division.blank? ? 'none' : @previous_career.company_division}"%></li>
+        <li>Position: <%="#{@previous_career.position.blank? ? 'none' : @previous_career.position}"%></li>
+        <li>Community: <%="#{@previous_career.community.blank? ? 'none' : @previous_career.community}"%></li>
+      </ul>
+    </span>
+
+  </td>
+  <td width="20"></td>
+</tr>

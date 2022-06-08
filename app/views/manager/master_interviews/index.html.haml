@@ -1,0 +1,19 @@
+#master_interviews.interviews-page-index.main-page
+  .content-container
+    .row-fluid
+      .container{data: {project_search: ''}}
+        %section.menu-wrapper.filters-bar
+          = render 'interviews_filters', current_manager: "All", current_status: "All"
+
+    = hidden_field_tag :user_id, params[:user_id]
+
+    .container.main
+      .top-row
+        .mm-wrapper
+          %h2.title All Interviews
+          .top-buttons
+            =link_to '+ Add Interview', "#",  class: 'table-top-btn mm-btn-white btn-add-interview'
+          = render 'new_interview_form'
+
+      #interviews_list
+        =render 'interviews', interviews: @interviews

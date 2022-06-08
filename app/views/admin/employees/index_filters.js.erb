@@ -1,0 +1,97 @@
+$(".employees-partial").html('<%= escape_javascript(render :partial => "employee_list", locals: { users: @users } )%>');
+
+$('#employee .items-on-page').on("change", function(e) {
+  var sortingOrder = sortingSandbox.getSortingOrder();
+  var data = {};
+  data['tech'] = $('[data-current-tech]').attr('data-current-tech');
+  data['status'] = $('[data-current-status]').attr('data-current-status');
+  data['role'] = $('[data-current-role-status]').attr('data-current-role-status');
+  data['company_division'] = $('[data-current-company-division]').attr('data-current-company-division');
+  data['office'] = $('[data-current-office]').attr('data-current-office');
+  data['community'] = $('[data-current-community]').attr('data-current-community');
+  data['position'] = $('[data-current-position]').attr('data-current-position');
+  data['search_query'] = $('#employee .search-form input').val();
+  data['per_page'] = $('#employee .items-on-page').val();
+  if (sortingOrder !== undefined) {
+    data['order'] = sortingOrder === 1 ? 'asc' : 'desc';
+  }
+  $.ajax({
+    url: "/admin/employees/search",
+    type: "GET",
+    data: data
+  }).done(function () {
+      highlightOption()
+  });
+});
+
+
+$(".cut-td").on("click", function() {
+  return $(this).toggleClass("shown");
+});
+
+$("[data-hint]").popover({
+  trigger: "hover",
+  placement: "bottom"
+});
+
+$('[data-user-img=1]').popover({
+  html: true,
+  trigger: 'click hover',
+  delay: {
+    'show': 500, 'hide': 500
+  },
+  placement: 'left',
+  content: function() {
+    var current_user_img;
+    current_user_img = $(this).find('img').attr('src');
+    $('.img-popover img').attr('src', current_user_img);
+    return $($(this).data('popwrapper')).html();
+  }
+});
+
+var statusSortingOrder = sortingSandbox.getSortingOrder();
+if (statusSortingOrder !== undefined) {
+  var sortBy = sortingSandbox.getSortByField();
+  if (sortBy === 'show_in_load_calendar') {
+    sortingSandbox.toggleSortingIcon('[data-employee-sort-icon=show_in_load_calendar]');
+  }
+
+  if (sortBy === 'send_time_tracking_reminders') {
+    sortingSandbox.toggleSortingIcon('[data-employee-sort-icon=send_time_tracking_reminders]');
+  }
+}
+
+$('[data-employee-sort-control]').on('click', function() {
+  var reqRout = '/admin/employees/search';
+  var payload = {
+    tech: $('[data-current-tech]').attr('data-current-tech'),
+    status: $('[data-current-status]').attr('data-current-status'),
+    legal_status: $('[data-current-legal-status]').attr('data-current-legal-status'),
+    role_status: $('[data-current-role-status]').attr('data-current-role-status'),
+    company_division: $('[data-current-company-division]').attr('data-current-company-division'),
+    community: $('[data-current-community]').attr('data-current-community'),
+    position: $('[data-current-position]').attr('data-current-position'),
+    search_query: $('#employee .search-form input').val(),
+    per_page: $('#employee .items-on-page').val(),
+    order_by: $(this).data('employee-sort-control')
+  };
+  var sortBy = $(this).data('employee-sort-control');
+  var sortingIcon = '[data-employee-sort-icon=' + $(this).data('employee-sort-control') + ']';
+  sortingSandbox.sort(reqRout, payload, sortBy, sortingIcon);
+});
+
+ $(document).on('page:load', function() {
+    removeSkill();
+  }).ready(removeSkill);
+
+
+function highlightOption() {
+    var option = document.querySelectorAll('.items-on-page option')
+    option.forEach(function (i) {
+        if(i.selected === true) {
+            i.style.color = "#FD5D32"
+        }
+    })
+}
+
+$(document).ready(highlightOption);

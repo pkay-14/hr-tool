@@ -1,0 +1,46 @@
+.mm-modal-custom.create-form.new-project-form#mm-modal
+  .mm-modal__title
+    %h3.new-project New Project
+    =link_to 'Cancel', "#",  class: 'cancel-adding btn-icon cancel-icon close-modal'
+  =form_for [:manager, Project.new] ,:url =>  manager_create_project_path, remote: true do |f|
+
+    %ul.new-project-form__list.mm-modal__list
+      %li.mm-modal__item
+        %label.mm-modal__label
+          Project Name
+          =f.text_field :name, class: 'new-project-form__input new-project-form__input-name'
+          %span#add-project-popup--project-name--error-name-duplicated.error-comment-big The project name is duplicated
+      %li.mm-modal__item
+        %label.mm-modal__label
+          Manager
+          = f.select :manager_id , options_from_collection_for_select(@current_managers, 'id' ,'full_name', current_user.id),  {}, {class: 'new-project-form__select'}
+      %li.mm-modal__item
+        %label.mm-modal__label-208
+          From
+          #add-project-popup--date--container.input-append.input-append--flex.date.no-margin-b{'data-datepicker-proj-new' => '', 'data-current-datepicker-proj-new' => ''}
+            = f.text_field :from, :class => 'text_field new-project-form__input', "data-format"=>"dd.MM.yyyy", "data-start-date-proj-new"=>""
+            %span.add-on
+              %i.datepicker--icon-calendar
+          #add-project-popup--date--error-required.error-comment-big Field required
+
+        %label.mm-modal__label-208
+          To
+          .input-append.input-append--flex.date{'data-datepicker-proj-new' => '', 'data-launch-datepicker-proj-new' => ''}
+            = f.text_field :to, :class => 'text_field new-project-form__input', "data-format"=>"dd.MM.yyyy", "data-end-date-proj-new"=>""
+            %span.add-on
+              %i.datepicker--icon-calendar
+
+      %li.error-date-massage-projects__item
+        %p.error-date-massage-projects__text.m-b-5 Please adjust the start and end dates!
+      %li.mm-modal__item
+        %label.mm-modal__label-208
+          Status
+          =f.select :status, Project::STATUS,  {}, {class: 'project_status new-project-form__select'}
+        %label.mm-modal__label-208
+          Category
+          =f.select :category, Project::CATEGORIES, {}, {class: 'project_category new-project-form__select'}
+
+      %li.mm-modal__buttons.mm-modal__buttons-project
+        =link_to 'Cancel', "#",  class: 'cancel-adding mm-button mm-button-gray close-modal'
+        =f.submit 'Create', class: 'add-project mm-button mm-button-orange', data: {'hide-new-form' => ''}, id: 'add-project-form-submit-btn'
+

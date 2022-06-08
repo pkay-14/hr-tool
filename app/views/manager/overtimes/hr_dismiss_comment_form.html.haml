@@ -1,0 +1,15 @@
+.main-page.mm-background-overlay--active
+  .content-container
+    .container.main
+      .mm-modal-custom
+        .mm-modal__title
+          %h3.overtime-dismissal__title Dismissal
+          = link_to 'Cancel', manager_overtimes_path,  class: 'btn-icon cancel-icon', data: {"toggle" => "popover", "hint" => "", "content" => "Cancel"}
+
+        = form_tag "#{@overtime.id}/dismiss", class: 'hr_overtime-dismissal__form' do
+          .overtime__field
+            .overtime-comment
+              = label_tag 'Comment'
+              = text_area_tag :comment, nil, class: 'hr_overtime__textarea mm-modal__textarea'
+            .mm-modal__buttons
+              = submit_tag "OK",id: 'hr_overtime_dismiss_submit_comment_button', class: 'add-question mm-button mm-button-orange', data: {"toggle" => "popover", "hint" => "", "content" => "Continue"}

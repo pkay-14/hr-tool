@@ -1,0 +1,35 @@
+.hr-table-wrap
+  %table.hr-table.candidate-summary
+    %thead
+      %tr.hr-table__head-row.hr-table__head-row--height
+        %th.mm-th-table-top.hr-table__cell--space-l-10.candidate-name
+          Master's name
+        %th.mm-th-table-top
+          Date
+        %th.mm-th-table-top
+          Status
+        %th.mm-th-table-top
+          Project
+        %th.mm-th-table-top
+
+    %tbody
+      -unless interviews.nil?
+        - interviews.each do |interview|
+          %tr.hr-table__body-row
+            %td.hr-table__cell-center.hr-table__cell--space-l-10
+              - if interview.successful? && interview.passed
+                .load-indicator.no-load{title:"Successful"}
+              - if !interview.successful? && interview.passed
+                .load-indicator.high-load{title:"Unsuccessful"}
+              - if !interview.passed
+                .load-indicator.half-loaded{title:"Without Status"}
+              = link_to interview.user.full_name, admin_employee_path(interview.user), class: 'mm-name'
+            %td.hr-table__cell-center= interview.date
+            %td.hr-table__cell-center= interview.passed ? "passed" : "assigned"
+            %td.hr-table__cell-center= interview.project
+            %td.hr-table__cell-center.hr-table__td--text-right.actions
+              = link_to 'Edit', edit_manager_master_interview_path(interview), class: 'btn-icon edit-icon'
+              = link_to 'Delete', manager_master_interview_path(interview), :method => :delete, class: 'btn-icon cancel-icon', :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) }
+%div.moc-paginate
+  -# = select_tag :limit, options_for_select([['10/page', 10], ['20/page', 20], ['50/page', 50], ['100/page', 100], ['All' ]], 20), class: 'items-on-page', autocomplete: :off
+  = paginate interviews

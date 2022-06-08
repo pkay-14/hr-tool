@@ -1,0 +1,4 @@
+%ul.inline.nested-fields.office
+  %li.countries-office__item
+    = f.text_field :name, title: 'name', class: 'profile-form__input countries__input'
+    = link_to_remove_association 'remove', f, :class => 'btn-icon trash-icon vertical-align-middle'

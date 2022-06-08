@@ -1,0 +1,81 @@
+.dropdown-container
+  .mobile-top-row
+    %h3.menu-title Filters
+    .close-dropdowns
+      %button#close-right-menu.close-right-menu
+  - if master_cabinet?
+    .dropdown-block.dropdown-block-208.column-item-responsive#master-cabinet-filters
+      %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_master_cabinet_filter: Load::MASTER_CABINET_FILTERS.first}}
+        = Load::MASTER_CABINET_FILTERS.first
+      %ul.hr-dropdown__menu.dropdown-menu
+        - Load::MASTER_CABINET_FILTERS.each do |filter|
+          %li.dropdown__item{data: {filter: filter}  }
+            = filter
+    .menu-bottom-button
+      %button.btn-show-result#close-right-menu-btn Show
+
+  - else
+
+    .dropdown-block.column-item-responsive#project-category-filters
+      %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_project_category: "Any category"}}
+        Any category
+      %ul.hr-dropdown__menu.dropdown-menu
+        -(['Any category'] + Project::CATEGORIES).each do |project_category|
+          %li.dropdown__item{data: {project_category: project_category}  }
+            = project_category
+
+    .dropdown-block.column-item-responsive#team-filters
+      %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_team: "All Teams"}}
+        All Teams
+      %ul.hr-dropdown__menu.dropdown-menu
+        -(['All Teams', 'My Team']).each do |team|
+          %li.dropdown__item{data: {team: team}  }
+            = team
+
+    .dropdown-block.column-item-responsive#tech-filters
+      %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_tech: "Any skills"}}
+        Any skills
+      %ul.hr-dropdown__menu.dropdown-menu#myTab{ :role => "tablist" }
+        -User::TECH.each do |tech|
+          -# - unless tech == current_tech
+          %li.dropdown__item{data: {tech: tech}  }
+            = tech
+
+    .dropdown-block.column-item-responsive#status-filters
+      %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_status: "Any load"}}
+        Any load
+      %ul.hr-dropdown__menu.dropdown-menu
+        -Load::STATUSES.each do |status|
+          -# - unless status == current_status
+          %li.dropdown__item{data: {status: status}  }
+            = status
+
+    .dropdown-block.column-item-responsive#company-division-filters
+      %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_company_division: "Any division"}}
+        Any division
+      %ul.hr-dropdown__menu.dropdown-menu
+        -(['Any division'] + divisions).each do |company_division|
+          %li.dropdown__item{data: {company_division: company_division}  }
+            =company_division
+
+    .dropdown-block.column-item-responsive#community-filters
+      %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_community: "Any community"}}
+        Any community
+      %ul.hr-dropdown__menu.dropdown-menu
+        -(['Any community'] + communities).each do |community|
+          %li.dropdown__item{data: {community: community}  }
+            = community
+
+    .dropdown-block.dropdown-block-m-0.column-item-responsive#position-filters.position-filters
+      %a.dropdown.dropdown-position-load{:href=>"#", data: {toggle:"dropdown", current_position: "Any position"}}
+        Any position
+      %ul.hr-dropdown__menu.dropdown-menu
+        -(['Any position'] + positions).each do |position|
+          %li.dropdown__item{data: {position: position}  }
+            = position
+
+    .menu-bottom-button
+      %button.btn-show-result#close-right-menu-btn Show
+
+
+

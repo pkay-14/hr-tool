@@ -1,0 +1,49 @@
+.profile-page.profile-form.main-page
+  .content-container
+    .row-fluid
+      .container
+        .btn-wrapper
+          = link_to 'Back', manager_master_interviews_path, :class => 'mm-btn-back__link'
+    #edit_master_interview.container.main
+      .content-block
+
+        .mm-modal-custom
+          .mm-modal__title
+            %h3.title.row-fluid
+              = @interview.user.full_name
+          = form_for(@interview, :html => {class: "mm-modal__form"}, :url => {:action => "update"}) do |f|
+            %ul.mm-modal__list
+              %li.mm-modal__item
+                %label.mm-modal__label-208
+                  Client
+                  = f.text_field :client, class: "mm-modal__input-208"
+                %label.mm-modal__label-208
+                  Project
+                  = f.text_field :project, class: "mm-modal__input-208"
+              %li.mm-modal__item.m-t-10
+                %label.mm-modal__label
+                  Description
+                  = f.text_area :description, class: "mm-modal__textarea"
+              %li.mm-modal__item.m-t-10
+                %label.mm-modal__label
+                  %span.mm-modal__span-required Date*
+                  .input-append.date
+                    = f.text_field :date , class: 'mm-modal__date-208', "data-format"=>"dd.MM.yyyy hh:mm"
+                    %span.add-on
+                      %i.datepicker--icon-calendar
+              %li.mm-modal__item.mm-modal__item-checkbox
+                %label.checkbox.inline
+                  Passed?
+                  = f.check_box :passed
+                %label.checkbox.inline.m-l-25
+                  Successful?
+                  = f.check_box :successful
+                %label.checkbox.inline.m-l-25
+                  Prepared?
+                  = f.check_box :prepared
+              %li.mm-modal__item.m-t-10
+                %label.mm-modal__label
+                  Feedback
+                  = f.text_area :feedback, class: "mm-modal__textarea"
+              %li.mm-modal__buttons
+                = f.submit "Update", class: 'mm-button mm-button-orange'

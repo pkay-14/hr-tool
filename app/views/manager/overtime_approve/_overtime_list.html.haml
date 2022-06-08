@@ -1,0 +1,138 @@
+.hr-table-wrap.table-wrap-responsive.table-overtime-approve.general-table
+  %table.hr-table.table-responsive
+    %thead.table-inner-responsive
+      %tr.hr-table__head-row.hr-table__head-row--height.table-tr-responsive
+        %th.mm-th-table-top.hr-table__cell--space-l-10.name Master
+        %th.mm-th-table-top.date Date
+        %th.mm-th-table-top.hours Overtime Hours
+        %th.mm-th-table-top.th-comment Comments
+        %th.mm-th-table-top.status Status
+    - @overtime_approves.each do |approve|
+      - unless approve.canadian?
+        %tr.hr-table__body-row.hr-table__body-row--white.table-tr-responsive
+          %td.hr-table__cell.hr-table__cell--space-l-10.name.table-td-responsive
+            %span.span-responsive.span-master-name Master
+            .wrap-test.short-dots
+              %ul.media-list
+                %li.media.text-left
+                  = link_to image_tag((approve.overtime.employee.photo.path(:small_retina).present? ? approve.overtime.employee.photo.url(:small_retina) : "user_icon_placeholder@2x.png") , class: "media-object media-object--break img-circle", alt: "User photo" ), admin_employee_path(approve.overtime.employee), :class => 'pull-left master-photo'
+                  .media-body
+                    %h4.media-heading
+                      = link_to approve.overtime.employee.full_name.empty? ? "No Name" : approve.overtime.employee.full_name, admin_employee_path(approve.overtime.employee), class: "mm-name"
+                    %ul.skills-list.master-skill
+                      - approve.overtime.employee.skills.each do |s|
+                        %li.mm-size-12.table-text-main-color
+                          = s.name
+                          %span.table-text-secondary-color
+                            = "- #{s.level.present? ? s.level : 'Unknown level'}"
+          %td.hr-table__cell.table-td-responsive{:class => "date"}
+            %span.span-responsive Date
+            = approve.overtime.date
+          %td.hr-table__cell.table-td-responsive.d-flex{:class => "hours"}
+            %span.span-responsive Overtime Hours
+            .overtime-approve-hours--container
+              = approve.overtime.hours.round(2)
+            %div{'data-time-logged--container' => ''}
+              %button.btn-icon.icon-more.icon-caret-down-overtime{'data-show-overtime-details--button' => ''}
+              .mm-modal-custom.modal-time-logged.hide
+                .modal-content
+                  .mm-modal__title
+                    %h3 Time Logged
+                    %button.btn-icon.cancel-icon.close-time-logged
+                  .modal-logged-body
+                    - if approve.overtime.time_logged_on_issues.present?
+                      - approve.overtime.time_logged_on_issues.each do |issue, time_logged|
+                        - unless issue.nil?
+                          .time-logged-block
+                            - log = sanitize "#{time_logged.round(2)}h on <b>#{issue.key.blank? ? issue.project&.name : issue.key}</b>"
+                            - summary = sanitize "<span>: #{issue.summary}</span></br>" unless issue.summary.blank?
+                            = link_to log + summary, approve.overtime.issue_url(issue), target: :_blank, class: "time-logged__link"
+                          .comment-time-logged
+                            - unless approve.overtime.time_logs.blank?
+                              - approve.overtime.time_logs.each do |time_log|
+                                -if time_log.jira_issue_id.to_i.eql? issue.id
+                                  %span
+                                    = "#{(time_log.time_spent_seconds/3600.0).round(2)}h"
+                                  = ": #{time_log.worklog_comment.present? ? time_log.worklog_comment : 'no comment'}"
+                                  %br
+                            - else
+                              = "No comment info for timelog"
+                        %hr.time-logged-hr-mobile
+                    - else
+                      .no-data-message
+                        = "No timelog info to display"
+                      %hr.time-logged__hr
+                  .mm-modal__buttons.mm-modal__buttons-logged
+                    .mm-button.mm-button-orange.close-time-logged Close
+
+            - if approve.overtime.time_difference
+              %div{'data-time-logged--container' => ''}
+                %button.btn-icon.icon-warning.icon-caret-down-overtime{'data-show-overtime-details--button' => ''}
+                .mm-modal-custom.modal-time-logged.hide
+                  .modal-content
+                    .mm-modal__title
+                      %h3 Updated overtime request
+                      %button.btn-icon.cancel-icon.close-time-logged
+                    .modal-logged-body
+                      - if approve.overtime.time_logged_on_issues.present?
+                        .updated-overtime-request-popup-line--container
+                          .bold-text
+                            = "#{approve.overtime.hours.round(2)}h total reported time for #{approve.overtime.date}"
+                        .updated-overtime-request-popup-line--container
+                          .regular-text
+                            = "#{previous_time(approve.overtime)}h was initially logged on #{approve.overtime.previous_date}"
+                        .updated-overtime-request-popup-line--container
+                          .regular-text.was-logged--color
+                            = "#{logged_on_date(approve.overtime)}h was logged on #{approve.overtime.updated_at.to_date} (#{operation(approve.overtime)} the initial logged time)"
+                    .mm-modal__buttons.m-t-15.space-b-15
+                      %button.mm-button.mm-button-orange.close-time-logged Close
+
+          %td.hr-table__cell.table-td-responsive
+            %span.span-responsive Comments
+            .comment-container
+              -unless approve.is_approved.nil?
+                = hidden_field_tag :approval_comment, approve.comment
+                = hidden_field_tag :approve_id, approve.id
+                %span.comment__text
+                  = sanitize "#{approve.comment}" unless approve.comment.blank?
+                %button#edit-comment__btn.edit-comment__btn.btn-icon.edit-icon
+            .mm-modal-custom.hide
+              .modal-content
+                .mm-modal__title
+                  %h3 Edit comment
+                  %button.edit-btn.btn-cancel-edit{data: {"toggle" => "popover", "hint" => "", "content" => "Cancel"}}
+                .mm-modal-body
+                  .edit-container
+                    .form-container
+                      = form_tag( edit_manager_overtime_approve_path(approve.id)) do
+                        %label.mm-modal__label Comment
+                        = text_area_tag :pm_edited_comment, approve.comment, placeholder: 'Edit Comment', class: 'edit-comment'
+                        %p.error-comment Comment too short
+                        = submit_tag 'Save', class: 'mm-button mm-button-orange mm-button-save-pm align-self-center', data: {"toggle" => "popover", "hint" => "", "content" => "Confirm"}
+
+          %td.hr-table__cell.status.table-td-responsive
+            %span.span-responsive.span-status-responsive Status
+            .mm-overtime-approve-status
+              - if approve.is_approved.nil?
+                = sanitize "<span> Pending </span>"
+                %span
+                  = link_to 'Approve', approve_comment_form_manager_overtime_approve_path(approve), class: 'btn-icon check-icon', data: {"toggle" => "popover", "hint" => "", "content" => "Approve"}
+                  = link_to 'Dismiss', dismiss_comment_form_manager_overtime_approve_path(approve), class: 'btn-icon cancel-icon', data: {"toggle" => "popover", "hint" => "", "content" => "Dismiss"}
+              -else
+                = sanitize "</br><b> #{approve.status}</b>"
+                .pull-right
+                  %button.btn-icon.undo-icon.undo-btn-hr{'data-btn-for-undo-approve'=>"#{approve.id}"} Undo
+                  .mm-modal-custom.undo-modal#undo-modal-hr{'data-modal-for-undo-approve'=>"#{approve.id}"}
+                    .modal-dialog.modal-sm
+                      .modal-content
+                        .mm-modal__title
+                          %h3.overtime-approval__title Cancel
+                          %button.btn-icon.cancel-icon.close-undo-hr{type:"button", 'data-dismiss'=>"modal", 'aria-label'=>"Close"}
+                        .modal-body
+                          %p.centered The status of this overtime notification will be changed back to "Pending".
+                          %p.centered Do you want to proceed?
+                          .mm-modal__buttons.mm-modal__buttons-proceed
+                            = link_to 'Proceed', revert_approve_status_manager_overtime_approve_path(approve, params: @overtime_approves_params ), id: 'approve_undo_button', class: 'mm-button mm-button-orange'
+
+.moc-paginate
+  = paginate @overtime_approves if @overtime_approves

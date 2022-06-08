@@ -1,0 +1,2 @@
+%li
+  = link_to_unless current_page.first?, "", url, :class =>"icon-angle-left", :rel => 'prev', :remote => url.scan('search').empty? ? remote : true

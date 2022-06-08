@@ -1,0 +1,26 @@
+<tr>
+  <td style="font-family: Arial,serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0;
+  text-align: center;
+  color: #646464;">
+    <span>
+      Hi!
+      <br>
+      <br>
+      This email is to inform you that <%= @master.full_name %> has submitted the
+      <br>
+      External Peer: <%= @external_peer['name'] %>, email: <%= @external_peer['email'] %>
+      <br>
+      <br>
+      <a href="<%= main_settings_apr_user_session_url(@user_session.id) %>" target="_blank" rel="noopener" style="color:#FD5D32; text-decoration: none">Please, check Master’s External Peers listed in MastersModule</a> and make sure that they have an opportunity to provide their feedback to the Master.
+      <br>
+      <br>
+      <br>
+      Enjoy your day!
+    </span>
+  </td>
+</tr>

@@ -1,0 +1,8 @@
+public/*
+app/assets/stylesheets/published_page/bootstrap/*
+app/frontend/styles/shared/bootstrap/*
+app/frontend/images/*
+backup-images/icons/*
+vendor/assets/stylesheets/*
+vendor/gems/*
+app/frontend/styles/shared/components/constructor/_spectrum.scss

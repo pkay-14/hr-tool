@@ -1,0 +1,12 @@
+.container.main.feedback-comment
+  %h3 Leave your feedback for:
+  = @master.full_name
+  = form_tag manager_master_feedbacks_path do
+    = submit_tag 'Submit', class: 'add-question btn-icon check-icon'
+    = hidden_field_tag :master_id, @master.id.to_s
+    = hidden_field_tag :project_id, params[:project_id]
+    .fedback-comment-header
+    = text_area_tag :text
+
+
+

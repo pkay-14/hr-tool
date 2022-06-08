@@ -1,0 +1,20 @@
+<tr>
+  <td width="20"></td>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block;">
+      Привіт! <br>
+      Кандидат <%= @candidate.full_name %>  виконав тестове завдання. Будь ласка, перевір та залиш свій фідбек про якість виконання.
+    </span>
+  </td>
+  <td width="20"></td>
+</tr>
+
+<tr><td height="35" colspan="3"></td></tr>
+
+<tr>
+  <td width="20"></td>
+  <td align="center">
+    <%= link_to "Залишити фідбек", @host, {:style=>"color:#ef4934; font:18px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none; display:block; text-decoration: none"} %>
+  </td>
+  <td width="20"></td>
+</tr>

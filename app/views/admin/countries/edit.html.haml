@@ -1,0 +1,10 @@
+#master-form.profile-page.profile-form.main-page
+  .content-container
+    .container.main
+      .content-block
+        .mm-btn-back-wrapper
+          = link_to 'Back', admin_countries_path, :class => 'mm-btn-back__link'
+        .head-part
+          %h2.profile-title Edit Country
+        .profile-info-box
+          = render :partial => "form"

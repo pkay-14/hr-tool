@@ -1,0 +1,10 @@
+<tr>
+  <td width="20"></td>
+  <td>
+    <span mc:edit="content_1" style="color:#646464; font:16px Arial, sans-serif; line-height: 26px; -webkit-text-size-adjust:none;">
+      Today, <%= link_to(@master.full_name, admin_employee_url(@master)) %> requested a sick leave for <%= sprintf("%g", @quota_info['total']) %> days, but has only <%= sprintf("%g", @quota_info['quota']) %> paid sick leave days available, hence <%= sprintf("%g", @quota_info['excess']) %> day(s) will not be paid for. <br>
+      Please consider reaching out to the master to get more details.
+    </span>
+  </td>
+  <td width="20"></td>
+</tr>

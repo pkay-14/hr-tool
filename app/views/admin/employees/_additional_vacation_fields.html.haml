@@ -1,0 +1,12 @@
+%ul.inline.nested-fields.additional-vacation__list
+  %li
+    = f.text_field :days, class: 'additional-vacation-days', disabled: f.object&.persisted?
+  %li.additional-vacation__item--year
+    = f.object&.created_at ? f.object&.created_at&.strftime('%Y') : @current_year
+  -#%li
+  -#  = f.label :assigned_by, :class => 'control-label'
+  -#  = f.select :assigned_by, options_from_collection_for_select(User.current_managers, 'id', 'full_name', f.object.assigned_by_id), {},{class: 'additional-vacation-assigned_by'}
+  %li.custom-textarea.m-l-15
+    = f.text_area :comment, class: 'additional-vacation-comment profile-form__textarea--custom', disabled: f.object&.persisted?
+  %li
+    = link_to_remove_association 'remove', f, :class => 'btn-icon cancel-icon vertical-align-middle'

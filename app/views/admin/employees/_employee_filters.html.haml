@@ -1,0 +1,116 @@
+.dropdown-container
+  .mobile-top-row
+    %h3.menu-title Filters
+    .close-dropdowns
+      %button#close-right-menu.close-right-menu
+  .dropdown-block#employees-technology
+    %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_tech: "Any skills"}}
+      Any skills
+    %ul.hr-dropdown__menu.dropdown-menu{ :role => "tablist" }
+      -(User::TECH).each do |tech|
+        %li.dropdown__item{data: {tech: tech}  }
+          = tech
+
+  .dropdown-block#employees-status
+    %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_status: "master"}}
+      Master
+    %ul.hr-dropdown__menu.dropdown-menu{ :role => "tablist" }
+      %li.dropdown__item{ data: { user_status: 'current' } }
+        Master
+      %li.dropdown__item{ data: { user_status: 'left' } }
+        Ex Master
+
+  -#.btn-group.custom-dropdown#employees-legal-status
+  -#  %a.btn.dropdown-toggle{:href=>"#", data: {toggle:"dropdown", current_legal_status: "Any legal docs"}}
+  -#    Any legal docs
+  -#    %span.caret
+  -#  %ul.dropdown-menu{ :role => "tablist" }
+  -#    %li{data: {legal_status: 'Any legal docs'} }
+  -#      %a{:role => "tab", 'data-toggle' => "tab"}
+  -#        Any legal docs
+  -#    %li{data: {legal_status: 'without_legal_info'} }
+  -#      %a{:role => "tab", 'data-toggle' => "tab"}
+  -#        Without legal info
+  -#    %li{data: {legal_status: 'without_contract'} }
+  -#      %a{:role => "tab", 'data-toggle' => "tab"}
+  -#        Without contract
+  -#    %li{data: {legal_status: 'with_contract'} }
+  -#      %a{:role => "tab", 'data-toggle' => "tab"}
+  -#        With contract
+
+  .dropdown-block#employees-role-status
+    %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_role_status: "Any role"}}
+      Any role
+    %ul.hr-dropdown__menu.dropdown-menu{ :role => "tablist" }
+      -User::ROLES.each do |role, name|
+        %li.dropdown__item{data: {role_status: role} }
+          = name
+
+  .dropdown-block#employees-office
+    %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_office: "Any office"}}
+      Any office
+    %ul.hr-dropdown__menu.dropdown-menu{ :role => "tablist" }
+      -(['Any office'] + Office.order_by(name: :asc).pluck(:name)).each do |office|
+        %li.dropdown__item{data: {office: office} }
+          =office.capitalize
+
+
+  .dropdown-block#employees-company-division
+    %a.dropdown.dropdown-division{:href=>"#", data: {toggle:"dropdown", current_company_division: "Any division"}}
+      Any division
+    %ul.hr-dropdown__menu.dropdown-menu{ :role => "tablist" }
+      -(['Any division'] + divisions).each do |division|
+        %li.dropdown__item{data: {company_division: division} }
+          =division.capitalize
+
+  .dropdown-block#employees-community
+    %a.dropdown.dropdown-community{:href=>"#", data: {toggle:"dropdown", current_community: "Any community"}}
+      Any community
+    %ul.hr-dropdown__menu.dropdown-menu{ :role => "tablist" }
+      -(['Any community'] + communities).each do |community|
+        %li.dropdown__item{data: {community: community} }
+          =community.capitalize
+
+  .dropdown-block#employees-positions
+    %a.dropdown.dropdown-position{:href=>"#", data: {toggle:"dropdown", current_position: "Any position"}}
+      Any position
+    %ul.hr-dropdown__menu.dropdown-menu{ :role => "tablist" }
+      -(['Any position'] + positions).each do |position|
+        %li.dropdown__item{data: {position: position} }
+          =position.capitalize
+
+  .dropdown-block.dropdown-block-m-0#employees-people-partner
+    %a.dropdown.dropdown-people-partner{:href=>"#", data: {toggle:"dropdown", current_people_partner: "Any people partner"}}
+      Any people partner
+    %ul.hr-dropdown__menu.dropdown-menu{ :role => "tablist" }
+      -(['Any people partner'] + User.people_partners_names).each do |people_partner|
+        %li.dropdown__item{data: {people_partner: people_partner} }
+          = people_partner.split.map(&:capitalize).join(' ')
+
+  .menu-bottom-button
+    %button.btn-show-result#close-right-menu-btn Show
+-##accordion.panel-group.filter-collapse
+-#  .panel
+-#    .panel-heading
+-#      %h4.panel-title
+-#        %a{:class => "active-link", "data-toggle" => "collapse", "data-parent" =>"#accordion", :href => "#collapseFilters"}
+-#          Filters
+-#
+-##collapseFilters.panel-collapse.collapse
+-#  .panel-body
+-#    .date-filter-label
+-#      ="Hired at"
+-#    = "From"
+-#    .input-append.date#new-s
+-#      = text_field 'date-range', :frome,{:class => 'text_field span2', "data-format"=>"dd-MM-yyyy"}
+-#      %span.add-on
+-#        %i.datepicker--icon-calendar
+-#    = "to"
+-#    .input-append.date
+-#      = text_field 'date-range', :to,{  :class => 'text_field span2', "data-format"=>"dd-MM-yyyy"}
+-#      %span.add-on
+-#        %i.datepicker--icon-calendar
+-#
+-#    .interviwer-check-box
+-#      =check_box_tag :interviewer
+-#      only Interviewer

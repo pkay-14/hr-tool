@@ -1,0 +1,21 @@
+#overtimes.overtime-page-index.main-page
+  .content-container
+    .row-fluid
+      .container
+        %section.menu-wrapper.filters-bar.filters-bar--flex.general-dropdown
+          = render 'overtime_approve_filters'
+
+    .container.main
+      .overtimes
+        .top-row
+          .all-masters-wrapper
+            %h2.title
+              Overtime Requests
+            .top-buttons.top-without-buttons-mobile
+              .search-container
+                .hr-search.search-form.search-item#approve-search-form
+                  =text_field_tag 'overtime-approve-master-filter-input', @overtime_approves_params[:query] ? @overtime_approves_params[:query] : '', {class: 'search__field', placeholder: 'Search'}
+                .open-dropdowns
+                  %button#open-right-menu.open-right-menu
+        %div#overtime-approve-list.overtime-table
+          = render :partial => "overtime_list"

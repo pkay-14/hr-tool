@@ -1,0 +1,5 @@
+%span
+  - days = vacation_days.count_days
+  = sanitize "&nbsp;#{days}: " if days > 0
+  = sanitize "<i>#{vacation_days.from.strftime('%d')}/#{vacation_days.from.strftime('%m')}/#{vacation_days.from.strftime('%Y')}</i>" if days > 0
+  = sanitize "<i> - #{vacation_days.to.strftime('%d')}/#{vacation_days.to.strftime('%m')}/#{vacation_days.to.strftime('%Y')}  </i>" if days > 1

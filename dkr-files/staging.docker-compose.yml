@@ -1,0 +1,120 @@
+version: "2"
+services:
+
+#  proxy:
+#    build:
+#      context: ./dkr-files
+#      dockerfile: staging.nginx.Dockerfile
+#    container_name: 'proxy'
+#    ports:
+#      - "80:80"
+#    links:
+#      - hrdev:hrdev
+#    tty: true
+
+  webpack:
+    container_name: webpack
+    build:
+      context: ..
+      dockerfile: ./webpack.Dockerfile
+    command: yarn build-staging
+    ports:
+      # host:container
+      - 3035:3035
+    volumes:
+      - ..:/myapp
+      # - data-node-modules:/myapp/node_modules
+      # - hrdev-sources:/app:nocopy
+    env_file: ./.env.staging
+    # profiles:
+      # - frontend
+    environment:
+      - WEBPACK_HOST=0.0.0.0
+
+  hrdev:
+    image: "320485110145.dkr.ecr.eu-west-3.amazonaws.com/hr_module_bookkeeping.staging"
+    container_name: 'hrdev'
+    ports:
+      - "8080:8080"
+    depends_on:
+      - redis
+      - mongo
+      - postgres
+      - sidekiq
+    env_file:
+      - ./.env.staging
+    environment:
+      SERVER_ROLE: 'web'
+    command: /bin/sh -c "chmod +x /myapp/staging.startup.sh && /myapp/staging.startup.sh"
+    tty: true
+    volumes:
+      - './config/secrets.yml:/myapp/config/secrets.yml'
+      - './config/database.yml:/myapp/config/database.yml'
+      - './config/external_services:/myapp/config/external_services'
+      - './photos:/myapp/public/system/users/photos'
+      - './vendor/letter_opener:/myapp/vendor/letter_opener'
+
+  sidekiq:
+    image: "320485110145.dkr.ecr.eu-west-3.amazonaws.com/hr_module_bookkeeping.staging"
+    container_name: hrdev_sidekiq
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    depends_on:
+      - redis
+      - mongo
+      - postgres
+    volumes:
+      - ..:/myapp
+
+#  hrdev_faye:
+#    image: "hub.masterofcode.com/hr_module_bookkeeping"
+#    container_name: 'hrdev_faye'
+#    ports:
+#      - "9292:9292"
+#    depends_on:
+#      - "hrdev"
+#    links:
+#      - postgres:postgres
+#      - postgres_test:postgres_test
+#      - redis:redis
+#      - mongo:mongo
+#    env_file:
+#      - ./.env.staging
+#    environment:
+#      SERVER_ROLE: 'faye'
+#    command: /bin/sh -c "chmod +x /myapp/staging.startup.sh && /myapp/staging.startup.sh"
+#    tty: true
+
+  postgres:
+    image: 'postgres:11'
+    container_name: 'hrdev_postgres'
+    env_file:
+      - ./.env.staging
+    ports:
+      - '5432:5432'
+    volumes:
+      - './data/postgres:/var/lib/postgresql/data:rw'
+
+#  postgres_test:
+#      image: 'postgres:latest'
+#      container_name: 'hrdev_postgres_test'
+#      env_file:
+#        - ./.env.staging
+#      ports:
+#        - '5433:5432'
+
+  redis:
+    image: 'redis:latest'
+    container_name: 'hrdev_redis'
+    command: redis-server
+    ports:
+      - '6379:6379'
+    volumes:
+      - './data/redis:/var/lib/redis/data:rw'
+
+  mongo:
+    image: 'mongo:3.2'
+    container_name: 'hrdev_mongo'
+    ports:
+      - '27017:27017'
+    volumes:
+      - './data/mongodb:/data/db:rw'

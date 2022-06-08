@@ -1,0 +1,20 @@
+%li.mm-profile-form__item.mm-no-border
+  = f.label :changes_date, class: "profile-edit-form-label"
+  .profile-form__item-input-wrap.mm-no-border.flex-direction--column-left
+    %div
+      #user-changes-date--container.input-append.input-append--flex.date.project-form__block.apr__block-dates.changes-date{'data-change-date' => '', 'data-current-date' => ''}
+        - if @user.changes_date && @user.working_status.eql?('Ex Master')
+          = f.text_field :changes_date, :value => @user.changes_date.strftime("%d.%m.%Y") , "data-format"=>"dd.MM.yyyy", class: 'profile-form__input text_field', "readonly"=>"readonly"
+          %span.add-on
+            %i.apr-date__icon{"data-time-icon"=>"icon-time", "data-date-icon"=>"icon-calendar"}
+        - else
+          = f.text_field :changes_date, :value => nil, "data-format"=>"dd.MM.yyyy", class: 'profile-form__input text_field', "readonly"=>"readonly"
+          %button.add-on#changes-date-icon.changes-date-icon
+            %i.apr-date__icon{"data-time-icon"=>"icon-time", "data-date-icon"=>"icon-calendar"}
+      %div#user-changes-date-error__text-id.user-changes-date-error__text Please, specify a new Start date
+      %p.change-date-validation__text--start You may not choose the date, that is earlier than the start date of a Master's previous career entry
+      %p.change-date-validation__text--end You may not choose the date, that is earlier than the Master's dismissal date
+      %p.change-date-validation__text--previous You may not choose the date, that is earlier than the start date of a Master's previous career entry
+      = f.hidden_field 'last_career_history_start_date', {value: @history_start_date, class: 'profile-form__input--hidden-start'}
+      = f.hidden_field 'last_career_history_end_date', {value: @history_end_date, class: 'profile-form__input--hidden-end'}
+      = f.hidden_field 'previous_career_history_start_date', {value: @previous_date, class: 'profile-form__input--hidden-previous-start'}

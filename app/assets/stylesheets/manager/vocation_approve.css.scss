@@ -1,0 +1,213 @@
+@import "../shared/variables.css.scss";
+
+#vacation_list{
+  .name {
+    width: 205px;
+  }
+  .type-of-vocation {
+    width: 100px;
+  }
+  .from-date,
+  .to-date{
+    width: 116px;
+  }
+  .action {
+    width: 70px;
+  }
+  .vacation-tr-responsive:nth-child(even) {
+    background-color: #fafafa;
+  }
+
+
+  @media (max-width: 1200px) {
+    .vacation-th-responsive, .vacation-td-responsive {
+      width: 180px;
+    }
+
+    .vacation-image-responsive {
+      display: none;
+    }
+
+    .vacation-btn-responsive {
+      width: 80px;
+    }
+
+    .btn-approve {
+      margin-bottom: 10px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .name {
+      width: 100%;
+    }
+    .vacation-table-wrap {
+      position: relative;
+      width: 55%;
+      margin: 0 auto;
+      overflow-x: inherit;
+    }
+
+    .vacation-table-wrap {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .vacation-table-responsive {
+      display: flex;
+    }
+
+    .vacation-table-inner-responsive {
+      display: none;
+    }
+
+    .vacation-table-responsive tbody {
+      width: 100%;
+    }
+
+    .vacation-tr-responsive {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .vacation-tr-responsive:nth-child(odd) {
+      border: none;
+    }
+
+    .vacation-tr-responsive:nth-child(even) {
+      border-top: 2px solid $td-vacation-approve-border;
+      border-bottom: 2px solid $td-vacation-approve-border;
+    }
+
+    .vacation-tr-responsive:first-child {
+      border-radius: 0 6px 0 0;
+    }
+
+    .vacation-tr-responsive:last-child {
+      border-radius: 0 0 6px 0;
+    }
+
+    .vacation-td-responsive {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      padding: 0;
+    }
+
+    .media-body {
+      display: flex;
+    }
+
+    .vacation-btn-responsive {
+      width: auto;
+    }
+
+    .btn-approve {
+      margin-right: 15px;
+      margin-bottom: 0;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .vacation-table-wrap {
+      width: 65%;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .vacation-table-wrap {
+      width: 90%;
+    }
+
+    .vacation-btn-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .vacation-btn-responsive {
+      width: 90px;
+    }
+
+    .btn-approve {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+@media (max-width: 991px) {
+  .vacation-title {
+    text-align: center;
+    margin: 30px 0;
+  }
+}
+
+@media (max-width: 576px) {
+  .vacation-title {
+    font-size: 35px;
+  }
+}
+
+.mm-badge {
+  background-color: #E7522C;
+  border-radius: 2px;
+  color: white;
+
+  padding: 2px 8px;
+  font-size: 14px;
+
+  position: absolute;
+  top: 13px;
+  right: 16px;
+  @media (max-width: 991px) {
+    right: unset;
+    left: 275px;
+  }
+}
+
+.master-photo.master-photo {
+  width: 44px;
+}
+
+.media-object--break {
+  word-break: break-all;
+}
+
+.vacation-reject__form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 15px 20px 15px !important;
+}
+
+.vacation-request__td {
+  width: 10%;
+}
+
+.vacation-reject__controls {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.vacation-reject__field {
+  width: 100%;
+}
+//
+//.vacation-reject__textarea {
+//  width: 100%;
+//  min-height: 70px;
+//  padding: 15px;
+//  box-sizing: border-box;
+//}
+
+
+@media (max-width: 991px) {
+  .master-photo.master-photo {
+    display: none;
+  }
+  .mm-status-container {
+    display: flex;
+    flex-direction: column;
+  }
+}
+

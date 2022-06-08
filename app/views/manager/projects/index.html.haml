@@ -1,0 +1,33 @@
+#projects.projects-page-index.main-page{data: {projects_delete: ''}}
+  .content-container
+    .row-fluid
+      .container{data: {project_search: ''}}
+        %section.menu-wrapper.filters-bar.filters-bar--flex
+          = render 'projects_filters', current_manager: "All", current_status: "Any status"
+
+
+    .container.main
+      .top-row
+        .all-masters-wrapper
+          .title-container
+            %h2.title All Projects
+          .top-buttons
+            .top-buttons-container
+              - if current_user.is_hr_manager?
+                %button#export-filtered-projects--btn.table-top-btn.mm-btn-white
+                  Export to csv
+              -unless (current_user.is_lead?&& !(current_user.is_manager? || current_user.is_hr_manager?))
+                =link_to '+ Add Project', "#",  class: 'open-project-form table-top-btn mm-btn-white'
+              %a.open-all-project-form.table-top-btn.mm-btn-white{:href=>"#", :onclick=>'return false', data: {toggle:"popover",content: "Show all projects" }}
+                All
+            .search-container
+              .hr-search.search-form.search-item
+                =text_field_tag  'search_query',  params[:search_query] ? params[:search_query] : '', class: 'tag-links search__field', placeholder: 'Search'
+              .open-dropdowns
+                %button#open-right-menu.open-right-menu
+          .new-project-container
+            = render 'new_project_form'
+      -# %a.save-proj-bt.hide{:href=>"#", :onclick=>'return false', data: {toggle:"popover",content: "Save project" }}
+      -#   Save
+      .projects.projects-view
+        = render partial: 'projects', locals: { projects: @projects }

@@ -1,0 +1,28 @@
+.dropdown-container.dropdown-container-no-space
+  .dropdown-block.dropdown-block-208#interviews-filters
+    %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_status: ""}}
+      Any status
+    %ul.hr-dropdown__menu.dropdown-menu
+      %li.dropdown__item{ data: { status: "" } }
+        %label
+          Any status
+      %li.dropdown__item{ data: { status: "0" } }
+        %label
+          Assigned
+      %li.dropdown__item{ data: { status: "1" } }
+        %label
+          Passed
+
+  .dropdown-block.dropdown-block-208#interviews-success
+    %a.dropdown{:href=>"#", data: {toggle:"dropdown", current_successful_status: ""}}
+      Any result
+    %ul.hr-dropdown__menu.dropdown-menu
+      %li.dropdown__item{ data: { successful_status: "" } }
+        %label
+          Any result
+      %li.dropdown__item{ data: { successful_status: "1" } }
+        %label
+          Successful
+      %li.dropdown__item{ data: { successful_status: "0" } }
+        %label
+          Unsuccessful

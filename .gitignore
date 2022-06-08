@@ -1,0 +1,49 @@
+/.idea/
+/.vscode/
+
+bundle/
+db/*.sqlite3
+log/*.log*
+tmp/*
+/tmp/pids/*              # this line
+!/tmp/pids               # this line
+!/tmp/pids/.keep         # and this line
+public/system/*
+.sass-cache/
+public/stylesheets/
+.DS_Store
+.powenv
+script/rmb
+.env
+.rbenv-vars
+.ruby-gemset
+.ruby-version
+hrmodule_design/
+public/system/users/photo
+public/assets/
+dump.rdb
+vendor/gems
+vendor/cache
+vendor/letter_opener
+sidekiq/letter_opener
+docker_dev/data
+config/secrets.yml
+/config/external_services/
+
+passenger*
+dkr-files-dev/.data
+dkr-files-dev/.docker-sync
+var
+docker-compose.yml
+
+/node_modules
+/public/dist
+/dist
+
+yarn-error.log
+
+# Tests
+/tests/**/screenshots
+/tests/**/videos
+# Local environment variables for the test
+cypress.env.json

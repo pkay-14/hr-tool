@@ -1,0 +1,7 @@
+%span
+  - if off_days.to - off_days.from == 0
+    = sanitize "<b>#{off_days.half_day? ? 0.5 : 1.0}: </b>"
+  - else
+    = sanitize "<b>#{(off_days.to - off_days.from)+ 1.0}: </b>"
+
+  = "#{off_days.from.strftime('%d')}/#{off_days.from.strftime('%m')}/#{off_days.from.strftime('%Y')} "

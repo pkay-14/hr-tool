@@ -1,0 +1,203 @@
+$('[data-project-members=<%= @load.project.id %>]').last()
+  .before('<%=escape_javascript(render partial: "load", locals: { load: @load, project: @load.project }) %>')
+
+$('[data-load-id=<%= @load.id.to_s %>]').addClass("add-member")
+
+$('[data-project-members=<%= @load.project.id %>]').removeClass('hide')
+
+$('.btn-remove-master').on("click", function () {
+    const parentRowEl = this.closest('[data-project-members]');
+    const tableNameEl = parentRowEl.querySelector('[data-master-name]');
+    const popupNameEl = document.querySelector('[data-deleting-name]');
+
+    popupNameEl.textContent = `${tableNameEl.textContent}'s`;
+    $('.master-remove-icon').attr('data-load-id', $(this).attr('data-load-id'));
+    $('#confirm-modal-master').css('display', 'block');
+    $('.mm-background-overlay').css('display', 'block');
+});
+
+$('[data-load-id=<%= @load.id.to_s %>] .master-remove-icon').on('click', function(e) {
+  var id;
+  id = $(this).attr('data-load-id');
+  return $.ajax({
+    url: "/manager/projects/load/" + id,
+    type: "DELETE",
+    data: {}
+  }).done(function () {
+      $('tr[data-load-id="'+load_id+'"]').remove();
+      $('.mm-background-overlay').css('display', 'none');
+  });
+});
+
+function clear_date_events() {
+    var data, load_id;
+    $("[data-load-id] .clear").on("click", function() {
+      data = {
+        load: {}
+      };
+
+      load_id = $(this).closest('[data-load-id]').data('load-id');
+      if ($(this).parent().hasClass('from-date')) {
+        data['date'] = 'from';
+      } else {
+        data['date'] = 'to';
+      }
+
+      $.ajax({
+        url: "/manager/projects/load/" + load_id + '/clear_date',
+        type: "POST",
+        data: data
+      }).done(function() {
+           $(this).remove()
+      });
+    });
+    $(".member-row .from-date .clear").on('click', function () {
+      $(this).closest('td').children('.clear').hide();
+    })
+
+    $(".member-row .to-date .clear").on('click', function () {
+      $(this).closest('td').children('.clear').hide();
+    })
+};
+
+clear_date_events();
+
+$(`[data-load-id=<%= @load.id.to_s %>] .from-date, [data-load-id=<%= @load.id.to_s %>] .to-date`).datetimepicker().on('changeDate', function(ev) {
+  const self = $(this);
+  const dateField = document.createElement('span');
+  const date_value = self.find('input').val();
+  const load_id = self.closest('[data-load-id]').data('load-id');
+  let data;
+
+  self.find('.date-field').remove();
+  self.find('.date-text').remove();
+  self.find('.clear').remove();
+  dateField.classList.add("date-field");
+  self.append(dateField);
+  self.datetimepicker('hide');
+  self.find('.date-field').text(date_value);
+
+  if (self.hasClass('from-date')) {
+    data = {
+      load: {
+        from: date_value
+      }
+    };
+  } else {
+    data = {
+      load: {
+        to: date_value
+      }
+    };
+  }
+  $.ajax({
+    url: "/manager/projects/load/" + load_id,
+    type: "PUT",
+    data: data
+  });
+  $.ajax({
+    url: 'projects/load/' + load_id + '/warning',
+    type: "GET",
+    data: {}
+  });
+});
+
+function createDeleteButton() {
+  $(`[data-load-id=<%= @load.id.to_s %>] .to-date`).datetimepicker().on('changeDate', function() {
+    const self = $(this);
+    const clearField = document.createElement('button');
+
+    clearField.classList.add("clear");
+    self.append(clearField);
+    self.find('.clear').on('click', function() {
+      self.find('.date-field').remove()
+    });
+    clear_date_events();
+  });
+}
+
+createDeleteButton();
+
+function checkTooltipText() {
+  const tooltipTextEls = document.querySelectorAll('[data-master-tooltip-text]');
+
+  tooltipTextEls.forEach(tooltipTextEl => {
+    if (tooltipTextEl.textContent.trim().length === 0) {
+      tooltipTextEl.closest('[data-master-tooltip]').style.visibility = 'hidden';
+    }
+  });
+}
+
+checkTooltipText();
+
+$('.st-member-name').on("click", function(e) {
+  return $(this).siblings('.select-wrapper').find('[data-user-list="initail"]').select2("open");
+});
+
+$('[data-user-list="initail"]').on("select2:opening", function(e) {
+  $(this).parent().siblings('.st-member-name').hide();
+  $(this).parent().removeClass('hidden');
+});
+
+$('[data-user-list="initail"]').on("select2:close", function(e) {
+  $(this).parent().addClass('hidden');
+  $(this).parent().siblings('.st-member-name').show();
+});
+
+$('[data-load-id=<%= @load.id.to_s %>] [data-user-list="initail"]').select2({
+  data: <%= @employee_for_select2 %>
+});
+
+$('[data-load-id=<%= @load.id.to_s %>] [data-user-list="initail"]').on("select2:select", function(e) {
+  var load_id, master_id;
+  $(this).parent().siblings('.st-member-name').text(e.params.data.text).show();
+  master_id = e.params.data.id;
+  load_id = $(this).closest('[data-load-id]').attr('data-load-id');
+  $.ajax({
+    url: "/manager/projects/load/" + load_id,
+    type: "PUT",
+    data: {
+      load: {
+        employee_id: master_id
+      }
+    },
+    success: function(data) {
+      $.ajax({
+        url: 'projects/load/' + load_id + '/warning',
+        type: "GET",
+        data: {}
+      });
+    }
+  });
+});
+
+
+$(".best_in_place").best_in_place();
+
+$('[data-load-id=<%= @load.id.to_s %>] .member-load .best_in_place').best_in_place().bind('ajax:success', function() {
+  var load_id;
+  load_id = $(this).data('loadId');
+  return $.ajax({
+    url: 'projects/load/' + load_id + '/warning',
+    type: "GET",
+    data: {}
+  });
+});
+
+$("[data-load-id=<%= @load.id.to_s %>] .clear").on("click", function() {
+    var data, load_id;
+    data = {
+        load: {}
+    };
+    load_id = $(this).closest('[data-load-id]').data('load-id');
+    if ($(this).parent().hasClass('from-date')) {
+        data['date'] = 'from';
+    } else {
+        data['date'] = 'to';
+    }
+    return $.ajax({
+        url: "/manager/projects/load/" + load_id + '/clear_date',
+        type: "POST",
+        data: data
+    });
+});

@@ -1,0 +1,432 @@
+@import "../shared/variables.css.scss";
+
+.vacation-page-index {
+  .container.main {
+    .vacation-request-form {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.75);
+      min-height: 100vh;
+      z-index: 8;
+
+      ul.form {
+        li {
+          &.name-col {
+            width: 215px;
+          }
+          &.type-col {
+            width: 180px;
+          }
+          &.from-date-col {
+            width: 125px;
+          }
+          &.to-date-col {
+            width: 125px;
+          }
+          &.status-col {
+            width: 120px;
+          }
+        }
+      }
+    }
+
+  }
+
+  .approved {
+    color: $approve;
+  }
+  .rejected {
+    color: $not-approved;
+  }
+  .request {
+    color: $request;
+  }
+}
+
+#employee-vacation-box{
+  h3{
+    min-height: 51px;
+  }
+  .inline{
+    margin-top: 30px;
+  }
+}
+
+.vacation-page-index .search-form {
+  position: relative;
+  float: right;
+  width: 175px;
+  margin-left: 5px;
+  text-align: right;
+
+  input[type="text"] {
+    width: 100%;
+    height: 31px;
+    padding: 4px 30px 4px 4px;
+    box-sizing: border-box;
+    margin: 0;
+    border: 0 solid;
+    box-shadow: none;
+  }
+}
+
+.vacation-fields-list {
+  display: flex;
+
+  @media (max-width: 583px) {
+    flex-direction: column-reverse;
+  }
+}
+
+.vacation-fields-list--space-b {
+  margin-bottom: 10px;
+}
+
+.vacation-fields-list--column {
+  flex-direction: column;
+}
+
+.vacation-fields-list--space-between {
+  justify-content: space-between;
+}
+
+.vacation-fields-list--align-c {
+  align-items: center;
+
+  @media (max-width: 583px) {
+    align-items: flex-start;
+  }
+}
+
+.vacation-popup {
+  width: 95%;
+  max-width: 600px;
+  background: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-sizing: border-box;
+  border-radius: 10px;
+  max-height: 735px;
+  overflow-y: auto;
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+}
+
+.modal-content-container {
+  padding: 0 15px 25px 15px;
+}
+
+.top-modal-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #F1F1F1;
+  padding: 9px 15px;
+}
+
+.vacation-popup--height {
+  max-height: 665px;
+}
+
+.vacations-form {
+  min-height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.vacation-popup__title {
+  font-size: 22px;
+  color: $main-text-color;
+  text-align: left;
+}
+
+.vacation-fields__item {
+  width: 100%;
+
+  .vacation-label {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .vacation-label--inline {
+    flex-direction: row;
+  }
+}
+
+.vacation-fields__item--space-b {
+  margin-bottom: 15px;
+}
+
+.vacation-fields__item--space-b-md {
+  margin-bottom: 30px;
+}
+
+.vacation-fields__item--half {
+  width: 48%;
+
+  @media (max-width: 583px) {
+    width: 100%;
+  }
+}
+
+.vacation-fields__item--md {
+  width: 38%;
+
+  @media (max-width: 583px) {
+    width: 100%;
+  }
+}
+
+.vacation-fields__item--order {
+  order: 0;
+
+  @media (max-width: 583px) {
+    order: -1;
+  }
+}
+
+.vacation-fields__item--sm {
+  width: 17%;
+
+  @media (max-width: 583px) {
+    width: 100%;
+  }
+}
+
+.vacation-fields__item-spaace-t-desctop {
+  margin-top: 38px;
+  label {
+    margin-bottom: 0;
+  }
+  @media (max-width: 583px) {
+    margin-top: 0;
+  }
+}
+
+.vacation-fields__item--height-sm {
+  height: 19px;
+}
+
+.eployee-select-wrap {
+  position: relative;
+  width: 100%;
+
+  .select2 {
+    .select2-selection--single {
+      height: 38px;
+
+      .select2-selection__arrow {
+        height: 100%;
+      }
+    }
+
+    .select2-selection__rendered {
+      height: 100%;
+      line-height: 36px;
+    }
+  }
+
+  .select2 + .select2-container {
+    top: 28px !important;
+    left: 0 !important;
+    width: 100%;
+
+    .select2-dropdown {
+      width: 100% !important;
+      max-width: none;
+
+      .select2-results {
+        width: 100%;
+      }
+    }
+
+    .select2-search--dropdown {
+      width: 100%;
+    }
+
+    .select2-dropdown.select2-dropdown--below {
+      .select2-results {
+        margin-top: 10px;
+      }
+      .select2-search--dropdown {
+        input.select2-search__field {
+          height: 38px;
+        }
+      }
+    }
+  }
+}
+
+.input-append.vacation-date-box {
+  display: flex;
+  height: 38px;
+  width: 100%;
+
+  .vacation-date-inp {
+    width: 88%;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  .vacation-calendar-ic {
+    width: 12%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    box-sizing: border-box;
+  }
+}
+
+.vacation-select {
+  width: 100%;
+  height: 38px;
+}
+
+.vacation-popup__actions-list {
+  display: flex;
+  justify-content: center;
+}
+
+.vacation-popup__actions-item--abs {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+}
+
+.vacation-textarea {
+  width: 100%;
+  resize: none;
+  box-sizing: border-box;
+  border: 1px solid #F1F1F1;
+  box-shadow: none;
+}
+
+.vacation-year, .vacation-days {
+  font-size: 12px;
+  color: $main-text-color;
+}
+
+.vacation-days {
+  font-weight: 400;
+}
+
+.vacation-days-left--space-b {
+  margin-bottom: 10px;
+}
+
+.vacation-text {
+  padding: 0 5px;
+  font-weight: 700;
+}
+
+.vacation-label__text {
+  font-size: 12px;
+  font-weight: 400;
+  color: #BABABA;
+}
+
+.vacation-label__text--grey {
+  color: #ccc;
+}
+
+.vacation-label__text--space-r {
+  margin-right: 10px;
+}
+
+.vacation-label__text--error {
+  color: red;
+  font-weight: 300;
+}
+
+.vacation-fields__item--inline {
+  display: flex;
+}
+
+.vacations-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.hidden-info {
+  display: block;
+  visibility: hidden;
+  height: 0;
+  width: 0;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+.master-info {
+  width: 255px;
+}
+
+td.type, th.type, td.vacation-status, th.vacation-status {
+  padding-left: 70px;
+}
+
+.date-from, .date-to, .actions.vacation-actions {
+  width: 90px;
+}
+
+.vacation-status {
+  width: 284px;
+}
+
+.vacation-actions__wrap {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.actions.vacation-actions {
+  .btn-icon.check-icon, .btn-icon.cancel-icon, .btn-icon.trash-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+.not-approved-managers {
+  list-style: none;
+  font-size: 10px;
+  font-weight: 400;
+  color: #444444;
+}
+
+.vacation-actions-container {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#btn_export_vacations{
+  margin-right: 10px;
+}
+
+.mm-modal-body-export {
+  padding: 15px;
+}
+
+.mm-modal-body-export__text {
+  margin: 0 0 40px 0px;
+}
+
+.dates-field {
+  display: flex;
+  justify-content: space-between;
+}
+
+.vacation-fields__text--unpaid-message {
+  color: #EF627B;
+;
+}

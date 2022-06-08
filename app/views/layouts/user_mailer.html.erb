@@ -1,0 +1,118 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title>Email Newsletter</title>
+
+<style type="text/css">
+	@media only screen and (max-width: 599px){
+		table[class=main-table],table[class=main-table] .image{
+			width:100% !important;
+		}
+
+}	@media only screen and (max-width: 599px){
+		table[class=main-table] .image{
+			max-width:100% !important;
+			height:auto !important;
+		}
+
+}	@media only screen and (max-width: 599px){
+		table[class=main-table] .image2{
+			width:75% !important;
+			height:auto !important;
+		}
+
+}	@media only screen and (max-width: 599px){
+		table[class=main-table] .row{
+			display:block !important;
+			width:100% !important;
+			height:auto !important;
+		}
+
+}</style></head>
+<body style="padding:0px;margin:0px;">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:0; padding:0; border-collapse:collapse;">
+	<tr>
+	  <td align="center">
+		<table width="600" border="0" cellspacing="0" cellpadding="0" style="margin:0; padding:0; border-collapse:collapse;" class="main-table">
+
+			<tr>
+				<td>
+                	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:0; padding:0; border-collapse:collapse;">
+                    	<tr><td height="40" colspan="3"></td></tr>
+                        <tr>
+                        	<td align="center" colspan="3">
+                            	<img src="<%= image_url('email/moc_logo_email_header.png') %>" alt="Logo" width="60" height="60" style="display:block">
+                            </td>
+                        </tr>
+                        <tr><td height="35" colspan="3"></td></tr>
+                        <tr>
+                        	<td width="20"></td>
+                        	<td align="center">
+                            	<span mc:edit="title" style="color:#131313; font:28px Arial, sans-serif; line-height: 36px; -webkit-text-size-adjust:none; display:block;"><%= message.subject %></span>
+                            </td>
+                            <td width="20"></td>
+                        </tr>
+                        <tr><td height="40" colspan="3"></td></tr>
+						<tr>
+							<td colspan="3" align="center">
+                <hr color="#DBDBDB" align="center" size="1px" width="120px">
+							</td>
+						</tr>
+                    </table>
+                </td>
+            </tr>
+
+            <tr>
+            	<td>
+                	<table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin:0; padding:0; border-collapse:collapse;">
+                        <tr><td height="45" colspan="3"></td></tr>
+				                    <%= yield %>
+                        <tr><td height="40" colspan="3"></td></tr>
+                        <tr>
+                        	<td colspan="3" align="center">
+                            <hr color="#FD5D32" align="center" size="1px" width="120px">
+                          </td>
+                        </tr>
+                        <tr><td height="70" colspan="3"></td></tr>
+                        <tr>
+                        	<td align="center" colspan="3">
+                            	<img src="<%= image_url('email/moc_logo_email_footer.png') %>" alt="Logo" width="143" height="69" style="display:block;">
+                            </td>
+                        </tr>
+                        <tr><td height="40" colspan="3"></td></tr>
+                        <tr>
+                        	<td align="center" colspan="3">
+                            	<table width="220" border="0" cellspacing="0" cellpadding="0" style="margin:0; padding:0; border-collapse:collapse;">
+                                	<tr>
+                                    	<td width="60" align="center">
+                                        	<a href="https://www.facebook.com/master.of.code.global">
+                                            	<img src="<%= image_url('email/social_fb.png') %>" alt="Facebook" width="40" height="40" style="display:block">
+                                          	</a>
+                                        </td>
+                                        <td width="60" align="center">
+                                        	<a href="https://twitter.com/master_of_code">
+                                            	<img src="<%= image_url('email/social_tw.png') %>" alt="Twitter" width="40" height="40" style="display:block">
+                                          	</a>
+                                        </td>
+                                        <td width="60" align="center">
+                                        	<a href="https://www.linkedin.com/company/master-of-code">
+                                            	<img src="<%= image_url('email/social_in.png') %>" alt="LinkedIn" width="40" height="40" style="display:block">
+                                          	</a>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr><td height="90" colspan="3"></td></tr>
+                    </table>
+                </td>
+            </tr>
+
+		</table>
+	  </td>
+	</tr>
+</table>
+</body>
+</html>

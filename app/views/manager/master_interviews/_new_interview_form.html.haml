@@ -1,0 +1,30 @@
+.mm-modal-custom#mm-modal
+  .mm-modal__title
+    %h3 New Interview
+    =link_to 'Cancel', "#",  class: 'cancel-adding btn-icon cancel-icon close-modal'
+  = form_for @interview, :url => {:action => "create"} do |f|
+    .mm-modal__buttons
+      =f.submit 'Create', class: 'add-interview mm-button mm-button-orange', data: {'hide-new-form' => ''}
+    %ul.mm-modal__list
+      %li.mm-modal__item
+        %label.mm-modal__label-208
+          Master
+          = f.select :user_id, options_from_collection_for_select(@employee, 'id', 'full_name')
+        %label.mm-modal__label-208
+          Project
+          = f.text_field :project, class: 'mm-modal__input-208'
+      %li.mm-modal__item.m-t-15
+        %label.mm-modal__label
+          Description
+          = f.text_area :description, class: 'mm-modal__textarea'
+
+      %li.mm-modal__item.m-t-15
+        %label.mm-modal__label-208
+          %span.mm-modal__span-required Date*
+          .input-append.date#interview-date
+            = f.text_field :date, class: 'mm-modal__date-208', "data-format"=>"dd.MM.yyyy hh:mm"
+            %span.add-on
+              %i.datepicker--icon-calendar
+        %label.mm-modal__label-208
+          Client
+          = f.text_field :client, class: 'mm-modal__input-208'
